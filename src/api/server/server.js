@@ -26,6 +26,7 @@ let archivePosition = function(position, positions) {
         console.log("une position a été archivée");
     })
 }
+
 // On ouvre une connexion à notre base de données
 MongoClient.connect(url, {
     useUnifiedTopology: true,
@@ -79,40 +80,38 @@ MongoClient.connect(url, {
                     console.log("Bienvenue sur notre application !");
                     // Génération d'un token crypté
                     let token = jwt.sign({
-                        data: user._id
+                        data: result._id
                     }, privatekey, { expiresIn: '24h' });
                     console.log("token: " + token);
                     res.json(token);
-
-                    // Décodage du token
-                    // try {
-                    //     var decoded = jwt.verify(token, privatekey);
-                    //     console.log("decoded:" + decoded.data);
-                    // } catch(err) {
-                    //     console.log("erreur lors du décodage");
-                    // }
                 }
             })
         })
-        .get("/position", (req, res) => {
-            let position = {
-                lat: req.query.lat,
-                long: req.query.long,
-                date_activation: req.query.date,
-                heure_activation: req.query.heure,
-                msg: req.query.msg,
-                duree: req.query.duree,
-                status: "active"
+        .get("/position/:token", (req, res) => {
+            try {
+                let decoded = jwt.verify(req.params.token, privatekey);
+                console.log("decoded:" + decoded.data);
+                let position = {
+                    lat: req.query.lat,
+                    long: req.query.long,
+                    date_activation: req.query.date,
+                    heure_activation: req.query.heure,
+                    msg: req.query.msg,
+                    duree: req.query.duree,
+                    user: decoded.data,
+                    status: "active"
+                }
+                //  Si on a une position active lors de l'ajout d'une nouvelle position, on l'archive
+                positions.findOne({status: "active"})
+                .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
+                positions.insertOne(position, (err, resu) => {
+                    console.log("Position Ajoutée");
+                    res.json(position);
+                })
+            } catch(err) {
+                console.log("erreur lors du décodage");
             }
-            //  Si on a une position active lors de l'ajout d'une nouvelle position, on l'archive
-            positions.findOne({status: "active"})
-            .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
-            positions.insertOne(position, (err, resu) => {
-                console.log("Position Ajoutée");
-                res.json(position);
-            })
-            
-        })
+        });
         app.listen(3000, () => {
             console.log("En attente de requêtes...");
         })
