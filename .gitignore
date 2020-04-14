@@ -1,0 +1,5 @@
+src/api/node_modules
+
+## les fichier DS_Store pour MAC 
+.DS_Store
+
