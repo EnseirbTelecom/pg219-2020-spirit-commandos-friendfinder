@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "serve": "http-server ./www/ -o -c 1 -a localhost -p 8080",
+    "serve": "http-server ./www/ -o -c 1 -a localhost -p 8082",
     "build-cordova": "node ./build/build.js && cd cordova && cordova build",
     "postinstall": "cpy ./node_modules/framework7-icons/fonts/*.* ./www/fonts/"
   },
