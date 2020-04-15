@@ -1,0 +1,117 @@
+{ 
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FriendFinder",
+    "description": "Application mobile pour la géolocalisation des amis",  
+    "version": "1.0.1"
+  },
+  "servers": 
+    {
+      "url": "http://localhost:8082/api"
+    }
+  ,
+  "tags": [
+    {
+      "name": "position",
+      "description": "Détails pour les positions"
+    },
+    {
+      "name": "utilisateur",
+      "description": "Détails des utilisateurs"
+    }
+  ],
+  "paths": [
+  {
+    "/signup": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "l'inscription d'un nouvel utilisateur",
+        "operationId": "ajoutUtilisateur",
+        "requestBody": {
+          "description": "L'objet utilisateur à rajouter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Utilisateur"
+              }
+            }
+          }
+          },
+          "required": true
+        },
+        "responses": {
+          "405": {
+            "description": "Entrée invalide",
+            "content": {}
+          },
+          "200": {          
+            "description": "Ajout réussi",
+            "content": {
+              "text/plain": {  
+                "schema": {
+                  "type": "string"  
+                }
+              }
+            }
+          }
+        }
+     }
+  }
+  ],
+  "components": {
+    "schemas": {
+      "Utilisateur": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "prenom": {
+            "type": "string"
+          },
+          "pseudo": {
+            "type": "string"
+          },
+          "date": {
+            "type": "date"
+          }
+        }
+      },
+     "positions" : {
+       "type":"object",
+       "properties":{
+         "lat":{
+           "type":"integer"
+         },
+         "long":{
+           "type":"integer"
+         },
+         "date_activation":{
+           "type":"string"
+         },
+         "heure_activation":{
+           "type":"string"
+         },
+         "user":{
+            "$ref": "#/components/schemas/User"
+         },
+         "status":{
+           "type":"string"
+         }
+
+       }
+     }
+    }
+  }    
+}
