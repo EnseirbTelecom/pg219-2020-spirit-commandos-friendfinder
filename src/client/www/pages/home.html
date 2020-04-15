@@ -38,18 +38,23 @@
         },
         methods: {
             sign_up: function() {
-                let url = "http://localhost:3000/signup?mail="+document.getElementById("mail").value+"&password="+document.getElementById("mdp").value+"&nom="+document.getElementById("nom").value+"&prenom="+document.getElementById("prenom").value+"&pseudo="+document.getElementById("pseudo").value+"&date="+document.getElementById("date").value;
-                console.log("url: " + url);
+                let url = "http://localhost:3000/signup";
+                let reqBody = JSON.stringify({
+                            "mail": document.getElementById("mail").value,
+                            "password": document.getElementById("mdp").value,
+                            "nom": document.getElementById("nom").value,
+                            "prenom": document.getElementById("prenom").value,
+                            "pseudo": document.getElementById("pseudo").value,
+                            "date": document.getElementById("date").value
+                        });
+                console.log("BODY: " + reqBody);
                 try {
                     fetch(url, {
-                        method: "POST"
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: reqBody
                     }).then(res => {
-                        // if (res === null) {
-                        //     console.log("null retourné");
-                        // }
-                        //  else {
-                        //      console.log("token: " + JSON.stringify(res));
-                        //  }
+                       res.json();
                     });
                 } catch (err) {
                     this.$app.dialog.alert("ERROR: ", err);
