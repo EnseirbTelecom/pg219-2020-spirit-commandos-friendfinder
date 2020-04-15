@@ -39,16 +39,17 @@ MongoClient.connect(url, {
 
         // Rajouter les routes et les traitements
         app.post("/signup", (req, res) => {
+            console.log("BODY: " + JSON.stringify(req.body));
             let user = {
-                mail: req.query.mail,
-                password: req.query.password,
-                nom: req.query.nom,
-                prenom: req.query.prenom,
-                pseudo: req.query.pseudo,
-                date: req.query.date
+                mail: req.body.mail,
+                password: req.body.password,
+                nom: req.body.nom,
+                prenom: req.body.prenom,
+                pseudo: req.body.pseudo,
+                date: req.body.date
             };
             let userExists = {
-                mail : req.query.mail
+                mail : req.body.mail
             };
             // On cherche si l'@ mail existe déjà dans la base de données
             users.findOne(userExists, (err, result) => {
@@ -61,18 +62,18 @@ MongoClient.connect(url, {
                     users.insertOne(user, (err, resu) => {
                         console.log("Utilisateur Ajouté");
                         // Génération d'un token crypté
-                    let token = jwt.sign({
-                        data: user._id
-                    }, privatekey, { expiresIn: '24h' });
-                        res.json(token);
+                        let token = jwt.sign({
+                            data: user._id
+                        }, privatekey, { expiresIn: '24h' });
+                            res.json(token);
                     })
                 }
             })
         })
         .post("/signin", (req, res) => {
             let user = {
-                mail: req.query.mail,
-                password: req.query.password
+                mail: req.body.mail,
+                password: req.body.password
             };
             // On cherche l'utilisateur dans la base de données
             users.findOne(user, (err, result) => {
@@ -96,12 +97,12 @@ MongoClient.connect(url, {
                 let decoded = jwt.verify(req.params.token, privatekey);
                 console.log("decoded:" + decoded.data);
                 let position = {
-                    lat: req.query.lat,
-                    long: req.query.long,
-                    date_activation: req.query.date,
-                    heure_activation: req.query.heure,
-                    msg: req.query.msg,
-                    duree: req.query.duree,
+                    lat: req.body.lat,
+                    long: req.body.long,
+                    date_activation: req.body.date,
+                    heure_activation: req.body.heure,
+                    msg: req.body.msg,
+                    duree: req.body.duree,
                     user: decoded.data,
                     status: "active"
                 }
