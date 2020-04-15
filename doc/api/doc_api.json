@@ -5,11 +5,11 @@
     "description": "Application mobile pour la géolocalisation des amis",  
     "version": "1.0.1"
   },
-  "servers": 
+  "servers": [
     {
-      "url": "http://localhost:8082/api"
+      "url": "https://localhost:8082/api"
     }
-  ,
+  ],
   "tags": [
     {
       "name": "position",
@@ -20,9 +20,9 @@
       "description": "Détails des utilisateurs"
     }
   ],
-  "paths": [
+  "paths": 
   {
-    "/signup": {
+    "/utilisateur": {
       "post": {
         "tags": [
           "user"
@@ -58,11 +58,10 @@
           }
         }
      }
-  }
-  ],
+  },
   "components": {
     "schemas": {
-      "Utilisateur": {
+      "utilisateur": {
         "type": "object",
         "properties": {
           "id": {
@@ -84,7 +83,7 @@
             "type": "string"
           },
           "date": {
-            "type": "date"
+            "type": "string"
           }
         }
       },
@@ -104,7 +103,7 @@
            "type":"string"
          },
          "user":{
-            "$ref": "#/components/schemas/User"
+            "$ref": "#/components/schemas/utilisateur"
          },
          "status":{
            "type":"string"
