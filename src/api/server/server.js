@@ -65,7 +65,7 @@ MongoClient.connect(url, {
                         let token = jwt.sign({
                             data: user._id
                         }, privatekey, { expiresIn: '24h' });
-                            res.json(token);
+                        res.json(token);
                     })
                 }
             })
@@ -87,7 +87,6 @@ MongoClient.connect(url, {
                     let token = jwt.sign({
                         data: result._id
                     }, privatekey, { expiresIn: '24h' });
-                    console.log("token: " + token);
                     res.json(token);
                 }
             })

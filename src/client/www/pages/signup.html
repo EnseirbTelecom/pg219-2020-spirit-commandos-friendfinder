@@ -1,0 +1,69 @@
+<template>
+    <div class="page" data-name="signup">
+        <form id="log">
+            <div class="form-group">
+              <label for="mail">Email: </label>
+              <input id="mail" class="form-control field" placeholder="you@email.com">
+            </div>
+            <div class="form-group">
+              <label for="mdp">Mot de passe: </label>
+              <input id="mdp" type="password" class="form-control field" placeholder="password">
+            </div>
+            <div class="form-group">
+                <label for="nom">Nom: </label>
+                <input id="nom" class="form-control field" placeholder="First name">
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom: </label>
+                <input id="prenom"  class="form-control field" placeholder="Last name">
+            </div>
+            <div class="form-group">
+                <label for="pseudo">Pseudo: </label>
+                <input id="pseudo"  class="form-control field" placeholder="Pseudo">
+            </div>
+            <div class="form-group">
+                <label for="date">Date de naissance: </label>
+                <input id="date" class="form-control field" placeholder="">
+            </div>
+            <div class="add" style="margin-left: 40%; margin-right: 40%;">
+              <a  @click="sign_up" href="#" class="button button-round button-fill" >Sign up</a>
+          </div>
+        </form>
+    </div>
+</template>
+<script>
+    return {
+        async data() {
+            
+        },
+        methods: {
+            sign_up: async function() {
+                let url = "http://localhost:3000/signup";
+                let reqBody = JSON.stringify({
+                            "mail": document.getElementById("mail").value,
+                            "password": document.getElementById("mdp").value,
+                            "nom": document.getElementById("nom").value,
+                            "prenom": document.getElementById("prenom").value,
+                            "pseudo": document.getElementById("pseudo").value,
+                            "date": document.getElementById("date").value
+                        });
+                console.log("BODY: " + reqBody);
+                let token = null;
+                try {
+                    token = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: reqBody
+                    }).then(res => {
+                       return res.json();
+                    }).then(data => {
+                        console.log(JSON.stringify(data));
+                    });
+                } catch (err) {
+                    this.$app.dialog.alert("ERROR: ", err);
+                }
+            }
+        }
+    }
+
+</script>

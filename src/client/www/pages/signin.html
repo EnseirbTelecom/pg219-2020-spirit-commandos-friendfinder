@@ -1,0 +1,67 @@
+<template>
+    <div class="page" data-name="signup">
+                  <div class="list">
+                    <ul>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Mail</div>
+                          <div class="item-input-wrap">
+                            
+                            <input type="text" name="mail" id="mail" placeholder="you@example.mail">
+                          </div>
+                        </div>
+                      </li>
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Password</div>
+                          <div class="item-input-wrap">
+                            
+                            <input type="password" name="password" id="password" placeholder="Your password">
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="list">
+                    <ul>
+                      <li>
+                        
+                        <a href="#" class="item-link list-button login-button" @click="signin">Sign In</a>
+                      </li>
+                    </ul>
+                    <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login Screen</div>
+                  </div>
+                  <div>
+                      <p id="token"></p>
+                  </div>
+    </div>
+</template>
+<script>
+    return {
+        methods: {
+            signin: async function() {
+                let reqBody = JSON.stringify({
+                    mail: document.getElementById("mail").value,
+                    password: document.getElementById("password").value
+                });
+                let url = "http://localhost:3000/signin";
+                let token = null;
+                try {
+                    token = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                        body: reqBody
+                    }).then(res => {
+                       return res.json();
+                    }).then(data => { console.log(JSON.stringify(data)) });
+                    // console.log("token: " + JSON.stringify(token));
+                } catch (err) {
+                    this.$app.dialog.alert("ERROR: ", err);
+                } 
+                // finally {
+                //     document.getElementById("token").innerText = JSON.stringify(token);
+                // }
+            }
+        }
+    }
+</script>
