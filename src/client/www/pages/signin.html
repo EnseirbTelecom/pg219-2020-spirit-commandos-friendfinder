@@ -53,7 +53,18 @@
                         body: reqBody
                     }).then(res => {
                        return res.json();
-                    }).then(data => { console.log(JSON.stringify(data)) });
+                    }).then(data => { 
+                        console.log(JSON.stringify(data)); 
+                        let result = JSON.stringify(data);
+                        if (result === "null") {
+                            console.log("Accès interdit");
+                            this.$app.dialog.alert("Identifiants erronés !");
+                        }
+                        else {
+                            console.log("Bienvenue dans notre appli !");
+                            this.$router.navigate("/accueil/");
+                        }
+                    });
                     // console.log("token: " + JSON.stringify(token));
                 } catch (err) {
                     this.$app.dialog.alert("ERROR: ", err);

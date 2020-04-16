@@ -58,6 +58,17 @@
                        return res.json();
                     }).then(data => {
                         console.log(JSON.stringify(data));
+                        let result = JSON.stringify(data);
+                        if (result === "null") {
+                            console.log("@mail déjà utilisée");
+                            // this.$router.navigate("/signup/");
+                            this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
+                            // location.reload();
+                        }
+                        else {
+                            console.log("Bienvenue dans notre appli !");
+                            this.$router.navigate("/accueil/");
+                        }
                     });
                 } catch (err) {
                     this.$app.dialog.alert("ERROR: ", err);
