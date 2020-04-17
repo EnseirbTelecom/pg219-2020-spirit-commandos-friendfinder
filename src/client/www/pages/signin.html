@@ -1,6 +1,6 @@
 <template>
     <div class="page" data-name="signup">
-                  <div class="list">
+                  <div class="list" >
                     <ul>
                       <li class="item-content item-input">
                         <div class="item-inner">
@@ -24,13 +24,16 @@
                   </div>
                   <div class="list">
                     <ul>
-                      <li>
-                        
+                      <li>                        
                         <a href="#" class="item-link list-button login-button" @click="signin">Sign In</a>
                       </li>
                     </ul>
+                    <div style="float: right;">
+                      <a @click="changePassword">mot de passe oublié ?</a>
+                    </div>
                     <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login Screen</div>
                   </div>
+                  
                   <div>
                       <p id="token"></p>
                   </div>
@@ -72,6 +75,21 @@
                 // finally {
                 //     document.getElementById("token").innerText = JSON.stringify(token);
                 // }
+            },
+
+            changePassword: function() {
+                // this.$router.navigate("/changePassword/");
+                this.$app.dialog.prompt("Veuillez saisir votre adresse mail: ", res => {
+                        console.log(res);
+                        let url = "http://localhost:3000/changePassword?mail=" + res;
+                        console.log("URL: " + url);
+                        try {
+                            fetch(url).then(res => res.json());
+                        } 
+                        catch (err) {
+                            this.$app.dialog.alert("Error", err);
+                        }
+                    });
             }
         }
     }

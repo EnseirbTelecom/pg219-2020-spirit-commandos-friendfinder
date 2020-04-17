@@ -2,6 +2,16 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 
+let nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'SpiritCommandos2020@gmail.com',
+      pass: 'SpiritCommandos123'
+    }
+});
+
 // Express middleware to parse requests' body
 const bodyParser = require("body-parser")
 app.use(bodyParser.json())
@@ -17,7 +27,8 @@ app.use((req, res, next) => {
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const url = 'mongodb://localhost:27017';
-  
+
+
 // Clé pour le cryptage du token
 const privatekey = "privatekey";
 
@@ -36,6 +47,7 @@ MongoClient.connect(url, {
     .then(function (client) {
         let users = client.db("FriendFinder").collection("users");
         let positions = client.db("FriendFinder").collection("positions");
+        let friends = client.db("FriendFinder").collection("friends");
 
         // Rajouter les routes et les traitements
         app.post("/signup", (req, res) => {
@@ -115,11 +127,73 @@ MongoClient.connect(url, {
             } catch(err) {
                 console.log("erreur lors du décodage");
             }
+        })
+
+        .post("/friends/:token", (req, res) => {
+            // Ajouter un nouvel ami
+            try {
+                // on décode le token fourni
+                let decoded = jwt.verify(req.params.token, privatekey);
+                console.log("decoded:" + decoded.data);
+                let id_1 = decoded.data;
+                // On récupère l'id de l'ami
+                users.findOne({mail: req.body.mail}, (err, user) => {
+                    if (user !== null) {
+                        let friend = {
+                            id_1: id_1,
+                            id_2: ObjectID(user._id).toString()
+                        };
+                        // On vérifie que les deux utilisateurs ne sont pas déjà amis
+                        friends.insertOne(friend, (err, result) => {
+                            console.log("Friendship added successfully");
+                            res.json(result);
+                        })
+                    } 
+                    else {
+                        console.log("User not found");
+                        res.json(null);
+                    }
+                }) 
+            } catch(err) {
+                console.log("Une erreur s'est produite lors du décodage");
+            }
+        })
+        .get("/changePassword", (req, res) => {
+            let mail = req.query.mail;
+            console.log("MAIL: " + mail);
+            let randString = Math.random().toString(36).substring(7);
+            console.log("random", randString);
+            // Envoyer des mails
+            let mailOptions = {
+                from: 'SpiritCommandos2020@gmail.com',
+                to: mail,
+                subject: 'Réinitialisation du mot de passe FriendFinder',
+                // text: 'à modifier',
+                // html: '<p>Bonjour, <br/>' +
+                // 'Merci de votre inscription sur notre site. <br/>' + 
+                // 'Afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <a href="http://localhost:8082/pages/changePassword.php?mail=' + mail + '">Formulaire</a></p>'
+                text: "Veuillez trouvez ci-dessous vos nouveaux identifiants pour l'application mobile FriendFinder: \n" + 
+                    "mail: " + mail + 
+                    "\npassword: " + randString
+            };
+            transporter.sendMail(mailOptions, function(error, info) {
+                if (error) {
+                    console.log("ERROR: " + error);
+                } else {
+                    // On modifie le mot de passe de cet utilisateur dans la BDD
+                    users.findOne({mail: mail}).then(user => {
+                        users.updateOne(user, { $set: { password: randString}}).then((err, res) => {
+                            console.log("Mot de passe modifié avec succès");
+                        })
+                    })
+                }
         });
+        })
         app.listen(3000, () => {
             console.log("En attente de requêtes...");
         })
     })
+    
     .catch(function (err) {
       throw err;
     });
