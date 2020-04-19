@@ -1,14 +1,46 @@
 <template>
     <div class="page" data-name="accueil">
-        <header>
-            <h1> Page d'accueil </h1>
-        </header>
-    </div>
+        <div class="scrollbar-warm-flame">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
+              <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear" title="modifier les paramètres de votre compte"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
+            </div>
+        </div>
+        
+        <div style="margin-left:70px">
+            <div class="w3-container">
+                <nav class="navbar navbar-dark bg-dark">
+                    <a class="navbar-brand">Friend Finder</a>
+                    <a href="#"  id="signup_link">Déconnexion</a>
+                </nav>
+                <h1 class="title">Friend Finder</h1>
+                <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
+            </div>
+        </div>
+        <!-- <div class="panel panel-left panel-cover theme-dark panel-init">
+            <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                    <div class="title">Left Panel</div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="block">Left panel content goes here</div>
+            </div>
+        </div>
+    </div> -->
 </template>
 <script>
     return {
-        async data() {
-            
+        methods: {
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            }
         }
     }
 </script>
