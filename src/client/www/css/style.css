@@ -2,3 +2,55 @@
     margin-left: 10%;
     margin-right: 10%;
 }
+
+/* #up {
+    margin-left: 4%;
+    margin-top: 32%;
+    float: left;
+}
+
+#in {
+    margin-right: 4%;
+    margin-top: 32%;
+    float: right;
+} */
+
+.page {
+    background-color: rgba(8, 177, 177, 0.61);
+    background: linear-gradient(rgb(0, 255, 200), black);
+    
+}
+
+#form_signin {
+    /* float: right; */
+    width: 30cm;
+    margin-right: 10%;
+    margin-left: 20%;
+    margin-top: 10%;
+}
+
+/* #form_signup {
+    float: left;
+    width: 20cm;
+    margin-top: 2%; */
+    /* border: black solid 0.2rem;
+    border-radius: 0.3rem; */
+/* } */
+
+header {
+    margin-top: 10%;
+    margin-left: 42%;
+}
+
+#signup_link {
+    color: white;
+}
+
+#log {
+    margin-top: 5%;
+}
+
+#back {
+    margin-left: 5%;
+    margin-top: 5%;
+}

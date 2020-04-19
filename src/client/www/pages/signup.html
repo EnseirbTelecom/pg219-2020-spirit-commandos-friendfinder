@@ -1,5 +1,9 @@
 <template>
     <div class="page" data-name="signup">
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand">Friend Finder</a>
+            <a href="#" @click="signin" id="signup_link">S'authentifier</a>
+        </nav>
         <form id="log">
             <div class="form-group">
               <label for="mail">Email: </label>
@@ -29,6 +33,11 @@
               <a  @click="sign_up" href="#" class="button button-round button-fill" >Sign up</a>
           </div>
         </form>
+        <div class="fab " id="back">
+            <a  @click="back" href="#" title="Ajouter un produit">
+                <i class="icon f7-icons">arrow_left</i>
+            </a>
+        </div>
     </div>
 </template>
 <script>
@@ -66,13 +75,23 @@
                             // location.reload();
                         }
                         else {
-                            console.log("Bienvenue dans notre appli !");
-                            this.$router.navigate("/accueil/");
+                            console.log("Bienvenue !");
+                            const regex = /"/gi;
+                            result = result.replace(regex, '');
+                            console.log(result);
+                            let paths = "/accueil/" + result;
+                            this.$router.navigate(paths);
                         }
                     });
                 } catch (err) {
                     this.$app.dialog.alert("ERROR: ", err);
                 }
+            },
+            signin: function() {
+                this.$router.navigate("/signin");
+            }, 
+            back: function() {
+                this.$router.back();
             }
         }
     }

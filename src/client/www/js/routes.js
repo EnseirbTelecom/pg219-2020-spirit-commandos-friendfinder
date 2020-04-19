@@ -13,12 +13,16 @@ var routes = [
     componentUrl: './pages/signin.html'
   },
   {
-    path: '/accueil',
+    path: '/accueil/:token?',
     componentUrl: './pages/accueil.html'
   },
+  // {
+  //   path: '/changePassword',
+  //   componentUrl: './pages/changePassword.html'
+  // },
   {
-    path: '/changePassword',
-    componentUrl: './pages/changePassword.html'
+    path: "/parameters/:token?",
+    componentUrl:'./pages/params.html'
   },
   {
     path: '/position',

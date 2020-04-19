@@ -87,6 +87,7 @@ MongoClient.connect(url, {
                 mail: req.body.mail,
                 password: req.body.password
             };
+            console.log("USER: " + JSON.stringify(user));
             // On cherche l'utilisateur dans la base de données
             users.findOne(user, (err, result) => {
                 if (result === null) {
@@ -161,34 +162,77 @@ MongoClient.connect(url, {
         .get("/changePassword", (req, res) => {
             let mail = req.query.mail;
             console.log("MAIL: " + mail);
-            let randString = Math.random().toString(36).substring(7);
-            console.log("random", randString);
-            // Envoyer des mails
-            let mailOptions = {
-                from: 'SpiritCommandos2020@gmail.com',
-                to: mail,
-                subject: 'Réinitialisation du mot de passe FriendFinder',
-                // text: 'à modifier',
-                // html: '<p>Bonjour, <br/>' +
-                // 'Merci de votre inscription sur notre site. <br/>' + 
-                // 'Afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <a href="http://localhost:8082/pages/changePassword.php?mail=' + mail + '">Formulaire</a></p>'
-                text: "Veuillez trouvez ci-dessous vos nouveaux identifiants pour l'application mobile FriendFinder: \n" + 
-                    "mail: " + mail + 
-                    "\npassword: " + randString
-            };
-            transporter.sendMail(mailOptions, function(error, info) {
-                if (error) {
-                    console.log("ERROR: " + error);
-                } else {
-                    // On modifie le mot de passe de cet utilisateur dans la BDD
-                    users.findOne({mail: mail}).then(user => {
-                        users.updateOne(user, { $set: { password: randString}}).then((err, res) => {
-                            console.log("Mot de passe modifié avec succès");
-                        })
-                    })
+            // ON DOIT VÉRIFIER D'ABORD QUE L'UTILISATEUR EST BIEN INSCRIT DANS LA BDD
+            users.findOne({mail: mail}, (err, user) => {
+                console.log("USER: " + JSON.stringify(user));
+                if (user !== null) {
+                    let randString = Math.random().toString(36).substring(7);
+                    console.log("random", randString);
+                    // Envoyer des mails
+                    let mailOptions = {
+                        from: 'SpiritCommandos2020@gmail.com',
+                        to: mail,
+                        subject: 'Réinitialisation du mot de passe FriendFinder',
+                        // text: 'à modifier',
+                        // html: '<p>Bonjour, <br/>' +
+                        // 'Merci de votre inscription sur notre site. <br/>' + 
+                        // 'Afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <a href="http://localhost:8082/pages/changePassword.php?mail=' + mail + '">Formulaire</a></p>'
+                        text: "Veuillez trouvez ci-dessous vos nouveaux identifiants pour l'application mobile FriendFinder: \n" + 
+                            "mail: " + mail + 
+                            "\npassword: " + randString
+                    };
+                    transporter.sendMail(mailOptions, function(error, info) {
+                        if (error) {
+                            console.log("ERROR: " + error);
+                            res.json(null);
+                        } else {
+                            // On modifie le mot de passe de cet utilisateur dans la BDD
+                            // users.findOne({mail: mail}).then(user => {
+                                users.updateOne(user, { $set: { password: randString}}).then((err, result) => {
+                                    console.log("Mot de passe modifié avec succès");
+                                    res.json(user);
+                                })
+                            // })
+                        }
+                })         
+                } 
+                else {
+                    res.json(null);
                 }
+            })
+           
+    })
+        .post("/newPassword/:token", (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*");
+            try {
+                // on décode le token fourni
+                let decoded = jwt.verify(req.params.token, privatekey);
+                console.log("decoded:" + decoded.data);
+                let id = decoded.data;
+                console.log("id: " + id);
+                console.log("BODY: " + JSON.stringify(req.body));
+                let oldPassword = req.body.old;
+                let newPassword = req.body.new_mdp;
+                // On vérifie que l'ancien mot de passe envoyé est le bon
+                users.findOne( {"_id": ObjectID(id)}, (err, result) => {
+                    console.log("right: " + result.password);
+                    console.log("wrong: " + oldPassword);
+                    if (result.password === oldPassword) {
+                        console.log("Password conforme !");
+                        users.updateOne(result, { $set: { password: newPassword}}).then((err, res) => {
+                            console.log("Mot de passe modifié avec succès");
+                        });
+                        res.json("OK");
+                    }
+                    else {
+                        console.log("Le password entré n'est pas conforme !");
+                        res.json(null);
+                    }
+                })
+            } catch (err) {
+
+            }
         });
-        })
         app.listen(3000, () => {
             console.log("En attente de requêtes...");
         })
