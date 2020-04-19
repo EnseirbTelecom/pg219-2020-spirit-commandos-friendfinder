@@ -3,6 +3,7 @@
         <nav class="navbar navbar-dark bg-dark">
             <a class="navbar-brand">Friend Finder</a>
             <a href="#" @click="signup" id="signup_link">S'inscire</a>
+            <a href="#" @click="getPos">Position</a>
         </nav>
         <!-- <div id="form_page">
             <div id="form_signup" style="visibility: hidden;">
@@ -89,6 +90,9 @@
 <script>
     return {
         methods: {
+            getPos: function(){
+                this.$router.navigate("/position");
+            },
             signup: function() {
                 // console.log("form signup");
                 // document.getElementById("form_signup").style.visibility = "visible";

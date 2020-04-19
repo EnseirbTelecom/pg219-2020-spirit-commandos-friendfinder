@@ -1,4 +1,4 @@
-<!-- <template> -->
+<template> 
     <div class="page" data-name="positionActuelle">
         <div class="list" >
             Votre position actuelle est : 
@@ -7,64 +7,32 @@
         <div class="list">
             <ul>
                 <li>                        
-                <a href="#" class="item-link list-button login-button" @click="getPos">Position Actuelle</a>
+                <a @click="getPosition">Position Actuelle</a>
+                <div id="geolocalisation"> </div>
                 </li>
             </ul>
         </div>
     </div>
-<!-- </template> -->
-<!-- <script>
+</template> 
+<script>
     return {
         methods: {
             getPosition: function() {
-                let reqBody = JSON.stringify({
-                    mail: document.getElementById("mail").value,
-                    password: document.getElementById("password").value
-                });
-                let url = "http://localhost:3000/signin";
-                let token = null;
-                try {
-                    token = await fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                        body: reqBody
-                    }).then(res => {
-                       return res.json();
-                    }).then(data => { 
-                        console.log(JSON.stringify(data)); 
-                        let result = JSON.stringify(data);
-                        if (result === "null") {
-                            console.log("Accès interdit");
-                            this.$app.dialog.alert("Identifiants erronés !");
-                        }
-                        else {
-                            console.log("Bienvenue dans notre appli !");
-                            this.$router.navigate("/accueil/");
-                        }
-                    });
-                    // console.log("token: " + JSON.stringify(token));
-                } catch (err) {
-                    this.$app.dialog.alert("ERROR: ", err);
-                } 
-                // finally {
-                //     document.getElementById("token").innerText = JSON.stringify(token);
-                // }
-            },
-
-            changePassword: function() {
-                // this.$router.navigate("/changePassword/");
-                this.$app.dialog.prompt("Veuillez saisir votre adresse mail: ", res => {
-                        console.log(res);
-                        let url = "http://localhost:3000/changePassword?mail=" + res;
-                        console.log("URL: " + url);
-                        try {
-                            fetch(url).then(res => res.json());
-                        } 
-                        catch (err) {
-                            this.$app.dialog.alert("Error", err);
-                        }
-                    });
+                console.log("test getPostion"); 
+                var onSuccess = function(position) {
+                    console.log("recuperation position reussie");
+                    console.log(position.coords);
+                    var element = document.getElementById('geolocalisation');
+                    element.innerHTML= 'Latitude: '  + position.coords.latitude + '<br />' +
+                            'Longitude: ' + position.coords.longitude + '<br />' +
+                            '<hr />'      + element.innerHTML;
+                };
+                function onError(error) {
+                alert('code: '    + error.code    + '\n' +
+                'message: ' + error.message + '\n');
+                }
+                 navigator.geolocation.getCurrentPosition(onSuccess, onError);
             }
         }
     }
-</script> -->
+</script> 

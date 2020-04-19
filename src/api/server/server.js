@@ -129,7 +129,7 @@ MongoClient.connect(url, {
                 console.log("erreur lors du décodage");
             }
         })
-
+        
         .post("/friends/:token", (req, res) => {
             // Ajouter un nouvel ami
             try {
