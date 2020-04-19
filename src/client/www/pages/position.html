@@ -1,17 +1,41 @@
 <template> 
     <div class="page" data-name="positionActuelle">
-        <div class="list" >
-            Votre position actuelle est : 
-            <p id="posActuelle"> </p>
-        </div>  
-        <div class="list">
-            <ul>
-                <li>                        
-                <a @click="getPosition">Position Actuelle</a>
-                <div id="geolocalisation"> </div>
-                </li>
-            </ul>
+        <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
         </div>
+        <div style="margin-left:70px">
+        <div class="w3-container">
+            <nav class="navbar navbar-dark bg-dark">
+                <a class="navbar-brand">Friend Finder</a>
+                <a href="#"  id="signup_link">Déconnexion</a>
+            </nav>
+        </div>
+        <div style="margin-left:70px">  
+            <p> Durée de partage de position : </p>   
+            <form>
+                <div class="form-group">
+                    <label>Durée</label>
+                    <input type="text" class="form-control" id="duree" placeholder="Duree de partage">
+                </div>
+                <div class="form-group">
+                    <label>Durée en : </label>
+                    <select class="form-control" id="type_duree">
+                    <option>secondes</option>
+                    <option>minutes</option>
+                    <option>heures</option>
+                    <option>jours</option>
+                    <option>mois</option>
+                    </select>
+                </div>  
+            </form>                
+            <a @click="getPosition">Partager la position </a> 
+            <div id="geolocalisation"> </div>   
+        </div>
+        <div class="fab " id="back">
+                <a href="#" title="Ajouter un produit">
+                    <i class="icon f7-icons">arrow_left</i>
+                </a>
+        </div>
+        </div>    
     </div>
 </template> 
 <script>
