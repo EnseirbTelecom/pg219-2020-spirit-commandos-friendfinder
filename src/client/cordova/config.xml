@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.framework7.friendfinder" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>FriendFinder</name>
+<widget id="io.framework7.friendFinder" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Friend Finder</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -18,6 +18,9 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -27,6 +30,7 @@
     <allow-navigation href="*" />
 
     <platform name="android">
+      <preference name="Orientation" value="portrait" />
       <preference name="StatusBarOverlaysWebView" value="false" />
       <preference name="android-minSdkVersion" value="21" />
       <preference name="SplashMaintainAspectRatio" value="true" />

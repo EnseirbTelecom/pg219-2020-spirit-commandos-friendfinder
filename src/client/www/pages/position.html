@@ -1,33 +1,120 @@
 <template> 
     <div class="page" data-name="positionActuelle">
-        <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+        <div class="scrollbar-warm-flame d-none" id="menu">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"  title="Ajouter une nouvelle position"></i></a>
+              <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear" title="modifier les paramètres de votre compte"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a> 
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
+              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+            
+            </div>
         </div>
-        <div style="margin-left:70px">
-        <div class="w3-container">
-            <nav class="navbar navbar-dark bg-dark">
-                <a class="navbar-brand">Friend Finder</a>
-                <a href="#"  id="signup_link">Déconnexion</a>
-            </nav>
+        
+        <div >
+            <div id="contain">
+                <nav class="navbar navbar-dark bg-dark">
+                    <!-- <a class="navbar-brand">Friend Finder</a> -->
+                    <a  class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons" style="color: white;">menu</i></a>
+                    <a href="#" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i></a>
+                    <a href="#" style="color: white; "><i class="icon f7-icons">power</i></a>
+
         </div>
-        <div style="margin-left:70px">  
-            <p> Durée de partage de position : </p>   
-            <form>
-                <div class="form-group">
+        <div id="contain">  
+            <div style="margin-top: 2%;">
+                <center><h1>Partager une nouvelle position: </h1></center>
+            </div>
+            <!-- <p> Durée de partage de position : </p>    -->
+            <form id="log">
+                <div id="formulaire">
+                <!-- <div class="form-group row">
                     <label>Durée</label>
-                    <input type="text" class="form-control" id="duree" placeholder="Duree de partage">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="duree" placeholder="Duree de partage">
+                    </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <label>Durée en : </label>
-                    <select class="form-control" id="type_duree">
-                    <option>secondes</option>
-                    <option>minutes</option>
-                    <option>heures</option>
-                    <option>jours</option>
-                    <option>mois</option>
-                    </select>
-                </div>  
+                    <div class="col-sm-10">
+                        <select class="form-control" id="type_duree">
+                            <option>secondes</option>
+                            <option>minutes</option>
+                            <option>heures</option>
+                            <option>jours</option>
+                            <option>mois</option>
+                        </select>
+                        </div>
+                </div>  -->
+                <div class="form-group row">
+                    <label for="date" class="label1">Date d'activation: </label>
+                    <div class="col-sm-10">
+                        <a href="#" @click="show_da" id="edit_da" title="définir une date autre que la date d'aujourd'hui">
+                            <i class="icon f7-icons">pencil</i>
+                        </a>
+                        <a href="#" @click="cancel_da" id="cancel_da" class="d-none" title="utiliser la date d'aujourd'hui">
+                            <i class="icon f7-icons">multiply</i>
+                        </a>
+                    <!-- class="col-sm-2 col-form-label" -->
+                </div>
+                </div>
+                <div class="col-sm-10 d-none" id="date_a">
+                    <input type="date" class="form-control" id="date" value="2020-05-30" name="date">
+                </div>
+                <div class="form-group row">
+                    <label for="heure" class="label1">Heure d'activation: </label>
+                    <div class="col-sm-10">
+                        <a href="#" @click="show" id="edit_h" title="définir une heure autre que l'heure système">
+                            <i class="icon f7-icons">pencil</i>
+                        </a>
+                        <a href="#" @click="cancel" id="cancel_h" class="d-none" title="utiliser l'heure système">
+                            <i class="icon f7-icons">multiply</i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-10 d-none" id="heure">
+                    <input class="time" id="hh">
+                    <label>hh</label>
+                    <input class="time" id="mm">
+                    <label>min</label>
+                    <input class="time" id="ss">
+                    <label>sec</label>
+                </div>
+                <div class="form-group row">
+                    <label class="label1">Durée: </label>
+                    <div class="col-sm-10">
+                        <!-- <input placeholder="0" id="w" class="time">
+                        <label>weeks</label> -->
+                        <input placeholder="0" id="d" class="time">
+                        <label>dd</label>
+                        <input placeholder="00" id="h" class="time">
+                        <label>hh</label>
+                        <input placeholder="00" id="m" class="time">
+                        <label>mm</label>
+                        <input placeholder="00" id="s" class="time">
+                        <label>ss</label>
+                    </div>    
+                </div> 
+                
+                <div class="form-group row">
+                    <label class="label1">Acceptez-vous de partager votre position: </label>
+                    <div style="float: inline-end;">
+                        <label class="switch">
+                            <input type="checkbox" id="pos">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div id="error" style="color: red;" class="d-none">
+                        <p>Veuillez d'abord accepter la récupération de votre localisation par notre application</p>
+                    </div>
+                </div>
             </form>                
-            <a @click="getPosition">Partager la position </a> 
+            <!-- <a @click="getPosition" class="button button-round button-fill">Partager la position </a>  -->
+            <div class="add">
+                <a  @click="getPosition" href="#" class="button button-round button-fill" >Partager la position</a>
+            </div>
+        </div>
             <div id="geolocalisation"> </div>   
         </div>
         <div class="fab " id="back">
@@ -40,23 +127,79 @@
 </template> 
 <script>
     return {
+        async data() {
+            // document.getElementById("date").valueAsDate = new Date();
+        },
         methods: {
             getPosition: function() {
                 console.log("test getPostion"); 
-                var onSuccess = function(position) {
-                    console.log("recuperation position reussie");
-                    console.log(position.coords);
-                    var element = document.getElementById('geolocalisation');
-                    element.innerHTML= 'Latitude: '  + position.coords.latitude + '<br />' +
-                            'Longitude: ' + position.coords.longitude + '<br />' +
-                            '<hr />'      + element.innerHTML;
-                };
-                function onError(error) {
-                alert('code: '    + error.code    + '\n' +
-                'message: ' + error.message + '\n');
+                console.log(document.getElementById("pos").checked);
+                if (document.getElementById("pos").checked === false) {
+                    document.getElementById("error").classList = "d-visible";
                 }
-                 navigator.geolocation.getCurrentPosition(onSuccess, onError);
-            }
+                else {
+                    document.getElementById("error").classList = "d-none";
+                    var onSuccess = function(position) {
+                        console.log("recuperation position reussie");
+                        console.log(position.coords);
+                        var element = document.getElementById('geolocalisation');
+                        element.innerHTML= 'Latitude: '  + position.coords.latitude + '<br />' +
+                                'Longitude: ' + position.coords.longitude + '<br />' +
+                                '<hr />'      + element.innerHTML;
+                    };
+                    function onError(error) {
+                        alert('code: '    + error.code    + '\n' +
+                        'message: ' + error.message + '\n');
+                    }
+                    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+                }
+            },
+            show: function() {
+                document.getElementById("heure").classList.remove("d-none");
+                document.getElementById("edit_h").classList.add("d-none");
+                document.getElementById("cancel_h").classList.remove("d-none");
+            },
+            cancel: function() {
+                document.getElementById("heure").classList.add("d-none");
+                document.getElementById("edit_h").classList.remove("d-none");
+                document.getElementById("cancel_h").classList.add("d-none");
+                document.getElementById("w").value = "";
+                document.getElementById("d").value = "";
+                document.getElementById("h").value = "";
+                document.getElementById("m").value = "";
+                document.getElementById("s").value = "";
+            },
+            show_da: function() {
+                document.getElementById("date_a").classList.remove("d-none");
+                document.getElementById("edit_da").classList.add("d-none");
+                document.getElementById("cancel_da").classList.remove("d-none");
+            },
+            cancel_da: function() {
+                document.getElementById("date_a").classList.add("d-none");
+                document.getElementById("edit_da").classList.remove("d-none");
+                document.getElementById("cancel_da").classList.add("d-none");
+                document.getElementById("date").value = "";
+            },
+            show_menu: function() {
+                if (document.getElementById("menu").classList.contains("d-none")) {
+                    document.getElementById("menu").classList.remove("d-none");
+                    document.getElementById("contain").classList.add("w3-container");
+                    document.getElementById("contain").style.marginLeft = "70px";
+                } 
+                else {
+                    document.getElementById("menu").classList.add("d-none");
+                    document.getElementById("contain").classList.remove("w3-container");
+                    document.getElementById("contain").style.marginLeft = "0px";
+
+
+                }
+            
+            },
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
         }
     }
 </script> 

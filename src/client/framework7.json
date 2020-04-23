@@ -1,0 +1,32 @@
+{
+  "cwd": "/home/khadija/Bureau/test",
+  "type": [
+    "cordova"
+  ],
+  "name": "Friend Finder",
+  "framework": "core",
+  "template": "single-view",
+  "bundler": false,
+  "cssPreProcessor": false,
+  "theming": {
+    "customColor": true,
+    "color": "#000000",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": false
+  },
+  "customBuild": false,
+  "pkg": "io.framework7.friendFinder",
+  "cordova": {
+    "folder": "cordova",
+    "platforms": [
+      "android"
+    ],
+    "plugins": [
+      "cordova-plugin-statusbar",
+      "cordova-plugin-keyboard",
+      "cordova-plugin-splashscreen",
+      "cordova-plugin-wkwebview-engine"
+    ]
+  }
+}

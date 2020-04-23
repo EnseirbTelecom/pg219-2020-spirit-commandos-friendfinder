@@ -1,56 +1,237 @@
 #log {
-    margin-left: 10%;
-    margin-right: 10%;
+  margin-top: 100%;
+  margin-left: 10%;
+  margin-right: 10%;
+  border: black solid 0.4rem;
+  border-radius: 1rem;
+  background-color: white;
 }
 
 /* #up {
-    margin-left: 4%;
-    margin-top: 32%;
-    float: left;
+  margin-left: 4%;
+  margin-top: 32%;
+  float: left;
 }
 
 #in {
-    margin-right: 4%;
-    margin-top: 32%;
-    float: right;
+  margin-right: 4%;
+  margin-top: 32%;
+  float: right;
 } */
 
 .page {
-    background-color: rgba(8, 177, 177, 0.61);
-    background: linear-gradient(rgb(0, 255, 200), black);
-    
+  /* background-color: rgba(8, 177, 177, 0.61);
+  background: linear-gradient(rgb(0, 255, 200), black); */
+      /* background:
+          linear-gradient(217deg, rgba(0, 255, 21, 0.8), rgba(255,0,0,0) 70.71%),
+          linear-gradient(217deg, rgba(255, 0, 234, 0.8), rgba(255, 0, 234, 0) 70.71%),
+          linear-gradient(127deg, rgba(0, 255, 0, .8), rgba(0,255, 0, 0.5) 70.71%),
+          linear-gradient(336deg, rgba(0, 0, 255, .8), rgba(0, 0, 255, 0) 70.71%); */
+  margin-bottom: 20%;
+  /* background:
+  repeating-linear-gradient(190deg, rgba(0, 255, 76, 0.5) 40px,
+    rgba(0, 0, 0, 0.5) 80px, rgba(225, 32, 243, 0.781) 120px,
+    rgba(0, 255, 0, 0.5) 160px, rgba(0, 110, 255, 0.884) 200px,
+    rgba(226, 13, 233, 0.801) 240px, rgba(35, 220, 233, 0.863) 280px,
+    rgba(0, 255, 76, 0.5) 300px),
+  repeating-linear-gradient(-190deg, rgba(0, 255, 76, 0.5) 30px,
+  rgba(0, 0, 0, 0.5) 60px, rgba(225, 32, 243, 0.781) 90px,
+    rgba(0, 255, 0, 0.5) 120px, rgba(0, 110, 255, 0.884) 150px,
+    rgb(225, 13, 233, 0.801) 180px, rgba(35, 220, 233, 0.863) 210px,
+    rgba(0, 255, 76, 0.5) 230px),
+  repeating-linear-gradient(23deg, green 50px, pink 100px,
+    rgb(0, 255, 179) 150px, black 200px, rgb(0, 140, 255) 250px,
+    cyan 300px, violet 350px, green 370px); */
+    /* background: conic-gradient(from 45deg, rgba(167, 11, 11, 0.781), rgb(0, 0, 0), rgb(119, 119, 113), red, black, purple); */
+    background: conic-gradient(at 0% 30%, rgb(0, 225, 255) 10%, rgb(195, 0, 255) 30%, #1e90ff 50%);
+    /* background: conic-gradient(at 0% 30%, rgb(0, 255, 213) 10%, rgb(252, 0, 197) 30%, #1e90ff 50%); */
+
+    overflow: scroll;
+    overflow-x: scroll;
+
 }
 
 #form_signin {
-    /* float: right; */
-    width: 30cm;
-    margin-right: 10%;
-    margin-left: 20%;
-    margin-top: 10%;
+  /* float: right; */
+  width: 30cm;
+  margin-right: 10%;
+  margin-left: 20%;
+  margin-top: 10%;
 }
 
 /* #form_signup {
-    float: left;
-    width: 20cm;
-    margin-top: 2%; */
-    /* border: black solid 0.2rem;
-    border-radius: 0.3rem; */
+  float: left;
+  width: 20cm;
+  margin-top: 2%; */
+  /* border: black solid 0.2rem;
+  border-radius: 0.3rem; */
 /* } */
 
 header {
-    margin-top: 10%;
-    margin-left: 42%;
+  margin-top: 10%;
+  margin-left: 42%;
 }
 
-#signup_link {
-    color: white;
+.label1 {
+  font-weight: 800;
+  color: rgb(8, 39, 97);
+}
+
+.link :hover {
+  font-weight: 1000;
+  color: blue;
+}
+
+#formulaire {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 3%;
+  margin-bottom: 20%;
+}
+
+#title {
+  margin-right: 25%;
+  margin-top: 1%;
+  /* margin-left: 45.8%; */
+  margin-bottom: 5%;
+  font-weight: bold;
+  /* font-size: xx-large; */
+  color: black;
+  text-shadow: 1px 1px 2px rgb(187, 13, 230), 0 0 25px rgb(209, 117, 197), 0 0 5px rgb(187, 41, 223);
 }
 
 #log {
-    margin-top: 5%;
+  margin-top: 5%;
 }
 
 #back {
-    margin-left: 5%;
-    margin-top: 5%;
+  margin-left: 5%;
+  margin-top: 5%;
 }
+
+.time {
+  width: 0.5cm;
+  border-radius: 2pt;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  /* background-color: royalblue; */
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: black;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px black;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#notifs {
+    margin-left: 150%;
+}
+
+#notifs :hover {
+    color: cyan;
+    background-color: darkmagenta;
+}
+
+#form_signin {
+    border: black solid 0.4rem;
+    border-radius: 1rem;
+    background-color: white;
+}
+
+#form {
+    margin-left: 2%;
+    margin-right: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+/* .page::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+.page::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+.page::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+} */
+
+
+/* you can hide leter
+input:before {
+content: "Logic:";
+margin-left: -35px;
+font-size: 10px;
+color: #333;
+}
+input {
+position: absolute;
+bottom: 5px;
+left: 50%;
+margin-left: 10px;
+opacity: .1;
+-webkit-transition: all 0.3s ease-out; 
+   -moz-transition: all 0.3s ease-out; 
+     -o-transition: all 0.3s ease-out; 
+        transition: all 0.3s ease-out; 
+} 
+input:hover {
+opacity: 1;
+} */

@@ -16,10 +16,10 @@ var routes = [
     path: '/accueil/:token?',
     componentUrl: './pages/accueil.html'
   },
-  // {
-  //   path: '/changePassword',
-  //   componentUrl: './pages/changePassword.html'
-  // },
+  {
+    path: '/amis/:token?',
+    componentUrl: './pages/amis.html'
+  },
   {
     path: "/parameters/:token?",
     componentUrl:'./pages/params.html'

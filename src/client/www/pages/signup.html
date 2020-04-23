@@ -1,37 +1,62 @@
 <template>
     <div class="page" data-name="signup">
-        <nav class="navbar navbar-dark bg-dark">
+        <!-- <nav class="navbar navbar-dark bg-dark">
             <a class="navbar-brand">Friend Finder</a>
             <a href="#" @click="signin" id="signup_link">S'authentifier</a>
-        </nav>
-        <form id="log">
-            <div class="form-group">
-              <label for="mail">Email: </label>
-              <input id="mail" class="form-control field" placeholder="you@email.com">
+        </nav> -->
+        <header>
+            <ceter><h1 id="title">Friend Finder</h1></ceter>
+        </header>
+        <form id="log" action="sign">
+            <div id="formulaire">
+            <div class="form-group row">
+              <label for="mail" class="col-sm-2 col-form-label">Email: </label>
+              <div class="col-sm-10">
+                <input id="mail1" class="form-control field" placeholder="you@email.com">
+              </div>
             </div>
-            <div class="form-group">
-              <label for="mdp">Mot de passe: </label>
-              <input id="mdp" type="password" class="form-control field" placeholder="password">
+            <div class="form-group row">
+              <label for="mdp" class="col-sm-2 col-form-label">Mot de passe: </label>
+              <div class="col-sm-10">
+                <input id="mdp1" type="password" class="form-control field" placeholder="password">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="nom">Nom: </label>
+            <div class="form-group row">
+                <label for="nom" class="col-sm-2 col-form-label">Nom: </label>
+              <div class="col-sm-10">
                 <input id="nom" class="form-control field" placeholder="First name">
             </div>
-            <div class="form-group">
-                <label for="prenom">Prénom: </label>
+            </div>
+            <div class="form-group row">
+                <label for="prenom" class="col-sm-2 col-form-label">Prénom: </label>
+              <div class="col-sm-10">
                 <input id="prenom"  class="form-control field" placeholder="Last name">
             </div>
-            <div class="form-group">
-                <label for="pseudo">Pseudo: </label>
+            </div>
+            <div class="form-group row">
+                <label for="pseudo" class="col-sm-2 col-form-label">Pseudo: </label>
+              <div class="col-sm-10">
                 <input id="pseudo"  class="form-control field" placeholder="Pseudo">
             </div>
-            <div class="form-group">
-                <label for="date">Date de naissance: </label>
-                <input id="date" class="form-control field" placeholder="">
             </div>
-            <div class="add" style="margin-left: 40%; margin-right: 40%;">
+            <div class="form-group row">
+                <label for="date" class="col-sm-2 col-form-label">Date de naissance: </label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="date" value="" name="date">
+                </div>
+            </div>
+            <div class="add">
               <a  @click="sign_up" href="#" class="button button-round button-fill" >Sign up</a>
           </div>
+          <div class="list">
+            <div style="float: right;">
+                <a @click="signin" class="d-block link">S'authentifier</a>
+            </div>
+            <!-- <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login
+                Screen</div> -->
+        </div>
+    </div>
+</div>
         </form>
         <div class="fab " id="back">
             <a  @click="back" href="#" title="Ajouter un produit">
@@ -47,14 +72,15 @@
         },
         methods: {
             sign_up: async function() {
+                console.log("mail : " + document.getElementById("mail1").value);
                 let url = "http://localhost:3000/signup";
                 let reqBody = JSON.stringify({
-                            "mail": document.getElementById("mail").value,
-                            "password": document.getElementById("mdp").value,
+                            "mail": document.getElementById("mail1").value,
+                            "password": document.getElementById("mdp1").value,
                             "nom": document.getElementById("nom").value,
                             "prenom": document.getElementById("prenom").value,
                             "pseudo": document.getElementById("pseudo").value,
-                            "date": document.getElementById("date").value
+                            "date": document.getElementById("date").value,
                         });
                 console.log("BODY: " + reqBody);
                 let token = null;
@@ -84,11 +110,39 @@
                         }
                     });
                 } catch (err) {
-                    this.$app.dialog.alert("ERROR: ", err);
+                    url = "http://10.0.2.2:3000/signup";
+                    try {
+                        token = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: reqBody
+                    }).then(res => {
+                       return res.json();
+                    }).then(data => {
+                        console.log(JSON.stringify(data));
+                        let result = JSON.stringify(data);
+                        if (result === "null") {
+                            console.log("@mail déjà utilisée");
+                            // this.$router.navigate("/signup/");
+                            this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
+                            // location.reload();
+                        }
+                        else {
+                            console.log("Bienvenue !");
+                            const regex = /"/gi;
+                            result = result.replace(regex, '');
+                            console.log(result);
+                            let paths = "/accueil/" + result;
+                            this.$router.navigate(paths);
+                        }
+                    });
+                    } catch (err) {
+                        this.$app.dialog.alert("ERROR: ", err);
+                    }
                 }
             },
             signin: function() {
-                this.$router.navigate("/signin");
+                this.$router.navigate("/");
             }, 
             back: function() {
                 this.$router.back();

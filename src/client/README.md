@@ -1,4 +1,4 @@
-# FriendFinder
+# Friend Finder
 
 ## Framework7 CLI Options
 
@@ -6,11 +6,11 @@ Framework7 app created with following options:
 
 ```
 {
-  "cwd": "/home/khadija/Bureau/pg219-2020-spirit-commandos-friendfinder/src/client",
+  "cwd": "/home/khadija/Bureau/test",
   "type": [
     "cordova"
   ],
-  "name": "FriendFinder",
+  "name": "Friend Finder",
   "framework": "core",
   "template": "single-view",
   "bundler": false,
@@ -23,7 +23,7 @@ Framework7 app created with following options:
     "fillBars": false
   },
   "customBuild": false,
-  "pkg": "io.framework7.friendfinder",
+  "pkg": "io.framework7.friendFinder",
   "cordova": {
     "folder": "cordova",
     "platforms": [
@@ -55,13 +55,13 @@ Cordova project located in `cordova` folder. You shouldn't modify content of `co
 Assets (icons, splash screens) source images located in `assets-src` folder. To generate your own icons and splash screen images, you will need to replace all assets in this directory with your own images (pay attention to image size and format), and run the following command in the project directory:
 
 ```
-framework7 generate-assets
+framework7 assets
 ```
 
 Or launch UI where you will be able to change icons and splash screens:
 
 ```
-framework7 generate-assets --ui
+framework7 assets --ui
 ```
 
 ## Documentation & Resources

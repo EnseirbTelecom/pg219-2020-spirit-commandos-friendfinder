@@ -1,90 +1,41 @@
 <template>
     <div class="page" data-name="home">
-        <nav class="navbar navbar-dark bg-dark">
+        <!-- <nav class="navbar navbar-dark bg-dark">
             <a class="navbar-brand">Friend Finder</a>
             <a href="#" @click="signup" id="signup_link">S'inscrire</a>
-        </nav>
-        <!-- <div id="form_page">
-            <div id="form_signup" style="visibility: hidden;">
-                <form id="log">
-                    <div class="form-group">
-                    <label for="mail">Email: </label>
-                    <input id="mail" class="form-control field" placeholder="you@email.com">
-                    </div>
-                    <div class="form-group">
-                    <label for="mdp">Mot de passe: </label>
-                    <input id="mdp" type="password" class="form-control field" placeholder="password" style="background-color: white; border-radius: 0.1rem;">
-                    </div>
-                    <div class="form-group">
-                        <label for="nom">Nom: </label>
-                        <input id="nom" class="form-control field" placeholder="First name">
-                    </div>
-                    <div class="form-group">
-                        <label for="prenom">Prénom: </label>
-                        <input id="prenom"  class="form-control field" placeholder="Last name">
-                    </div>
-                    <div class="form-group">
-                        <label for="pseudo">Pseudo: </label>
-                        <input id="pseudo"  class="form-control field" placeholder="Pseudo">
-                    </div>
-                    <div class="form-group">
-                        <label for="date">Date de naissance: </label>
-                        <input id="date" class="form-control field" placeholder="">
-                    </div>
-                    <div class="add" style="margin-left: 40%; margin-right: 40%;">
-                        <a  @click="sign_up" href="#" class="button button-round button-fill" >Sign up</a>
-                    </div>
-                </form>
-            </div>
-            <div id="up">
-                <a  @click="signup" href="#" class="button button-round button-fill" title="Inscription">Sign up</a>
-            </div> -->
-            
-            <!-- Formulaire d'authentification -->
-            <div id="form_signin" >
-                <div class="list" >
-                    <ul>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                        <div class="item-title item-label">Mail</div>
-                        <div class="item-input-wrap">
-                            
-                            <input type="text" name="mail" id="mail1" placeholder="you@example.mail">
+        </nav> -->
+        <header>
+            <ceter><h1 id="title">Friend Finder</h1></ceter>
+        </header>
+        <form id="log">
+            <div id="formulaire">
+            <!-- <div id="form_signin"> -->
+                <!-- <div id="form"> -->
+                    <div class="form-group row">
+                        <label for="mail" class="col-sm-2 col-form-label label1">Email: </label>
+                        <div class="col-sm-10">
+                            <input id="mail" class="form-control field" placeholder="you@email.com">
                         </div>
-                        </div>
-                    </li>
-                    <li class="item-content item-input">
-                        <div class="item-inner">
-                        <div class="item-title item-label">Password</div>
-                        <div class="item-input-wrap">
-                            
-                            <input type="password" name="password" id="password" placeholder="Your password">
-                        </div>
-                        </div>
-                    </li>
-                    </ul>
-                </div>
-                <div class="add" style="margin-left: 40%; margin-right: 40%;">
-                    <a  @click="sign_in" href="#" class="button button-round button-fill" >Sign in</a>
-                </div>
-                <div class="list">
-                    <ul>
-                    <!-- <li>                        
-                        <a href="#" class="item-link list-button login-button" @click="sign_in">Sign In</a>
-                    </li> -->
-                    
-                    </ul>
-                    <div style="float: right;">
-                    <a @click="changePassword">mot de passe oublié ?</a>
                     </div>
-                    <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login Screen</div>
+                    <div class="form-group row">
+                        <label for="mdp" class="col-sm-2 col-form-label label1">Mot de passe: </label>
+                        <div class="col-sm-10">
+                            <input id="mdp" type="password" class="form-control field" placeholder="password">
+                        </div>
+                    </div>
+                    <div class="add">
+                        <a @click="sign_in" href="#" class="button button-round button-fill">Sign in</a>
+                    </div>
+                    <div >
+                        <div style="float: right;">
+                            <a @click="changePassword" class="d-block link">mot de passe oublié ?</a>
+                            <a @click="signup" class="d-block link">S'inscrire</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- <div id="in">
-                <a @click="signin" href="#" class="button button-round button-fill" title="Authentification">Sign in</a>
-            </div> -->
         </div>
-    </div>
+    </form>
 </template>
 <script>
     return {
@@ -110,8 +61,8 @@
             },
             sign_in: async function() {
                 let reqBody = JSON.stringify({
-                    mail: document.getElementById("mail1").value,
-                    password: document.getElementById("password").value
+                    mail: document.getElementById("mail").value,
+                    password: document.getElementById("mdp").value
                 });
                 let url = "http://localhost:3000/signin";
                 let token = null;
@@ -144,7 +95,37 @@
                     });
                     // console.log("token: " + JSON.stringify(token));
                 } catch (err) {
-                    this.$app.dialog.alert("ERROR: ", err);
+                    try {
+                        url = "http://10.0.2.2:3000/signin";
+                        token = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                            body: reqBody
+                        }).then(res => {
+                        return res.json();
+                        }).then(data => { 
+                            console.log(JSON.stringify(data)); 
+                            let result = JSON.stringify(data);
+                            if (result === "null") {
+                                console.log("Accès interdit");
+                                this.$app.dialog.alert("Identifiants erronés !");
+                            }
+                            else {
+                                console.log("Bienvenue dans notre appli !");
+                                console.log("Bienvenue !");
+                                const regex = /"/gi;
+                                result = result.replace(regex, '');
+                                console.log(result);
+                                let paths = "/accueil/" + result;
+                                // let paths = "/accueil/" + result;
+                                console.log("path: " + paths);
+                                this.$router.navigate(paths);
+                                // this.$router.navigate("/accueil/");
+                            }
+                        });
+                        } catch (err) {
+                            this.$app.dialog.alert("ERROR: ", err);
+                        }
                 } 
                 // finally {
                 //     document.getElementById("token").innerText = JSON.stringify(token);
@@ -173,7 +154,24 @@
                             })
                         } 
                         catch (err) {
-                            this.$app.dialog.alert("Error", err);
+                            try {
+                                url = "http://10.0.2.2:3000/changePassword?mail=" + res;
+                                fetch(url).then(res => {
+                                return res.json();
+                            }).then(data => {
+                                let response = JSON.stringify(data);
+                                console.log("response: " + response);
+                                if (response === "null") {
+                                    this.$app.dialog.alert("Cette adresse mail n'est pas enregistrée dans la base de données !");
+                                }
+                                else {
+                                    console.log("ok");
+                                    this.$app.dialog.alert("Un mail a été envoyé à l'adresse mail " + res + " avec vos nouveaux identifiants !");
+                                } 
+                            })
+                            } catch(err) {
+                                this.$app.dialog.alert("Error", err);
+                            }
                         }
                     });
             },
@@ -215,7 +213,35 @@
                         }
                     });
                 } catch (err) {
-                    this.$app.dialog.alert("ERROR: ", err);
+                    let url = "http://10.0.2.2:3000/signup";
+                    try {
+                        token = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: reqBody
+                    }).then(res => {
+                       return res.json();
+                    }).then(data => {
+                        console.log("HOME");
+                        console.log(JSON.stringify(data));
+                        let result = JSON.stringify(data);
+                        if (result === "null") {
+                            console.log("@mail déjà utilisée");
+                            // this.$router.navigate("/signup/");
+                            this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
+                            // location.reload();
+                        }
+                        else {
+                            let paths = "/accueil/" + result;
+                            console.log("path: " + paths);
+                            console.log("Bienvenue dans notre appli !");
+                            // this.$router.navigate("/accueil/");
+                            this.$router.navigate(paths);
+                        }
+                    });
+                    } catch (err) {
+                        this.$app.dialog.alert("ERROR: ", err);
+                    }
                 }
             }
         }

@@ -88,7 +88,8 @@
                             new_mdp: new_mdp
                         });
                     console.log("BODY:  " + reqBody);
-                    fetch(url, {
+                    try {
+                        fetch(url, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: reqBody
@@ -104,6 +105,26 @@
                                 this.$app.dialog.alert("Something went wrong");
                             }
                         })
+                    } catch (err) {
+                        url = "http://10.0.2.2:3000/newPassword/" + this.$route.params.token;
+                        fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: reqBody
+                    }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            console.log(JSON.stringify(data));
+                            if (data === "OK") {
+                                this.$app.dialog.alert("Mot de passe changé avec succès !");
+                                document.getElementById("form_modify").classList = "d-none";        
+                            }
+                            else {
+                                this.$app.dialog.alert("Something went wrong");
+                            }
+                        })
+                    }
+                    
                     
                 }
             },
