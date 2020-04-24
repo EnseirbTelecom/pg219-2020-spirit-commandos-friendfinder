@@ -16,6 +16,9 @@
                         <div class="col-sm-10">
                             <input id="mail" class="form-control field" placeholder="you@email.com">
                         </div>
+                        <div class="d-none" style="color: red;" id="error_mail">
+                            <p>Veuillez entrer une adresse mail valide (contenant les caractères @ et .)</p>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="mdp" class="col-sm-2 col-form-label label1">Mot de passe: </label>
@@ -41,62 +44,21 @@
     return {
         methods: {
             signup: function() {
-                // console.log("form signup");
-                // document.getElementById("form_signup").style.visibility = "visible";
-                // document.getElementById("form_signin").style.visibility = "hidden";
-                // document.getElementById("up").style.visibility = "hidden";
-                // document.getElementById("in").style.visibility = "visible";
-
                 this.$router.navigate("/signup/");
             },
-            signin: function() {
-                console.log("form signin");
-                document.getElementById("form_signin").style.visibility = "visible";
-                document.getElementById("form_signup").style.visibility = "hidden";
-                // document.getElementById("in").style.visibility = "hidden";
-                // document.getElementById("up").style.visibility = "visible";
-
-
-                // this.$router.navigate("/signin");
-            },
             sign_in: async function() {
-                let reqBody = JSON.stringify({
-                    mail: document.getElementById("mail").value,
-                    password: document.getElementById("mdp").value
-                });
-                let url = "http://localhost:3000/signin";
-                let token = null;
-                try {
-                    token = await fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                        body: reqBody
-                    }).then(res => {
-                       return res.json();
-                    }).then(data => { 
-                        console.log(JSON.stringify(data)); 
-                        let result = JSON.stringify(data);
-                        if (result === "null") {
-                            console.log("Accès interdit");
-                            this.$app.dialog.alert("Identifiants erronés !");
-                        }
-                        else {
-                            console.log("Bienvenue dans notre appli !");
-                            console.log("Bienvenue !");
-                            const regex = /"/gi;
-                            result = result.replace(regex, '');
-                            console.log(result);
-                            let paths = "/accueil/" + result;
-                            // let paths = "/accueil/" + result;
-                            console.log("path: " + paths);
-                            this.$router.navigate(paths);
-                            // this.$router.navigate("/accueil/");
-                        }
+                if (!document.getElementById("mail").value.includes("@") || !document.getElementById("mail").value.includes(".")) {
+                    document.getElementById("error_mail").classList.remove("d-none");
+                    document.getElementById("mail").style.borderColor = "red";
+                }
+                else {
+                    let reqBody = JSON.stringify({
+                        mail: document.getElementById("mail").value,
+                        password: document.getElementById("mdp").value
                     });
-                    // console.log("token: " + JSON.stringify(token));
-                } catch (err) {
+                    let url = "http://localhost:3000/signin";
+                    let token = null;
                     try {
-                        url = "http://10.0.2.2:3000/signin";
                         token = await fetch(url, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -123,10 +85,42 @@
                                 // this.$router.navigate("/accueil/");
                             }
                         });
-                        } catch (err) {
-                            this.$app.dialog.alert("ERROR: ", err);
-                        }
+                        // console.log("token: " + JSON.stringify(token));
+                    } catch (err) {
+                        try {
+                            url = "http://10.0.2.2:3000/signin";
+                            token = await fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                                body: reqBody
+                            }).then(res => {
+                            return res.json();
+                            }).then(data => { 
+                                console.log(JSON.stringify(data)); 
+                                let result = JSON.stringify(data);
+                                if (result === "null") {
+                                    console.log("Accès interdit");
+                                    this.$app.dialog.alert("Identifiants erronés !");
+                                }
+                                else {
+                                    console.log("Bienvenue dans notre appli !");
+                                    console.log("Bienvenue !");
+                                    const regex = /"/gi;
+                                    result = result.replace(regex, '');
+                                    console.log(result);
+                                    let paths = "/accueil/" + result;
+                                    // let paths = "/accueil/" + result;
+                                    console.log("path: " + paths);
+                                    this.$router.navigate(paths);
+                                    // this.$router.navigate("/accueil/");
+                                }
+                            });
+                            } catch (err) {
+                                this.$app.dialog.alert("ERROR: ", err);
+                            }
                 } 
+                }
+                
                 // finally {
                 //     document.getElementById("token").innerText = JSON.stringify(token);
                 // }
