@@ -1,39 +1,34 @@
 <template>
     <div class="page" data-name="home">
-        <!-- <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand">Friend Finder</a>
-            <a href="#" @click="signup" id="signup_link">S'inscrire</a>
-        </nav> -->
         <header>
-            <ceter><h1 id="title">Friend Finder</h1></ceter>
+            <ceter>
+                <h1 id="title">Friend Finder</h1>
+            </ceter>
         </header>
         <form id="log">
             <div id="formulaire">
-            <!-- <div id="form_signin"> -->
-                <!-- <div id="form"> -->
-                    <div class="form-group row">
-                        <label for="mail" class="col-sm-2 col-form-label label1">Email: </label>
-                        <div class="col-sm-10">
-                            <input id="mail" class="form-control field" placeholder="you@email.com">
-                        </div>
-                        <div class="d-none" style="color: red;" id="error_mail">
-                            <p>Veuillez entrer une adresse mail valide (contenant les caractères @ et .)</p>
-                        </div>
+                <div class="form-group row">
+                    <label for="mail" class="col-sm-2 col-form-label label1">Email: </label>
+                    <div class="col-sm-10">
+                        <input id="mail" class="form-control field" placeholder="you@email.com">
                     </div>
-                    <div class="form-group row">
-                        <label for="mdp" class="col-sm-2 col-form-label label1">Mot de passe: </label>
-                        <div class="col-sm-10">
-                            <input id="mdp" type="password" class="form-control field" placeholder="password">
-                        </div>
+                    <div class="d-none" style="color: red;" id="error_mail">
+                        <p>Veuillez entrer une adresse mail valide (contenant les caractères @ et .)</p>
                     </div>
-                    <div class="add">
-                        <a @click="sign_in" href="#" class="button button-round button-fill">Sign in</a>
+                </div>
+                <div class="form-group row">
+                    <label for="mdp" class="col-sm-2 col-form-label label1">Mot de passe: </label>
+                    <div class="col-sm-10">
+                        <input id="mdp" type="password" class="form-control field" placeholder="password">
                     </div>
-                    <div >
-                        <div style="float: right;">
-                            <a @click="changePassword" class="d-block link">mot de passe oublié ?</a>
-                            <a @click="signup" class="d-block link">S'inscrire</a>
-                        </div>
+                </div>
+                <div class="add">
+                    <a @click="sign_in" href="#" class="button button-round button-fill">Sign in</a>
+                </div>
+                <div>
+                    <div style="float: right;">
+                        <a @click="changePassword" class="d-block link">mot de passe oublié ?</a>
+                        <a @click="signup" class="d-block link">S'inscrire</a>
                     </div>
                 </div>
             </div>
@@ -43,10 +38,10 @@
 <script>
     return {
         methods: {
-            signup: function() {
+            signup: function () {
                 this.$router.navigate("/signup/");
             },
-            sign_in: async function() {
+            sign_in: async function () {
                 if (!document.getElementById("mail").value.includes("@") || !document.getElementById("mail").value.includes(".")) {
                     document.getElementById("error_mail").classList.remove("d-none");
                     document.getElementById("mail").style.borderColor = "red";
@@ -60,13 +55,13 @@
                     let token = null;
                     try {
                         token = await fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
                             body: reqBody
                         }).then(res => {
-                        return res.json();
-                        }).then(data => { 
-                            console.log(JSON.stringify(data)); 
+                            return res.json();
+                        }).then(data => {
+                            console.log(JSON.stringify(data));
                             let result = JSON.stringify(data);
                             if (result === "null") {
                                 console.log("Accès interdit");
@@ -79,24 +74,21 @@
                                 result = result.replace(regex, '');
                                 console.log(result);
                                 let paths = "/accueil/" + result;
-                                // let paths = "/accueil/" + result;
                                 console.log("path: " + paths);
                                 this.$router.navigate(paths);
-                                // this.$router.navigate("/accueil/");
                             }
                         });
-                        // console.log("token: " + JSON.stringify(token));
                     } catch (err) {
                         try {
                             url = "http://10.0.2.2:3000/signin";
                             token = await fetch(url, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
                                 body: reqBody
                             }).then(res => {
-                            return res.json();
-                            }).then(data => { 
-                                console.log(JSON.stringify(data)); 
+                                return res.json();
+                            }).then(data => {
+                                console.log(JSON.stringify(data));
                                 let result = JSON.stringify(data);
                                 if (result === "null") {
                                     console.log("Accès interdit");
@@ -109,30 +101,40 @@
                                     result = result.replace(regex, '');
                                     console.log(result);
                                     let paths = "/accueil/" + result;
-                                    // let paths = "/accueil/" + result;
                                     console.log("path: " + paths);
                                     this.$router.navigate(paths);
-                                    // this.$router.navigate("/accueil/");
                                 }
                             });
-                            } catch (err) {
-                                this.$app.dialog.alert("ERROR: ", err);
-                            }
-                } 
+                        } catch (err) {
+                            this.$app.dialog.alert("ERROR: ", err);
+                        }
+                    }
                 }
-                
-                // finally {
-                //     document.getElementById("token").innerText = JSON.stringify(token);
-                // }
             },
 
-            changePassword: function() {
-                // this.$router.navigate("/changePassword/");
+            changePassword: function () {
                 this.$app.dialog.prompt("Veuillez saisir votre adresse mail: ", res => {
-                        console.log(res);
-                        let url = "http://localhost:3000/changePassword?mail=" + res;
-                        console.log("URL: " + url);
+                    console.log(res);
+                    let url = "http://localhost:3000/changePassword?mail=" + res;
+                    console.log("URL: " + url);
+                    try {
+                        fetch(url).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            let response = JSON.stringify(data);
+                            console.log("response: " + response);
+                            if (response === "null") {
+                                this.$app.dialog.alert("Cette adresse mail n'est pas enregistrée dans la base de données !");
+                            }
+                            else {
+                                console.log("ok");
+                                this.$app.dialog.alert("Un mail a été envoyé à l'adresse mail " + res + " avec vos nouveaux identifiants !");
+                            }
+                        })
+                    }
+                    catch (err) {
                         try {
+                            url = "http://10.0.2.2:3000/changePassword?mail=" + res;
                             fetch(url).then(res => {
                                 return res.json();
                             }).then(data => {
@@ -144,41 +146,24 @@
                                 else {
                                     console.log("ok");
                                     this.$app.dialog.alert("Un mail a été envoyé à l'adresse mail " + res + " avec vos nouveaux identifiants !");
-                                } 
-                            })
-                        } 
-                        catch (err) {
-                            try {
-                                url = "http://10.0.2.2:3000/changePassword?mail=" + res;
-                                fetch(url).then(res => {
-                                return res.json();
-                            }).then(data => {
-                                let response = JSON.stringify(data);
-                                console.log("response: " + response);
-                                if (response === "null") {
-                                    this.$app.dialog.alert("Cette adresse mail n'est pas enregistrée dans la base de données !");
                                 }
-                                else {
-                                    console.log("ok");
-                                    this.$app.dialog.alert("Un mail a été envoyé à l'adresse mail " + res + " avec vos nouveaux identifiants !");
-                                } 
                             })
-                            } catch(err) {
-                                this.$app.dialog.alert("Error", err);
-                            }
+                        } catch (err) {
+                            this.$app.dialog.alert("Error", err);
                         }
-                    });
+                    }
+                });
             },
-            sign_up: async function() {
+            sign_up: async function () {
                 let url = "http://localhost:3000/signup";
                 let reqBody = JSON.stringify({
-                            "mail": document.getElementById("mail").value,
-                            "password": document.getElementById("mdp").value,
-                            "nom": document.getElementById("nom").value,
-                            "prenom": document.getElementById("prenom").value,
-                            "pseudo": document.getElementById("pseudo").value,
-                            "date": document.getElementById("date").value
-                        });
+                    "mail": document.getElementById("mail").value,
+                    "password": document.getElementById("mdp").value,
+                    "nom": document.getElementById("nom").value,
+                    "prenom": document.getElementById("prenom").value,
+                    "pseudo": document.getElementById("pseudo").value,
+                    "date": document.getElementById("date").value
+                });
                 console.log("BODY: " + reqBody);
                 let token = null;
                 try {
@@ -187,22 +172,19 @@
                         headers: { "Content-Type": "application/json" },
                         body: reqBody
                     }).then(res => {
-                       return res.json();
+                        return res.json();
                     }).then(data => {
                         console.log("HOME");
                         console.log(JSON.stringify(data));
                         let result = JSON.stringify(data);
                         if (result === "null") {
                             console.log("@mail déjà utilisée");
-                            // this.$router.navigate("/signup/");
                             this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                            // location.reload();
                         }
                         else {
                             let paths = "/accueil/" + result;
                             console.log("path: " + paths);
                             console.log("Bienvenue dans notre appli !");
-                            // this.$router.navigate("/position/");
                             this.$router.navigate(paths);
                         }
                     });
@@ -210,29 +192,26 @@
                     let url = "http://10.0.2.2:3000/signup";
                     try {
                         token = await fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: reqBody
-                    }).then(res => {
-                       return res.json();
-                    }).then(data => {
-                        console.log("HOME");
-                        console.log(JSON.stringify(data));
-                        let result = JSON.stringify(data);
-                        if (result === "null") {
-                            console.log("@mail déjà utilisée");
-                            // this.$router.navigate("/signup/");
-                            this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                            // location.reload();
-                        }
-                        else {
-                            let paths = "/accueil/" + result;
-                            console.log("path: " + paths);
-                            console.log("Bienvenue dans notre appli !");
-                            // this.$router.navigate("/accueil/");
-                            this.$router.navigate(paths);
-                        }
-                    });
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: reqBody
+                        }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            console.log("HOME");
+                            console.log(JSON.stringify(data));
+                            let result = JSON.stringify(data);
+                            if (result === "null") {
+                                console.log("@mail déjà utilisée");
+                                this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
+                            }
+                            else {
+                                let paths = "/accueil/" + result;
+                                console.log("path: " + paths);
+                                console.log("Bienvenue dans notre appli !");
+                                this.$router.navigate(paths);
+                            }
+                        });
                     } catch (err) {
                         this.$app.dialog.alert("ERROR: ", err);
                     }

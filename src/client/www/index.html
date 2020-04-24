@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  
 <head>
   <meta charset="utf-8">
   <!--
@@ -11,23 +12,26 @@
     * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
       * Enable inline JS: add 'unsafe-inline' to default-src
   -->
-  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
 
   <meta name="theme-color" content="#000000">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
   <title>FriendFinder</title>
-  
-  
-  
-  
+
+
+
+
   <link rel="stylesheet" href="framework7/css/framework7.bundle.min.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/style.css">
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <!-- Side menu -->
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -35,6 +39,7 @@
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
+
 <body>
   <div id="app">
     <div class="view view-main"></div>
@@ -51,15 +56,22 @@
   <!-- Pour inclure du contenu html -->
   <!-- <script src="../js/w3.js"></script> -->
   <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
 
 
-    <!-- Left panel with cover effect-->
-    <!-- <div class="panel panel-left panel-cover theme-dark panel-init">
+<!-- Left panel with cover effect-->
+<!-- <div class="panel panel-left panel-cover theme-dark panel-init">
       <div class="view">
         <div class="page">
           <div class="navbar">
@@ -75,8 +87,8 @@
       </div>
     </div> -->
 
-    <!-- Right panel with reveal effect-->
-    <!-- <div class="panel panel-right panel-reveal theme-dark">
+<!-- Right panel with reveal effect-->
+<!-- <div class="panel panel-right panel-reveal theme-dark">
       <div class="view">
         <div class="page">
           <div class="navbar">
@@ -91,12 +103,12 @@
         </div>
       </div>
     </div> -->
-    
-    <!-- Your main view, should have "view-main" class -->
-    <!-- <div class="view view-main view-init safe-areas">
+
+<!-- Your main view, should have "view-main" class -->
+<!-- <div class="view view-main view-init safe-areas">
       <div class="page" data-name="home"> -->
-        <!-- Top Navbar -->
-        <!-- <div class="navbar navbar-large">
+<!-- Top Navbar -->
+<!-- <div class="navbar navbar-large">
           <div class="navbar-bg"></div>
           <div class="navbar-inner">
             <div class="left">
@@ -118,16 +130,16 @@
           </div>
         </div> -->
 
-        <!-- Toolbar-->
-        <!-- <div class="toolbar toolbar-bottom">
+<!-- Toolbar-->
+<!-- <div class="toolbar toolbar-bottom">
           <div class="toolbar-inner">
             <a href="#" class="link">Left Link</a>
             <a href="#" class="link">Right Link</a>
           </div>
         </div> -->
 
-        <!-- Scrollable page content-->
-        <!-- <div class="page-content">
+<!-- Scrollable page content-->
+<!-- <div class="page-content">
           <div class="block block-strong">
             <p>Here is your blank Framework7 app. Let's see what we have here.</p>
           </div>
@@ -194,8 +206,8 @@
     </div> -->
 
 
-    <!-- Popup -->
-    <!-- <div class="popup" id="my-popup">
+<!-- Popup -->
+<!-- <div class="popup" id="my-popup">
       <div class="view">
         <div class="page">
           <div class="navbar">
@@ -216,8 +228,8 @@
       </div>
     </div> -->
 
-    <!-- Login Screen -->
-    <!-- <div class="login-screen" id="my-login-screen">
+<!-- Login Screen -->
+<!-- <div class="login-screen" id="my-login-screen">
       <div class="view">
         <div class="page">
           <div class="page-content login-screen-content">

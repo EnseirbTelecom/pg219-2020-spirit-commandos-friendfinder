@@ -2,85 +2,73 @@
     <div class="page" data-name="accueil">
         <div class="scrollbar-warm-flame d-none" id="menu">
             <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
-              <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"  title="Ajouter une nouvelle position"></i></a>
-              <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear" title="modifier les paramètres de votre compte"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
-              <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
-              <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
-            
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
+                        title="Déconnexion"></i></a>
+
             </div>
         </div>
-        
-        <div >
+
+        <div>
             <div id="contain">
                 <nav class="navbar navbar-dark bg-dark">
-                    <!-- <a class="navbar-brand">Friend Finder</a> -->
-                    <a  class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons" style="color: white;">menu</i></a>
+                    <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                            style="color: white;">menu</i></a>
                     <a href="#" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i></a>
                     <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
-
-                    <!-- <div >
-                        <a href="#" id="notifs"><i class="icon f7-icons">bell</i><span style="color: white; background-color: red;">1</span></a>
-                    </div> -->
-                    <!-- <a href="#"  id="signup_link">Déconnexion</a> -->
                 </nav>
-                <center><h1 id="title">Friend Finder</h1></center>
-                <center><p>Cette application mobile vous permet de géolocaliser vos amis.</p></center>
+                <center>
+                    <h1 id="title">Friend Finder</h1>
+                </center>
+                <center>
+                    <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
+                </center>
             </div>
         </div>
-        <!-- <div class="panel panel-left panel-cover theme-dark panel-init">
-            <div class="navbar">
-                <div class="navbar-bg"></div>
-                <div class="navbar-inner">
-                    <div class="title">Left Panel</div>
-                </div>
-            </div>
-            <div class="page-content">
-                <div class="block">Left panel content goes here</div>
-            </div>
-        </div>
-    </div> -->
 </template>
 <script>
     return {
         async data() {
-            return {cpt: 0}
+            return { cpt: 0 }
         },
         methods: {
-            params: function() {
+            params: function () {
                 console.log("Vous voulez modifier votre mot de passe");
                 console.log(this.$route.params.token);
                 this.$router.navigate("/parameters/" + this.$route.params.token);
             },
-            getPos: function(){
-                // console.log("getPos");
+            getPos: function () {
                 this.$router.navigate("/AddPosition/" + this.$route.params.token);
-            }, 
-            show_menu: function() {
+            },
+            show_menu: function () {
                 if (document.getElementById("menu").classList.contains("d-none")) {
                     document.getElementById("menu").classList.remove("d-none");
                     document.getElementById("contain").classList.add("w3-container");
                     document.getElementById("contain").style.marginLeft = "70px";
-                } 
+                }
                 else {
                     document.getElementById("menu").classList.add("d-none");
                     document.getElementById("contain").classList.remove("w3-container");
                     document.getElementById("contain").style.marginLeft = "0px";
                 }
             },
-            amis: function() {
+            amis: function () {
                 this.$router.navigate("/amis/" + this.$route.params.token);
-            }, 
-            deconnecter: function() {
+            },
+            deconnecter: function () {
                 console.log("Deconnexion!!!!");
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                //     // this.$router.navigate("/deconnection/");
-                //     alert("Bye Bye");
-                // })
-                this.$router.navigate("/off/");
-                // .navigate("/deconnexion");
+                this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function () {
+                    this.$router.navigate("/off/");
+                })
             }
         }
     }

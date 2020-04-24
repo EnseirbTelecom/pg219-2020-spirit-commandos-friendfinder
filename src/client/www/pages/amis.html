@@ -2,20 +2,26 @@
     <div class="page" data-name="params">
         <div class="scrollbar-warm-flame d-none" id="menu1">
             <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
-              <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
-              <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"  title="Ajouter une nouvelle position"></i></a>
-              <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear" title="modifier les paramètres de votre compte"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
-              <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
-            
+                <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
+                        title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+
             </div>
         </div>
-        
+
         <div id="contain1">
             <nav class="navbar navbar-dark bg-dark">
-                <a  class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons" style="color: white;">menu</i></a>
+                <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                        style="color: white;">menu</i></a>
                 <a href="#" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i></a>
                 <a href="#" style="color: white; "><i class="icon f7-icons">power</i></a>
             </nav>
@@ -26,13 +32,13 @@
                     <div class="col-auto">
                         <label class="sr-only" for="inlineFormInputGroup">Username@mail.fr</label>
                         <div class="input-group mb-2">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">@</div>
-                          </div>
-                          <input class="form-control" id="mail" placeholder="Username">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">@</div>
+                            </div>
+                            <input class="form-control" id="mail" placeholder="Username">
                         </div>
-                      </div>
-                      <div class="add" style="margin-left: 40%; margin-right: 40%;">
+                    </div>
+                    <div class="add" style="margin-left: 40%; margin-right: 40%;">
                         <a @click="addf" href="#" class="button button-round button-fill">Ajouter</a>
                     </div>
                 </div>
@@ -41,7 +47,7 @@
     </div>
 
     <div class="fab " id="back">
-        <a  @click="back" href="#" title="Ajouter un produit">
+        <a @click="back" href="#" title="Ajouter un produit">
             <i class="icon f7-icons">arrow_left</i>
         </a>
     </div>
@@ -58,47 +64,41 @@
             //     this.$app.dialog.alert("Error " + err);
             // }
             // return { friends: friends };
-        }, 
+        },
         methods: {
-            params: function() {
+            params: function () {
                 console.log("Vous voulez modifier votre mot de passe");
                 console.log(this.$route.params.token);
                 this.$router.navigate("/parameters/" + this.$route.params.token);
             },
-            getPos: function(){
+            getPos: function () {
                 this.$router.navigate("/position");
-            }, 
-            show_menu: function() {
+            },
+            show_menu: function () {
                 if (document.getElementById("menu1").classList.contains("d-none")) {
                     document.getElementById("menu1").classList.remove("d-none");
                     document.getElementById("contain1").classList.add("w3-container");
                     document.getElementById("contain1").style.marginLeft = "70px";
-                } 
+                }
                 else {
                     document.getElementById("menu1").classList.add("d-none");
                     document.getElementById("contain1").classList.remove("w3-container");
                     document.getElementById("contain1").style.marginLeft = "0px";
                 }
             },
-            amis: function() {
+            amis: function () {
                 this.$router.navigate("/amis");
             },
-            add_friend: function() {
+            add_friend: function () {
                 console.log("Ajouter un ami");
                 document.getElementById("search").classList.remove("d-none");
             },
-            addf: function() {
+            addf: function () {
                 let url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
-                // let reqBody = JSON.stringify({
-                //     mail: document.getElementById("mail").value
-                // });
-                // console.log("BODY: " + reqBody);
                 console.log("URL: " + url);
                 try {
                     fetch(url, {
                         method: "POST",
-                        // headers: { "Content-Type": "appllication/json" },
-                        // body: reqBody
                     }).then(res => {
                         return res.json();
                     }).then(data => {
@@ -110,10 +110,10 @@
 
                 }
             },
-            back: function() {
+            back: function () {
                 this.$router.back();
             },
-            home: function() {
+            home: function () {
                 this.$router.navigate("/accueil/" + this.$route.params.token);
             }
         }
