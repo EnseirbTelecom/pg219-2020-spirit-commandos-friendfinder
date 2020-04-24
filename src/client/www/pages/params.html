@@ -2,7 +2,7 @@
     <div class="page" data-name="params">
         <div class="scrollbar-warm-flame">
             <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
+              <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
               <a href="#" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"  title="position"></i></a>
               <a href="#" class="w3-bar-item w3-button"><i class="fa fa-gear" title="modifier les paramètres de votre compte"></i></a> 
               <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
@@ -130,6 +130,9 @@
             },
             back: function() {
                 this.$router.back();
+            }, 
+            home: function() {
+                this.$router.navigate("/accueil/" + this.$route.params.token);
             }
         }
     }

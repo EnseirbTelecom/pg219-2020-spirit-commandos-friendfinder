@@ -30,7 +30,7 @@
     <allow-navigation href="*" />
 
     <platform name="android">
-      <preference name="Orientation" value="portrait" />
+      <preference name="Orientation" value="default" />
       <preference name="StatusBarOverlaysWebView" value="false" />
       <preference name="android-minSdkVersion" value="21" />
       <preference name="SplashMaintainAspectRatio" value="true" />

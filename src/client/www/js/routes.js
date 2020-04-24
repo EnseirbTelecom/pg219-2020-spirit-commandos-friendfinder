@@ -25,8 +25,12 @@ var routes = [
     componentUrl:'./pages/params.html'
   },
   {
-    path: '/position',
-    componentUrl: './pages/position.html'
+    path: '/AddPosition/:token',
+    componentUrl: './pages/Position.html'
+  },
+  {
+    path: '/off/',
+    url: './pages/bye.html'
   },
   // Default route (404 page). MUST BE THE LAST
   {

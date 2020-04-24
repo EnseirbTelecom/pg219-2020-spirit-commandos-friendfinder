@@ -8,7 +8,7 @@
               <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
               <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a> 
               <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+              <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
             
             </div>
         </div>
@@ -19,7 +19,7 @@
                     <!-- <a class="navbar-brand">Friend Finder</a> -->
                     <a  class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons" style="color: white;">menu</i></a>
                     <a href="#" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i></a>
-                    <a href="#" style="color: white; "><i class="icon f7-icons">power</i></a>
+                    <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
 
                     <!-- <div >
                         <a href="#" id="notifs"><i class="icon f7-icons">bell</i><span style="color: white; background-color: red;">1</span></a>
@@ -55,7 +55,8 @@
                 this.$router.navigate("/parameters/" + this.$route.params.token);
             },
             getPos: function(){
-                this.$router.navigate("/position");
+                // console.log("getPos");
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
             }, 
             show_menu: function() {
                 if (document.getElementById("menu").classList.contains("d-none")) {
@@ -71,6 +72,15 @@
             },
             amis: function() {
                 this.$router.navigate("/amis/" + this.$route.params.token);
+            }, 
+            deconnecter: function() {
+                console.log("Deconnexion!!!!");
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/deconnection/");
+                //     alert("Bye Bye");
+                // })
+                this.$router.navigate("/off/");
+                // .navigate("/deconnexion");
             }
         }
     }
