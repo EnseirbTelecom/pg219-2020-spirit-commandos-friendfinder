@@ -296,7 +296,6 @@ MongoClient.connect(url, {
                     // On décode le token fourni
                     console.log("requête GET accept friend");
                     let decoded = jwt.verify(req.params.token, privatekey);
-                    console.log("decoded:" + decoded.data);
                     notifications.findOne({ _id: ObjectID(req.query.id) }, (error, notif) => {
                         let friend = {
                             id_1: notif.id_src,
@@ -304,11 +303,7 @@ MongoClient.connect(url, {
                         };
                         friends.findOne(friend, (err, result) => {
                             console.log(JSON.stringify(result));
-                            friends.updateOne(result, { $set: { status: "accepted" } }, (error, resu) => {
-                                // console.log(error);
-                                // console.log("opération réussie !");
-                                // console.log(JSON.stringify(resu));
-                            })
+                            friends.updateOne(result, { $set: { status: "accepted" } }, (error, resu) => {})
                         })
                     })
 
@@ -320,21 +315,14 @@ MongoClient.connect(url, {
                 res.header("Access-Control-Allow-Origin", "*");
                 try {
                     // On décode le token fourni
-                    console.log("requête GET accept friend");
                     let decoded = jwt.verify(req.params.token, privatekey);
-                    console.log("decoded:" + decoded.data);
                     notifications.findOne({ _id: ObjectID(req.query.id) }, (error, notif) => {
                         let friend = {
                             id_1: notif.id_src,
                             id_2: notif.id_dst
                         };
                         friends.findOne(friend, (err, result) => {
-                            // console.log(JSON.stringify(result));
-                            friends.updateOne(result, { $set: { status: "refused" } }, (error, resu) => {
-                                // console.log(error);
-                                console.log("opération réussie !");
-                                // console.log(JSON.stringify(resu));
-                            })
+                            friends.updateOne(result, { $set: { status: "refused" } }, (error, resu) => {})
                         })
                     })
 
@@ -349,7 +337,11 @@ MongoClient.connect(url, {
                     let decoded = jwt.verify(req.params.token, privatekey);
                     console.log("decoded:" + decoded.data);
                     let id = decoded.data;
-                    notifications.find({ id_dst: id }, { status: "en attente" }).toArray().then(notifs => {
+                    let notifToLookFor = {
+                        id_dst: id,
+                        status: "en attente"
+                    };
+                    notifications.find(notifToLookFor).toArray().then(notifs => {
                         console.log("notifs: " + JSON.stringify(notifs));
                         res.json(notifs);
                     })
@@ -364,7 +356,6 @@ MongoClient.connect(url, {
                     // console.log("decoded:" + decoded.data);
                     let id = decoded.data;
                     notifications.find({ id_dst: id }).toArray().then(notifs => {
-                        // console.log("notifs: " + JSON.stringify(notifs));
                         res.json(notifs);
                     })
                 } catch (err) {

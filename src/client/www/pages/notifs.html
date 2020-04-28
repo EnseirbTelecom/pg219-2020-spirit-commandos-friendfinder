@@ -67,6 +67,7 @@
                     <!-- </div> -->
                     {{/each}}
                 </ul>
+                <a @click="AllNotifs">Afficher toutes les notifs</a>
 
 
             </div>
@@ -142,7 +143,16 @@
                 } catch (err) {
                     console.log("Une erreur est survenue");
                 }
+            },
+            AllNotifs: function() {
+                // let url = "http://10.0.2.2:3000/AllNotifs/" + this.$route.params.token;
+                // try {
+                //     fetch(url).then(res => {
+                //         return res.json();
+                //     }).then(data => {
 
+                //     })
+                // }
             }
         }
     }
