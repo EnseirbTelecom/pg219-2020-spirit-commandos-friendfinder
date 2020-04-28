@@ -26,8 +26,28 @@
                 <a href="#" style="color: white; "><i class="icon f7-icons">power</i></a>
             </nav>
 
-            <ul>
-                <li><a @click="add_friend">Ajouter un nouvel ami ?</a></li>
+            <center>
+                <h1 id="title">Friend Finder</h1>
+            </center>
+
+            {{#if id}}
+            <div id="card-accept">
+                Acceptez vous l'invitation de "xxxxxx" ?
+                <div class="block">
+                    <div class="row" id="buttons">
+                        <a @click="accept" class="col button button-fill btn-accept" style="margin-right: 1%;">Accepter</a>
+                        <a @click="cancel" class="col button button-fill btn-accept" style="margin-left: 1%;">Refuser</a>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            <div class="fab fab-center" id="plus">
+                <a @click="add_friend" href="#" title="Ajouter un produit">
+                    <i class="icon f7-icons">plus</i>
+                </a>
+            </div>
+            <!-- <ul>
+                <li><a @click="add_friend">Ajouter un nouvel ami ?</a></li> -->
                 <div id="search" class="d-none">
                     <div class="col-auto">
                         <label class="sr-only" for="inlineFormInputGroup">Username@mail.fr</label>
@@ -42,7 +62,7 @@
                         <a @click="addf" href="#" class="button button-round button-fill">Ajouter</a>
                     </div>
                 </div>
-            </ul>
+            <!-- </ul> -->
         </div>
     </div>
 
@@ -55,6 +75,15 @@
 <script>
     return {
         async data() {
+            if (this.$route.params.id) {
+                return {
+                    id: 1
+                }
+            } else {
+                return {
+                    id: 0
+                }
+            }
             // let friends = [];
             // let url = "http://localhost:3000/friends/" + this.$route.params.token;
             // console.log("urlllllll: " + url)
@@ -66,35 +95,38 @@
             // return { friends: friends };
         },
         methods: {
-            params: function () {
+            params: function() {
                 console.log("Vous voulez modifier votre mot de passe");
                 console.log(this.$route.params.token);
                 this.$router.navigate("/parameters/" + this.$route.params.token);
             },
-            getPos: function () {
+            getPos: function() {
                 this.$router.navigate("/position");
             },
-            show_menu: function () {
+            show_menu: function() {
                 if (document.getElementById("menu1").classList.contains("d-none")) {
                     document.getElementById("menu1").classList.remove("d-none");
                     document.getElementById("contain1").classList.add("w3-container");
                     document.getElementById("contain1").style.marginLeft = "70px";
-                }
-                else {
+                } else {
                     document.getElementById("menu1").classList.add("d-none");
                     document.getElementById("contain1").classList.remove("w3-container");
                     document.getElementById("contain1").style.marginLeft = "0px";
                 }
             },
-            amis: function () {
+            amis: function() {
                 this.$router.navigate("/amis");
             },
-            add_friend: function () {
+            add_friend: function() {
                 console.log("Ajouter un ami");
+                document.getElementById("plus").classList.add("d-none");
                 document.getElementById("search").classList.remove("d-none");
             },
-            addf: function () {
-                let url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+            addf: function() {
+                document.getElementById("search").classList.add("d-none");
+                document.getElementById("plus").classList.remove("d-none");
+                // let url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                let url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
                 console.log("URL: " + url);
                 try {
                     fetch(url, {
@@ -107,14 +139,55 @@
                         }
                     })
                 } catch (err) {
-
+                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    try {
+                        fetch(url, {
+                            method: "POST",
+                        }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            if (JSON.stringify(data) === "null") {
+                                this.$app.dialog.alert("User not found");
+                            }
+                        })
+                    } catch (err) {
+                        console.log("Une erreur est survenue");
+                    }
                 }
             },
-            back: function () {
+            back: function() {
                 this.$router.back();
             },
-            home: function () {
+            home: function() {
                 this.$router.navigate("/accueil/" + this.$route.params.token);
+            },
+            accept: function() {
+                console.log("You want to accept the invitation");
+                let url = "http://10.0.2.2:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                try {
+                    fetch(url)
+                } catch (err) {
+                    url = "http://localhost:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                    try {
+                        fetch(url);
+                    } catch (err) {
+
+                    }
+                }
+            },
+            cancel: function() {
+                console.log("You want to cancel the invitation");
+                let url = "http://10.0.2.2:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                try {
+                    fetch(url)
+                } catch (err) {
+                    url = "http://localhost:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                    try {
+                        fetch(url);
+                    } catch (err) {
+
+                    }
+                }
             }
         }
     }

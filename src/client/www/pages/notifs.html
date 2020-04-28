@@ -1,5 +1,5 @@
 <template>
-    <div class="page" data-name="accueil">
+    <div class="page" data-name="notifs">
         <div class="scrollbar-warm-flame d-none" id="menu">
             <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
@@ -17,7 +17,6 @@
 
             </div>
         </div>
-
         <div>
             <div id="contain">
                 <nav class="navbar navbar-dark bg-dark">
@@ -32,27 +31,45 @@
                 </nav>
                 <center>
                     <h1 id="title">Friend Finder</h1>
+                    <h2>Lise des notifications</h2>
                 </center>
-                <center>
-                    <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
-                </center>
-                <div>
-                    <p>
-                        {{#if cpt}}
-                        var
-                        {{else}}
-                        yok
-                        {{/if}}
-                    </p>
+                <!-- <div>
+            <p>
+                {{#if cpt}}
+                var
+                {{else}}
+                yok
+                {{/if}}
+            </p>
 
-                    <ul>
-                        {{#each notifs}}
-                        <li>{{code}}: {{id_src}} => {{id_dst}}</li>
-                        {{/each}}
-                    </ul>
-                </div>
+            <ul>
+                {{#each notifs}}
+                <li>{{code}}: {{id_src}} => {{id_dst}}</li>
+                {{/each}}
+            </ul>
+        </div> -->
+                <ul>
+                    {{#each notifs}}
+                    <!-- <div > -->
+                    <li>
+                        {{#if code}}
+                        <a @click="vu('{{_id}}')">
+                            <span class="icon"><i class="fa fa-thumb-tack"></i></span>
+                            <span class="text">{{id_src}} a partagé une nouvelle position</span>
+                        </a>
+                        {{else}}
+                        <a @click="vu('{{_id}}')">
+                            <span class="icon"><i class="fas fa-user"></i></span>
+                            <span class="text">Vous avez une nouvelle demande d'amitié de {{id_src}}</span>
+                        </a>
+                        {{/if}}
+                    </li>
+                    <!-- </div> -->
+                    {{/each}}
+                </ul>
+
+
             </div>
-        </div>
 </template>
 <script>
     return {
@@ -107,13 +124,25 @@
             },
             deconnecter: function() {
                 console.log("Deconnexion!!!!");
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function () {
-                //     this.$router.navigate("/off/");
-                // })
-                this.$router.navigate("/off/");
+                this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                    this.$router.navigate("/off/");
+                })
             },
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
+            },
+            vu: function(id) {
+                console.log(id);
+                let url = "http://localhost:3000/notifVue/" + this.$route.params.token + "?id=" + id;
+                try {
+                    // fetch(url)
+                    // .then(res => res.json());
+                    this.$router.navigate("/amis/" + this.$route.params.token + "/" + id);
+
+                } catch (err) {
+                    console.log("Une erreur est survenue");
+                }
+
             }
         }
     }
