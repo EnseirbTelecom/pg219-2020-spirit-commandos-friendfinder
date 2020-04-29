@@ -14,8 +14,8 @@
                         title="historique des positions"></i></a>
                 <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
                         title="Déconnexion"></i></a>
-
-            </div>
+                       
+            </div> 
         </div>
 
         <div>
@@ -92,6 +92,7 @@
                 this.$router.navigate("/AddPosition/" + this.$route.params.token);
             },
             show_menu: function() {
+                console.log("menu: " + document.getElementById("menu").innerHTML);
                 if (document.getElementById("menu").classList.contains("d-none")) {
                     document.getElementById("menu").classList.remove("d-none");
                     document.getElementById("contain").classList.add("w3-container");
@@ -106,7 +107,6 @@
                 this.$router.navigate("/amis/" + this.$route.params.token);
             },
             deconnecter: function() {
-                console.log("Deconnexion!!!!");
                 // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function () {
                 //     this.$router.navigate("/off/");
                 // })

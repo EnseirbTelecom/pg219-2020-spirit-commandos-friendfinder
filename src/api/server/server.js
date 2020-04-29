@@ -156,67 +156,77 @@ MongoClient.connect(url, {
             })
 
         .post("/friends/:token", (req, res) => {
-            // Ajouter un nouvel ami
-            try {
-                // on décode le token fourni
-                let decoded = jwt.verify(req.params.token, privatekey);
-                console.log("decoded:" + decoded.data);
-                let id_1 = decoded.data;
-                // On récupère l'id de l'ami
-                users.findOne({ mail: req.query.mail }, (err, user) => {
-                    if (user !== null) {
-                        let friend = {
-                            id_1: id_1,
-                            id_2: ObjectID(user._id).toString(),
-                        };
-                        // On vérifie que les deux utilisateurs ne sont pas déjà amis
-                        friends.findOne({ id_1: id_1 }, (error, search) => {
-                            console.log("search: " + JSON.stringify(search));
-                            if (search !== null) {
-                                if (search.id_2 === friend.id_2) {
-                                    console.log("Vous êtes déjà amis");
+                // Ajouter un nouvel ami
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    let id_1 = decoded.data;
+                    // On récupère l'id de l'ami
+                    users.findOne({ mail: req.query.mail }, (err, user) => {
+                        if (user !== null) {
+                            let friend = {
+                                id_1: id_1,
+                                id_2: ObjectID(user._id).toString(),
+                            };
+                            // On vérifie que les deux utilisateurs ne sont pas déjà amis
+                            friends.findOne({ id_1: id_1 }, (error, search) => {
+                                console.log("search: " + JSON.stringify(search));
+                                if (search !== null) {
+                                    if (search.id_2 === friend.id_2) {
+                                        console.log("Vous êtes déjà amis");
+                                    }
+                                } else {
+                                    friend.status = "pending";
+                                    console.log("FRIEND: " + JSON.stringify(friend));
+                                    // Le deux utilisateurs ne sont pas amis
+                                    friends.insertOne(friend, (err, result) => {
+                                        console.log("Friendship added successfully");
+                                    })
+                                    let notif = {
+                                        code: 0,
+                                        id_src: id_1,
+                                        id_dst: ObjectID(user._id).toString(),
+                                        status: "en attente"
+                                    }
+                                    notifications.insertOne(notif, (err, success) => {
+                                        console.log("nouvelle notification");
+                                        res.json(success);
+                                    })
                                 }
+                            });
+                        } else {
+                            console.log("User not found");
+                            res.json(null);
+                        }
+                    })
+                } catch (err) {
+                    console.log("Une erreur s'est produite lors du décodage");
+                }
+            })
+            // Récupérer la liste des amis
+            .get("/friends/:token", (req, res) => {
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    let id = decoded.data;
+                    let friendsListId = [];
+                    friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
+                        result.forEach(item => {
+                            if (item.id_1 === id) {
+                                friendsListId.push(ObjectID(item.id_2));
                             } else {
-                                friend.status = "pending";
-                                console.log("FRIEND: " + JSON.stringify(friend));
-                                // Le deux utilisateurs ne sont pas amis
-                                friends.insertOne(friend, (err, result) => {
-                                    console.log("Friendship added successfully");
-                                })
-                                let notif = {
-                                    code: 0,
-                                    id_src: id_1,
-                                    id_dst: ObjectID(user._id).toString(),
-                                    status: "en attente"
-                                }
-                                notifications.insertOne(notif, (err, success) => {
-                                    console.log("nouvelle notification");
-                                    res.json(success);
-                                })
+                                friendsListId.push(ObjectID(item.id_1));
                             }
                         });
-                    } else {
-                        console.log("User not found");
-                        res.json(null);
-                    }
-                })
-            } catch (err) {
-                console.log("Une erreur s'est produite lors du décodage");
-            }
-        })
-        app.get("/friends/:token", (req, res) => {
-                console.log("Get FRIENDS");
-                // try {
-                // on décode le token fourni
-                let decoded = jwt.verify(req.params.token, privatekey);
-                console.log("decoded:" + decoded.data);
-                let id = decoded.data;
-                let FriendsList = functionsFriends.getFriendsList(id, friends, users);
-                res.json(FriendsList);
-                // console.log("FriendsList: " + FriendsList.length);
-                // } catch (err) {
-                // console.log("Erreur s'est produite lors du décodage");
-                // }
+                        users.find({ _id: { $in: friendsListId } }).toArray().then(friendsListProfile => {
+                            res.json(friendsListProfile);
+                        })
+                    })
+                } catch (err) {
+                    console.log("Erreur s'est produite lors du décodage");
+                }
             })
             .get("/changePassword", (req, res) => {
                 let mail = req.query.mail;

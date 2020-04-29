@@ -1,42 +1,72 @@
 var routes = [{
         path: '/',
-        componentUrl: './pages/home.html'
+        componentUrl: './pages/home.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/signup/',
-        componentUrl: './pages/signup.html'
+        componentUrl: './pages/signup.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/signin',
-        componentUrl: './pages/signin.html'
+        componentUrl: './pages/signin.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/accueil/:token?',
-        componentUrl: './pages/accueil.html'
+        componentUrl: './pages/accueil.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/amis/:token?',
-        componentUrl: './pages/amis.html'
+        componentUrl: './pages/amis.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/amis/:token/:id',
-        componentUrl: './pages/amis.html'
+        componentUrl: './pages/amis.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: "/parameters/:token?",
-        componentUrl: './pages/params.html'
+        componentUrl: './pages/params.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/AddPosition/:token',
-        componentUrl: './pages/Position.html'
+        componentUrl: './pages/Position.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/off/',
-        url: './pages/bye.html'
+        url: './pages/bye.html',
+        options: {
+            transition: 'f7-circle',
+        }
     },
     {
         path: '/notifs/:token',
-        componentUrl: "./pages/notifs.html"
+        componentUrl: "./pages/notifs.html",
+        options: {
+            transition: 'f7-circle',
+        }
     },
     // Default route (404 page). MUST BE THE LAST
     {
