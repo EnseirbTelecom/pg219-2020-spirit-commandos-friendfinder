@@ -73,7 +73,7 @@ header {
 }
 
 #title {
-    margin-left: 10px;
+    /* margin-left: 10px; */
     margin-top: 1%;
     /* margin-left: 45.8%; */
     margin-bottom: 5%;
@@ -271,6 +271,21 @@ ul li:hover .text {
     /* color: #ff2c74; */
 }
 
+#icon-profile {
+    background-color: #ffffff;
+    line-height: 60px;
+    font-size: 30px;
+    color: black;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    border-radius: 30px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    margin-left: 45%;
+    margin-top: 2%;
+}
+
 #card-accept {
     /* background: linear-gradient(0.60turn, var(--dark-blue), var(--dark)); */
     background: linear-gradient(0.60turn, rgb(0, 204, 255), white);
@@ -279,7 +294,7 @@ ul li:hover .text {
     margin-right: 2%;
     margin-bottom: 2%;
     /* border-radius: 0.6rem; */
-    border: black solid 0.4rem;
+    /* border: black solid 0.4rem; */
     border-radius: 1rem;
     /* -webkit-box-shadow: 24px 24px 20px 7px rgba(36, 46, 45, 0.81);
     -moz-box-shadow: 24px 24px 20px 7px rgba(36, 46, 45, 0.81);
@@ -305,6 +320,21 @@ ul li:hover .text {
 
 .fab-center {
     margin-top: 5%;
+}
+
+.btn-delete {
+    background: linear-gradient(rgba(8, 100, 100, 0.884), rgba(0, 140, 255, 0.918), rgba(9, 52, 240, 0.74));
+    border: white solid;
+    border-radius: 1rem;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 2%;
+    font-style: italic;
+    font-weight: bold;
+}
+
+#btn {
+    color: white;
 }
 
 

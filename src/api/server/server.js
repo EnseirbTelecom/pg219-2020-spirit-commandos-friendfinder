@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
-const functionsFriends = require("../functions/friends.js");
 let nodemailer = require('nodemailer');
 
 let transporter = nodemailer.createTransport({
@@ -223,6 +222,18 @@ MongoClient.connect(url, {
                         users.find({ _id: { $in: friendsListId } }).toArray().then(friendsListProfile => {
                             res.json(friendsListProfile);
                         })
+                    })
+                } catch (err) {
+                    console.log("Erreur s'est produite lors du décodage");
+                }
+            })
+            .get("/getUserProfile/:token/:id", (req, res) => {
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    users.findOne({ _id: ObjectID(req.params.id) }, (err, user) => {
+                        delete user.password;
+                        res.json(user);
                     })
                 } catch (err) {
                     console.log("Erreur s'est produite lors du décodage");

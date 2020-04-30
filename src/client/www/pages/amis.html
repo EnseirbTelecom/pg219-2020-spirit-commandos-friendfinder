@@ -41,6 +41,12 @@
                 </div>
             </div>
             {{/if}}
+            <ul>
+                {{#each friends}}
+                
+                <a @click="getProfile('{{_id}}'"><li>{{mail}}</li></a>
+                {{/each}}
+            </ul>
             <div class="fab fab-center" id="plus">
                 <a @click="add_friend" href="#" title="Ajouter un produit">
                     <i class="icon f7-icons">plus</i>
@@ -75,24 +81,30 @@
 <script>
     return {
         async data() {
-            if (this.$route.params.id) {
-                return {
-                    id: 1
-                }
-            } else {
-                return {
-                    id: 0
+            let url = "http://10.0.2.2:3000/friends/" + this.$route.params.token;
+            let friends = [];
+            let id = 0;
+            try {
+                friends = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                url = "http://localhost:3000/friends/" + this.$route.params.token;
+                try {
+                    friends = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("ERROR: " + err);
                 }
             }
-            // let friends = [];
-            // let url = "http://localhost:3000/friends/" + this.$route.params.token;
-            // console.log("urlllllll: " + url)
-            // try {
-            //     // friends = await fetch(url).then(res => res.json());
-            // } catch(err) {
-            //     this.$app.dialog.alert("Error " + err);
-            // }
-            // return { friends: friends };
+            if (this.$route.params.id) {
+                id = 1;
+            }
+            return {
+                friends: friends,
+                id: id
+            }
         },
         methods: {
             params: function() {
@@ -139,7 +151,7 @@
                         }
                     })
                 } catch (err) {
-                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
                     try {
                         fetch(url, {
                             method: "POST",
@@ -188,6 +200,9 @@
 
                     }
                 }
+            },
+            getProfile: function(id) {
+                this.$router.navigate("/profile/" + this.$route.params.token + "/" + id);
             }
         }
     }

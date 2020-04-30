@@ -68,6 +68,13 @@ var routes = [{
             transition: 'f7-circle',
         }
     },
+    {
+        path: '/profile/:token/:friend',
+        componentUrl: "./pages/profile.html",
+        options: {
+            transition: 'f7-circle',
+        }
+    },
     // Default route (404 page). MUST BE THE LAST
     {
         path: '(.*)',
