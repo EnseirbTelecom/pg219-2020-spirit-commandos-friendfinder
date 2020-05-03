@@ -239,6 +239,37 @@ MongoClient.connect(url, {
                     console.log("Erreur s'est produite lors du décodage");
                 }
             })
+            .delete("/friend/:token/:id", (req, res) => {
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    let id_1 = decoded.data;
+                    let id_2 = req.params.id;
+                    friends.findOne({ id_1: id_1 }, { id_2: id_2 }, (err, friend) => {
+                        console.log(JSON.stringify(friend));
+                        if (friend === null) {
+                            friends.findOne({ id_1: id_2 }, { id_2: id_1 }, (err, friend1) => {
+                                if (friend1 === null) {
+                                    console.log("Ces deux utilisateurs ne sont pas amis !!!");
+                                } else {
+                                    console.log(JSON.stringify(friend1));
+                                    friends.deleteOne({ _id: ObjectID(friend1._id) }, (err, result) => {
+                                        console.log(result.deletedCount);
+                                        res.json("OK");
+                                    })
+                                }
+                            })
+                        } else {
+                            friends.deleteOne({ _id: ObjectID(friend._id) }, (err, result) => {
+                                console.log(result.deletedCount);
+                                res.json("OK");
+                            })
+                        }
+                    })
+                } catch (err) {
+                    console.log("Erreur s'est produite lors du décodage");
+                }
+            })
             .get("/changePassword", (req, res) => {
                 let mail = req.query.mail;
                 console.log("MAIL: " + mail);
@@ -383,7 +414,7 @@ MongoClient.connect(url, {
                     console.log("Erreur lors du décodage");
                 }
             })
-            .get("/notifVue/:token", (req, res) => {
+            .get("/SetNotifAsSeen/:token", (req, res) => {
                 // res.header("Access-Control-Allow-Origin", "*");
                 try {
                     // On décode le token fourni
