@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="accueil">
         <div class="scrollbar-warm-flame d-none" id="menu">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -14,13 +14,13 @@
                         title="historique des positions"></i></a>
                 <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
                         title="Déconnexion"></i></a>
-                       
-            </div> 
+
+            </div>
         </div>
 
         <div>
             <div id="contain">
-                <nav class="navbar navbar-dark bg-dark">
+                <nav class="navbar navbar-dark">
                     <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
                     <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
@@ -36,7 +36,11 @@
                 <center>
                     <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
                 </center>
-                <div>
+
+                <!-- <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
+                <div id="map_canvas" style="width: 100%; height: 500px;"> MAP CANVA</div> -->
+
+                <!-- <div>
                     <p>
                         {{#if cpt}}
                         var
@@ -50,7 +54,7 @@
                         <li>{{code}}: {{id_src}} => {{id_dst}}</li>
                         {{/each}}
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
 </template>
@@ -95,7 +99,6 @@
                 console.log("menu: " + document.getElementById("menu").innerHTML);
                 if (document.getElementById("menu").classList.contains("d-none")) {
                     document.getElementById("menu").classList.remove("d-none");
-                    document.getElementById("contain").classList.add("w3-container");
                     document.getElementById("contain").style.marginLeft = "70px";
                 } else {
                     document.getElementById("menu").classList.add("d-none");
@@ -107,14 +110,73 @@
                 this.$router.navigate("/amis/" + this.$route.params.token);
             },
             deconnecter: function() {
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function () {
-                //     this.$router.navigate("/off/");
-                // })
-                this.$router.navigate("/off/");
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
             },
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
             }
+
+            // showMap: function() {
+            //     // var mapDiv = document.getElementById("map_canvas");
+            //     // var GOOGLE = new plugin.google.maps.LatLng(37.422858, -122.085065);
+            //     // var map = plugin.google.maps.Map.getMap(mapDiv);
+            //     // map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
+            //     //     map.setCenter(GOOGLE);
+            //     // });
+            //     const GOOGLE = {
+            //         "lat": 37.422476,
+            //         "lng": -122.08425
+            //     };
+            //     // Define a div tag with id="map_canvas"
+            //     var mapDiv = document.getElementById("map_canvas");
+
+            //     // // Initialize the map plugin
+            //     // // var map = plugin.google.maps.Map.getMap(mapDiv, {
+            //     // //     controls: {
+            //     // //         myLocationButton: true
+            //     // //     },
+            //     // //     gestures: {
+            //     // //         'scroll': true,
+            //     // //         'tilt': true,
+            //     // //         'rotate': true,
+            //     // //         'zoom': true
+            //     // //     }
+            //     // // });
+            //     // var map = plugin.google.maps.Map.getMap(mapDiv, {
+            //     //     'camera': {
+            //     //         'latLng': GOOGLE,
+            //     //         'zoom': 17
+            //     //     }
+            //     // });
+            //     // You have to wait the MAP_READY event.
+            //     // map.on(plugin.google.maps.event.MAP_READY, (map) => {
+            //     //     console.log("FFFFFFFFFFFF");
+            //     //     var marker = map.addMarker({
+            //     //         position: {
+            //     //             lat: 37.422858,
+            //     //             lng: -122.085065
+            //     //         },
+            //     //         title: "Hello Cordova Google Maps for iOS and Android",
+            //     //         snippet: "This plugin is awesome!"
+            //     //     })
+            //     //     marker.showInfoWindow();
+
+            //     let latitude = 37.422476;
+            //     let longitude = -122.08425;
+            //     let map = new google.maps.Map(document.getElementById('map_canvas'), {
+            //         center: {
+            //             lat: parseFloat(latitude),
+            //             lng: parseFloat(longitude)
+            //         },
+            //         zoom: 12,
+            //         mapTypeId: google.maps.MapTypeId.ROADMAP
+            //     });
+            //     // 
+            // }
         }
     }
 </script>

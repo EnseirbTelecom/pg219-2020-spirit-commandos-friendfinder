@@ -53,8 +53,7 @@
     </platform>
 
 
-
-
+    <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyAZK0G94T9n59TTqqkImYRU-u5USoPQMTc" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="BackupWebStorage" value="local" />

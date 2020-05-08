@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="notifs">
         <div class="scrollbar-warm-flame d-none" id="menu">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -134,13 +134,15 @@
             },
             vu: function(id) {
                 console.log(id);
-                let url = "http://localhost:3000/notifVue/" + this.$route.params.token + "?id=" + id;
+                let url = "http://10.0.2.2:3000/SetNotifAsSeen/" + this.$route.params.token + "?id=" + id;
+                console.log("URL: " + url)
                 try {
-                    // fetch(url)
+                    fetch(url);
                     // .then(res => res.json());
                     this.$router.navigate("/amis/" + this.$route.params.token + "/" + id);
 
                 } catch (err) {
+                    url = "http://localhost:3000/SetNotifAsSeen/" + this.$route.params.token + "?id=" + id;
                     console.log("Une erreur est survenue");
                 }
             },

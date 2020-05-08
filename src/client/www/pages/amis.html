@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="params">
         <div class="scrollbar-warm-flame d-none" id="menu1">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
                 <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
                         title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
@@ -19,11 +19,15 @@
         </div>
 
         <div id="contain1">
-            <nav class="navbar navbar-dark bg-dark">
+            <nav class="navbar navbar-dark">
                 <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
                         style="color: white;">menu</i></a>
-                <a href="#" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i></a>
-                <a href="#" style="color: white; "><i class="icon f7-icons">power</i></a>
+                <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    {{#if cpt}}
+                    <span id="span_notifs"></span>
+                    {{/if}}
+                </a>
+                <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
             </nav>
 
             <center>
@@ -35,16 +39,20 @@
                 Acceptez vous l'invitation de "xxxxxx" ?
                 <div class="block">
                     <div class="row" id="buttons">
-                        <a @click="accept" class="col button button-fill btn-accept" style="margin-right: 1%;">Accepter</a>
-                        <a @click="cancel" class="col button button-fill btn-accept" style="margin-left: 1%;">Refuser</a>
+                        <a @click="accept" class="col button button-fill btn-accept"
+                            style="margin-right: 1%;">Accepter</a>
+                        <a @click="cancel" class="col button button-fill btn-accept"
+                            style="margin-left: 1%;">Refuser</a>
                     </div>
                 </div>
             </div>
             {{/if}}
             <ul>
                 {{#each friends}}
-                
-                <a @click="getProfile('{{_id}}'"><li>{{mail}}</li></a>
+
+                <a @click="getProfile('{{_id}}'">
+                    <li>{{mail}}</li>
+                </a>
                 {{/each}}
             </ul>
             <div class="fab fab-center" id="plus">
@@ -54,20 +62,21 @@
             </div>
             <!-- <ul>
                 <li><a @click="add_friend">Ajouter un nouvel ami ?</a></li> -->
-                <div id="search" class="d-none">
-                    <div class="col-auto">
-                        <label class="sr-only" for="inlineFormInputGroup">Username@mail.fr</label>
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">@</div>
-                            </div>
-                            <input class="form-control" id="mail" placeholder="Username">
+            <div id="search" class="d-none">
+                <div class="col-auto">
+                    <label class="sr-only" for="inlineFormInputGroup">Username@mail.fr</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
                         </div>
-                    </div>
-                    <div class="add" style="margin-left: 40%; margin-right: 40%;">
-                        <a @click="addf" href="#" class="button button-round button-fill">Ajouter</a>
+                        <input class="form-control" id="mail" placeholder="Username">
                     </div>
                 </div>
+                <div class="add" style="margin-left: 40%; margin-right: 40%;">
+                    <a @click="addf" href="#" class="button button-round button-fill">Ajouter</a>
+                </div>
+            </div>
+            <ul class="results"></ul>
             <!-- </ul> -->
         </div>
     </div>
@@ -81,9 +90,29 @@
 <script>
     return {
         async data() {
-            let url = "http://10.0.2.2:3000/friends/" + this.$route.params.token;
+            // On cherche les notifications de l'utilisateur
+            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let notifs = [];
+            let cpt = 0;
             let friends = [];
             let id = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                try {
+                    notifs = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("Error " + err);
+                }
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
+            url = "http://10.0.2.2:3000/friends/" + this.$route.params.token;
             try {
                 friends = await fetch(url)
                     .then(res =>
@@ -101,9 +130,12 @@
             if (this.$route.params.id) {
                 id = 1;
             }
+            console.log(JSON.stringify(friends));
             return {
                 friends: friends,
-                id: id
+                id: id,
+                notifs: notifs,
+                cpt: cpt
             }
         },
         methods: {
@@ -113,26 +145,66 @@
                 this.$router.navigate("/parameters/" + this.$route.params.token);
             },
             getPos: function() {
-                this.$router.navigate("/position");
+                // this.$router.navigate("/position");
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
             },
             show_menu: function() {
                 if (document.getElementById("menu1").classList.contains("d-none")) {
                     document.getElementById("menu1").classList.remove("d-none");
-                    document.getElementById("contain1").classList.add("w3-container");
                     document.getElementById("contain1").style.marginLeft = "70px";
                 } else {
                     document.getElementById("menu1").classList.add("d-none");
-                    document.getElementById("contain1").classList.remove("w3-container");
                     document.getElementById("contain1").style.marginLeft = "0px";
                 }
             },
             amis: function() {
                 this.$router.navigate("/amis");
             },
-            add_friend: function() {
+            add_friend: async function() {
                 console.log("Ajouter un ami");
                 document.getElementById("plus").classList.add("d-none");
                 document.getElementById("search").classList.remove("d-none");
+                let search = document.getElementById("mail");
+                let results = document.querySelector('ul, .results');
+                let users = [];
+                let url = "http://10.0.2.2:3000/users/" + this.$route.params.token;
+                try {
+                    users = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    url = "http://localhost:3000/users/" + this.$route.params.token;
+                    try {
+                        users = await fetch(url)
+                            .then(res =>
+                                res.json())
+                    } catch (err) {
+                        this.$app.dialog.alert("ERROR: " + err);
+                    }
+                }
+                console.log("users: " + JSON.stringify(users));
+
+                function displayResults(user) {
+                    // if (results.childElementCount > 5) {
+                    //     results.innerHTML = '';
+                    // }
+                    const li = document.createElement('li');
+                    li.classList.add('result');
+                    li.innerHTML = user.mail;
+                    results.appendChild(li);
+                }
+
+                function searchFilter() {
+                    console.log("value: " + search.value);
+                    results.innerHTML = '';
+                    users.forEach(user => {
+                        if (user.mail.includes(`${search.value}`)) {
+                            displayResults(user);
+                        }
+                    })
+                }
+
+                search.addEventListener('input', searchFilter);
             },
             addf: function() {
                 document.getElementById("search").classList.add("d-none");
@@ -177,11 +249,14 @@
                 console.log("You want to accept the invitation");
                 let url = "http://10.0.2.2:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
                 try {
-                    fetch(url)
+                    fetch(url);
+                    document.getElementById("card-accept").classList.add("d-none");
                 } catch (err) {
                     url = "http://localhost:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
                     try {
                         fetch(url);
+                        // this.$router.navigate("/amis/" + this.$route.params.token);
+                        document.getElementById("card-accept").classList.add("d-none");
                     } catch (err) {
 
                     }
@@ -191,11 +266,13 @@
                 console.log("You want to cancel the invitation");
                 let url = "http://10.0.2.2:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
                 try {
-                    fetch(url)
+                    fetch(url);
+                    document.getElementById("card-accept").classList.add("d-none");
                 } catch (err) {
                     url = "http://localhost:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
                     try {
                         fetch(url);
+                        document.getElementById("card-accept").classList.add("d-none");
                     } catch (err) {
 
                     }
@@ -203,6 +280,16 @@
             },
             getProfile: function(id) {
                 this.$router.navigate("/profile/" + this.$route.params.token + "/" + id);
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
             }
         }
     }

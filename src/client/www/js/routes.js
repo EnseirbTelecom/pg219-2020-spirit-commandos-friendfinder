@@ -56,7 +56,7 @@ var routes = [{
     },
     {
         path: '/off/',
-        url: './pages/bye.html',
+        componentUrl: './pages/bye.html',
         options: {
             transition: 'f7-circle',
         }

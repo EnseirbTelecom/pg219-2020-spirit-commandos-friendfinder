@@ -128,6 +128,26 @@ MongoClient.connect(url, {
                     }
                 })
             })
+            .get("/users/:token", (req, res) => {
+                try {
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    users.find({}).toArray().then(usersList => {
+                        usersList.forEach(user => {
+                            delete user.password;
+                            delete user.date;
+                            delete user.prenom;
+                            delete user.nom;
+                            delete user.pseudo;
+                            delete user._id;
+                        })
+                        console.log("users: " + JSON.stringify(usersList));
+                        res.json(usersList);
+                    })
+                } catch (err) {
+
+                }
+            })
             .get("/position/:token", (req, res) => {
                 try {
                     let decoded = jwt.verify(req.params.token, privatekey);

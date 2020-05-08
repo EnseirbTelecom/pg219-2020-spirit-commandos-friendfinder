@@ -1,20 +1,34 @@
 <template>
     <div class="page" data-name="params">
-        <div class="scrollbar-warm-flame">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
-              <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"  title="position"></i></a>
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-gear" title="modifier les paramètres de votre compte"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a> 
-              <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
-            </div>
+        <div class="scrollbar-warm-flame d-none" id="menuParams">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
+                        title="Déconnexion"></i></a>
+                       
+            </div> 
         </div>
-        <div style="margin-left:70px">
-            <div class="w3-container">
-                <nav class="navbar navbar-dark bg-dark">
-                    <a class="navbar-brand">Friend Finder</a>
-                    <a href="#"  id="signup_link">Déconnexion</a>
+
+        <div>
+            <div id="containParams">
+                <nav class="navbar navbar-dark">
+                    <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                            style="color: white;">menu</i></a>
+                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                        {{#if cpt}}
+                        <span id="span_notifs"></span>
+                        {{/if}}
+                    </a>
+                    <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
                 </nav>
                 <h1 class="title">Paramètres: </h1>
                 <ul>
@@ -63,6 +77,32 @@
 </template>
 <script>
     return {
+        async data() {
+            // On cherche les notifications de l'utilisateur
+            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                try {
+                    notifs = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("Error " + err);
+                }
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
+            return {
+                notifs: notifs,
+                cpt: cpt
+            }
+        },
         methods: {
             show_form: function() {
                 console.log("show form");
@@ -78,61 +118,94 @@
                 if (new_mdp !== mdp) {
                     document.getElementById("non_conforme").style.visibility = "visible";
                     console.log("mots de passe non conformes");
-                } 
-                else {
+                } else {
                     console.log("mots de passe conformes !");
                     let url = "http://localhost:3000/newPassword/" + this.$route.params.token;
                     console.log("URL: " + url);
                     let reqBody = JSON.stringify({
-                            old: old_mdp,
-                            new_mdp: new_mdp
-                        });
+                        old: old_mdp,
+                        new_mdp: new_mdp
+                    });
                     console.log("BODY:  " + reqBody);
                     try {
                         fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: reqBody
-                    }).then(res => {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: reqBody
+                        }).then(res => {
                             return res.json();
                         }).then(data => {
                             console.log(JSON.stringify(data));
                             if (data === "OK") {
                                 this.$app.dialog.alert("Mot de passe changé avec succès !");
-                                document.getElementById("form_modify").classList = "d-none";        
-                            }
-                            else {
+                                document.getElementById("form_modify").classList = "d-none";
+                            } else {
                                 this.$app.dialog.alert("Something went wrong");
                             }
                         })
                     } catch (err) {
                         url = "http://10.0.2.2:3000/newPassword/" + this.$route.params.token;
                         fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: reqBody
-                    }).then(res => {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: reqBody
+                        }).then(res => {
                             return res.json();
                         }).then(data => {
                             console.log(JSON.stringify(data));
                             if (data === "OK") {
                                 this.$app.dialog.alert("Mot de passe changé avec succès !");
-                                document.getElementById("form_modify").classList = "d-none";        
-                            }
-                            else {
+                                document.getElementById("form_modify").classList = "d-none";
+                            } else {
                                 this.$app.dialog.alert("Something went wrong");
                             }
                         })
                     }
-                    
-                    
+
+
                 }
             },
             back: function() {
                 this.$router.back();
-            }, 
+            },
             home: function() {
                 this.$router.navigate("/accueil/" + this.$route.params.token);
+            },
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                console.log("menu: " + document.getElementById("menuParams").innerHTML);
+                if (document.getElementById("menuParams").classList.contains("d-none")) {
+                    document.getElementById("menuParams").classList.remove("d-none");
+                    document.getElementById("containParams").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menuParams").classList.add("d-none");
+                    document.getElementById("containParams").classList.remove("w3-container");
+                    document.getElementById("containParams").style.marginLeft = "0px";
+                }
+            },
+            amis: function() {
+                this.$router.navigate("/amis/" + this.$route.params.token);
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
             }
         }
     }

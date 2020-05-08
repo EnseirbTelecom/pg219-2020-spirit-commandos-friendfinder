@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="notifs">
         <div class="scrollbar-warm-flame d-none" id="menuProfile">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -17,9 +17,10 @@
 
             </div>
         </div>
+
         <div>
             <div id="containProfile">
-                <nav class="navbar navbar-dark bg-dark">
+                <nav class="navbar navbar-dark">
                     <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
                     <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
@@ -42,7 +43,7 @@
                     <div class="block">
                         <div class="row" id="buttons">
                             <!-- <a class="col button button-fill btn-accept" style="margin-right: 1%;">Accepter</a> -->
-                            <a class="col button button-fill btn-delete" id="btn">Supprimer</a>
+                            <a @click="delete('{{_id}}')" class="col button button-fill btn-delete" id="btn">Supprimer</a>
                         </div>
                     </div>
                 </div>
@@ -53,8 +54,28 @@
 <script>
     return {
         async data() {
+            // On cherche les notifications de l'utilisateur
+            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                try {
+                    notifs = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("Error " + err);
+                }
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
             // console.log(JSON.stringify(this.$route.params.friend));
-            let url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + this.$route.params.friend;
+            url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + this.$route.params.friend;
             let profile = [];
             try {
                 profile = await fetch(url)
@@ -71,6 +92,8 @@
                 }
             }
             return {
+                notifs: notifs,
+                cpt: cpt,
                 profile: profile
             }
         },
@@ -87,11 +110,9 @@
                 console.log("menu: " + document.getElementById("menuProfile").innerHTML);
                 if (document.getElementById("menuProfile").classList.contains("d-none")) {
                     document.getElementById("menuProfile").classList.remove("d-none");
-                    document.getElementById("containProfile").classList.add("w3-containProfileer");
                     document.getElementById("containProfile").style.marginLeft = "70px";
                 } else {
                     document.getElementById("menuProfile").classList.add("d-none");
-                    document.getElementById("containProfile").classList.remove("w3-container");
                     document.getElementById("containProfile").style.marginLeft = "0px";
                 }
             },
@@ -103,6 +124,31 @@
                 //     this.$router.navigate("/off/");
                 // })
                 this.$router.navigate("/off/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
+            },
+            delete: function(id) {
+                let url = "http://10.0.2.2:3000/friend/" + this.$route.params.token + "/" + id;
+                fetch(url, {
+                    method: "DELETE"
+                }).then(res => {
+                    return res.json()
+                }).then(data => {
+                    if (data === "OK") {
+                        console.log(data);
+                        this.$app.dialog.alert('Cet utilisateur a été supprimé de la liste de vos amis', () => {
+                            this.$router.navigate("/amis/" + this.$route.params.token);
+                        });
+                    }
+                })
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
             },
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
