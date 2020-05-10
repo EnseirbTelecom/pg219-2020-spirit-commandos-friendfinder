@@ -148,9 +148,10 @@
             },
             deconnecter: function() {
                 console.log("Deconnexion!!!!");
-                this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                    this.$router.navigate("/off/");
-                })
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     this.$router.navigate("/off/");
+                // })
+                this.$router.navigate("/");
             },
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
