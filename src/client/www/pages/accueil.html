@@ -38,9 +38,7 @@
                 </center>
 
                 <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
-                <!-- 
-                    <div id="map_canvas" style="width: 100%; height: 500px;"> MAP CANVA</div> 
-                -->
+                <div id="map_canvas" style="width: 100%; height: 500px;"> MAP CANVA</div>
 
                 <!-- <div>
                     <p>
@@ -123,62 +121,62 @@
             },
 
             showMap: function() {
+                // var mapDiv = document.getElementById("map_canvas");
+                // var GOOGLE = new plugin.google.maps.LatLng(37.422858, -122.085065);
+                // var map = plugin.google.maps.Map.getMap(mapDiv);
+                // map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
+                //     map.setCenter(GOOGLE);
+                // });
+                const GOOGLE = {
+                    "lat": 37.422476,
+                    "lng": -122.08425
+                };
+                // Define a div tag with id="map_canvas"
                 var mapDiv = document.getElementById("map_canvas");
-                var GOOGLE = new plugin.google.maps.LatLng(37.422858, -122.085065);
-                var map = plugin.google.maps.Map.getMap(mapDiv);
-                map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
-                    map.setCenter(GOOGLE);
+
+                // // Initialize the map plugin
+                // // var map = plugin.google.maps.Map.getMap(mapDiv, {
+                // //     controls: {
+                // //         myLocationButton: true
+                // //     },
+                // //     gestures: {
+                // //         'scroll': true,
+                // //         'tilt': true,
+                // //         'rotate': true,
+                // //         'zoom': true
+                // //     }
+                // // });
+                // var map = plugin.google.maps.Map.getMap(mapDiv, {
+                //     'camera': {
+                //         'latLng': GOOGLE,
+                //         'zoom': 17
+                //     }
+                // });
+                // You have to wait the MAP_READY event.
+                // map.on(plugin.google.maps.event.MAP_READY, (map) => {
+                //     console.log("FFFFFFFFFFFF");
+                //     var marker = map.addMarker({
+                //         position: {
+                //             lat: 37.422858,
+                //             lng: -122.085065
+                //         },
+                //         title: "Hello Cordova Google Maps for iOS and Android",
+                //         snippet: "This plugin is awesome!"
+                //     })
+                //     marker.showInfoWindow();
+
+                let latitude = 37.422476;
+                let longitude = -122.08425;
+                let map = new google.maps.Map(document.getElementById('map_canvas'), {
+                    center: {
+                        lat: parseFloat(latitude),
+                        lng: parseFloat(longitude)
+                    },
+                    zoom: 12,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
                 });
-                // const GOOGLE = {
-                  //  "lat": 37.422476,
-                    // "lng": -122.08425
-                // };
-            //     // Define a div tag with id="map_canvas"
-            //     var mapDiv = document.getElementById("map_canvas");
-
-            //     // // Initialize the map plugin
-            //     // // var map = plugin.google.maps.Map.getMap(mapDiv, {
-            //     // //     controls: {
-            //     // //         myLocationButton: true
-            //     // //     },
-            //     // //     gestures: {
-            //     // //         'scroll': true,
-            //     // //         'tilt': true,
-            //     // //         'rotate': true,
-            //     // //         'zoom': true
-            //     // //     }
-            //     // // });
-            //     // var map = plugin.google.maps.Map.getMap(mapDiv, {
-            //     //     'camera': {
-            //     //         'latLng': GOOGLE,
-            //     //         'zoom': 17
-            //     //     }
-            //     // });
-            //     // You have to wait the MAP_READY event.
-            //     // map.on(plugin.google.maps.event.MAP_READY, (map) => {
-            //     //     console.log("FFFFFFFFFFFF");
-            //     //     var marker = map.addMarker({
-            //     //         position: {
-            //     //             lat: 37.422858,
-            //     //             lng: -122.085065
-            //     //         },
-            //     //         title: "Hello Cordova Google Maps for iOS and Android",
-            //     //         snippet: "This plugin is awesome!"
-            //     //     })
-            //     //     marker.showInfoWindow();
-
-            //     let latitude = 37.422476;
-            //     let longitude = -122.08425;
-            //     let map = new google.maps.Map(document.getElementById('map_canvas'), {
-            //         center: {
-            //             lat: parseFloat(latitude),
-            //             lng: parseFloat(longitude)
-            //         },
-            //         zoom: 12,
-            //         mapTypeId: google.maps.MapTypeId.ROADMAP
-            //     });
-            //     // 
-             }
+                // 
+            }
         }
     }
 </script>

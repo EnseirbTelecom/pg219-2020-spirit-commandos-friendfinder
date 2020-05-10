@@ -72,11 +72,11 @@
                         <input class="form-control" id="mail" placeholder="Username">
                     </div>
                 </div>
+                <ul id="results"></ul>
                 <div class="add" style="margin-left: 40%; margin-right: 40%;">
                     <a @click="addf" href="#" class="button button-round button-fill">Ajouter</a>
                 </div>
             </div>
-            <ul class="results"></ul>
             <!-- </ul> -->
         </div>
     </div>
@@ -160,12 +160,15 @@
             amis: function() {
                 this.$router.navigate("/amis");
             },
+            setValue: function() {
+                // document.getElementById("mail").value 
+            },
             add_friend: async function() {
                 console.log("Ajouter un ami");
                 document.getElementById("plus").classList.add("d-none");
                 document.getElementById("search").classList.remove("d-none");
                 let search = document.getElementById("mail");
-                let results = document.querySelector('ul, .results');
+                let results = document.querySelector('#results');
                 let users = [];
                 let url = "http://10.0.2.2:3000/users/" + this.$route.params.token;
                 try {
@@ -185,12 +188,12 @@
                 console.log("users: " + JSON.stringify(users));
 
                 function displayResults(user) {
-                    // if (results.childElementCount > 5) {
-                    //     results.innerHTML = '';
-                    // }
                     const li = document.createElement('li');
-                    li.classList.add('result');
-                    li.innerHTML = user.mail;
+                    const a = document.createElement('a');
+                    // li.classList.add('result');
+                    a.innerHTML = user.mail;
+                    // a.setAttribute('@click', 'setValue');
+                    li.appendChild(a);
                     results.appendChild(li);
                 }
 
