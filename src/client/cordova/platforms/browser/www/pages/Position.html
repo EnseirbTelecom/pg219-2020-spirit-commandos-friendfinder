@@ -131,6 +131,9 @@
                 <a @click="getPosition" href="#" class="button button-round button-fill">Partager la position</a>
             </div>
             <div id="geolocalisation"> </div>
+            <div id="output"> 
+                <img id="map" src="" alt="Carte graphique affichant la positions">
+            </div>
 
         </div>
         <div class="fab " id="back">
@@ -209,6 +212,10 @@
                         element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
                             'Longitude: ' + position.coords.longitude + '<br />' +
                             '<hr />' + element.innerHTML;
+                        //var img = new Image();
+                        //img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
+                        //console.log(img.src);
+                        document.getElementById('map').src="https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
                     };
 
                     function onError(error) {
