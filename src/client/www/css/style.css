@@ -128,19 +128,19 @@ header {
 
 header {
     margin-right: 100%;
-    margin-bottom: 15%;
+    /* margin-bottom: 15%; */
 }
 
 #title {
     margin-top: 5%;
-    margin-bottom: 35%;
+    /* margin-bottom: 35%; */
     font-weight: bold;
     color: rgb(215, 240, 248);
     text-shadow: 1px 1px 2px rgb(48, 207, 181), 0 0 25px rgb(8, 105, 231), 0 0 5px rgb(196, 196, 169);
 }
 
 #log {
-    margin-top: 5%;
+    margin-top: 20%;
 }
 
 #back {
