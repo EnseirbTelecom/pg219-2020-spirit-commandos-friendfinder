@@ -197,18 +197,56 @@
             },
             getPosition: function() {
                 console.log("test getPostion");
+                let now = new Date();
+                let month = now.getMonth() + 1;
+                let day = now.getDate();
+                let year = now.getFullYear();
+                let date = day + "/" + month + "/" + year;
+                let hours = now.getHours();
+                let minutes = now.getMinutes();
+                let seconds = now.getSeconds();
+                let heure = hours + ":" + minutes + ":" + seconds;
+                let latitude, longitude;
+                let d = document.getElementById("d").value;
+                let h = document.getElementById("h").value;
+                let m = document.getElementById("m").value;
+                let s = document.getElementById("s").value;
+                if (d === "") {
+                    d = "0";
+                }
+                if (h === "") {
+                    h = "0";
+                }
+                if (m === "") {
+                    m = "0";
+                }
+                if (s === "") {
+                    s = "0";
+                }
+                let duree = (((parseInt(d) * 24) + parseInt(h)) * 60 + parseInt(m)) * 60 + parseInt(s);
                 console.log(document.getElementById("pos").checked);
                 if (document.getElementById("pos").checked === false) {
                     document.getElementById("error").classList = "d-visible";
                 } else {
                     document.getElementById("error").classList = "d-none";
-                    var onSuccess = function(position) {
+                    let onSuccess = function(position) {
                         console.log("recuperation position reussie");
                         console.log(position.coords);
-                        var element = document.getElementById('geolocalisation');
-                        element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
-                            'Longitude: ' + position.coords.longitude + '<br />' +
-                            '<hr />' + element.innerHTML;
+                        let element = document.getElementById('geolocalisation');
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+                        let ReqBody = JSON.stringify({
+                            date: date,
+                            heure: heure,
+                            lat: latitude,
+                            long: longitude,
+                            msg: document.getElementById("msg").value,
+                            duree: duree
+                        });
+                        console.log(ReqBody);
+                        // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
+                        //     'Longitude: ' + position.coords.longitude + '<br />' +
+                        //     '<hr />' + element.innerHTML;
                     };
 
                     function onError(error) {
