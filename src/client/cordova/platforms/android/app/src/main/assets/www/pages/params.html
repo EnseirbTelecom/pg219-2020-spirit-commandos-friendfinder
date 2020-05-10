@@ -1,0 +1,212 @@
+<template>
+    <div class="page" data-name="params">
+        <div class="scrollbar-warm-flame d-none" id="menuParams">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
+                        title="Déconnexion"></i></a>
+                       
+            </div> 
+        </div>
+
+        <div>
+            <div id="containParams">
+                <nav class="navbar navbar-dark">
+                    <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                            style="color: white;">menu</i></a>
+                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                        {{#if cpt}}
+                        <span id="span_notifs"></span>
+                        {{/if}}
+                    </a>
+                    <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                </nav>
+                <h1 class="title">Paramètres: </h1>
+                <ul>
+                    <li>
+                        <a href="#" @click="show_form">changer le mot de passe</a>
+                        <div style="visibility: none;" id="form_modify" class="d-none">
+                            <div style="border: black solid 0.3rem; border-radius: 0.3rem; margin-left: 5%; margin-top: 2%; margin-right: 15%;" >
+                                <div style="margin-left: 2%;">
+                                <div class="form-group">
+                                    <label for="old_mdp">Ancien mot de passe: </label>
+                                    <input id="old_mdp" type="password" class="form-control field" placeholder="password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="mdp">Nouveau mot de passe: </label>
+                                    <input id="mdp" type="password" class="form-control field" placeholder="password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="new_mdp">Confirmer le mot de passe: </label>
+                                    <input id="new_mdp" type="password" class="form-control field" placeholder="password">
+                                    <p style="color: red; visibility: hidden;" id="non_conforme">Les deux mots de passe doivent être conformes !</p>
+                                </div>
+                            <div class="add" style="margin-left: 40%; margin-right: 40%;">
+                                <a @click="modify" href="#" class="button button-round button-fill">changer le mot de passe</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="disabled">changer l'adresse mail</a>
+                    </li>
+                    <li>
+                        <a href="#" class="disabled">changer la photo de profil</a>
+                    </li>
+
+                </ul>
+                
+                
+                <div class="fab " id="back">
+                    <a  @click="back" href="#" title="Ajouter un produit">
+                        <i class="icon f7-icons">arrow_left</i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    return {
+        async data() {
+            // On cherche les notifications de l'utilisateur
+            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                try {
+                    notifs = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("Error " + err);
+                }
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
+            return {
+                notifs: notifs,
+                cpt: cpt
+            }
+        },
+        methods: {
+            show_form: function() {
+                console.log("show form");
+                // w3.includeHTML();
+                document.getElementById("form_modify").classList = "d-visible";
+            },
+            modify: function() {
+                console.log("modify");
+                console.log("token: " + this.$route.params.token);
+                let old_mdp = document.getElementById("old_mdp").value;
+                let new_mdp = document.getElementById("mdp").value;
+                let mdp = document.getElementById("new_mdp").value;
+                if (new_mdp !== mdp) {
+                    document.getElementById("non_conforme").style.visibility = "visible";
+                    console.log("mots de passe non conformes");
+                } else {
+                    console.log("mots de passe conformes !");
+                    let url = "http://localhost:3000/newPassword/" + this.$route.params.token;
+                    console.log("URL: " + url);
+                    let reqBody = JSON.stringify({
+                        old: old_mdp,
+                        new_mdp: new_mdp
+                    });
+                    console.log("BODY:  " + reqBody);
+                    try {
+                        fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: reqBody
+                        }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            console.log(JSON.stringify(data));
+                            if (data === "OK") {
+                                this.$app.dialog.alert("Mot de passe changé avec succès !");
+                                document.getElementById("form_modify").classList = "d-none";
+                            } else {
+                                this.$app.dialog.alert("Something went wrong");
+                            }
+                        })
+                    } catch (err) {
+                        url = "http://10.0.2.2:3000/newPassword/" + this.$route.params.token;
+                        fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: reqBody
+                        }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            console.log(JSON.stringify(data));
+                            if (data === "OK") {
+                                this.$app.dialog.alert("Mot de passe changé avec succès !");
+                                document.getElementById("form_modify").classList = "d-none";
+                            } else {
+                                this.$app.dialog.alert("Something went wrong");
+                            }
+                        })
+                    }
+
+
+                }
+            },
+            back: function() {
+                this.$router.back();
+            },
+            home: function() {
+                this.$router.navigate("/accueil/" + this.$route.params.token);
+            },
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                console.log("menu: " + document.getElementById("menuParams").innerHTML);
+                if (document.getElementById("menuParams").classList.contains("d-none")) {
+                    document.getElementById("menuParams").classList.remove("d-none");
+                    document.getElementById("containParams").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menuParams").classList.add("d-none");
+                    document.getElementById("containParams").classList.remove("w3-container");
+                    document.getElementById("containParams").style.marginLeft = "0px";
+                }
+            },
+            amis: function() {
+                this.$router.navigate("/amis/" + this.$route.params.token);
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
+            }
+        }
+    }
+</script>

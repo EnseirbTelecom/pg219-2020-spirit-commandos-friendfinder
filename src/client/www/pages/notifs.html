@@ -78,13 +78,15 @@
             // On cherche les notifications de l'utilisateur
             let url = "http://localhost:3000/notifs/" + this.$route.params.token;
             let notifs = [];
+            let usr;
+            let user_src = [];
             let cpt = 0;
             try {
                 notifs = await fetch(url)
                     .then(res =>
                         res.json())
             } catch (err) {
-                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
                 try {
                     notifs = await fetch(url)
                         .then(res =>
@@ -95,8 +97,27 @@
             }
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
+            notifs.forEach(element => {
+                try {
+                    url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + element.id_src;
+                    usr = await fetch(url)
+                        .then(res => res.json())
+                } catch (err) {
+                    url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + element.id_src;
+                    try {
+                        usr = await fetch(url)
+                            .then(res => res.json())
+                    } catch (err) {
+                        this.$app.dialog.alert("Error " + err);
+                    }
+                } finally {
+                    usr.code = element.code;
+                    user_src.push(usr);
+                }
+            });
+
             return {
-                notifs: notifs,
+                notifs: user_src,
                 cpt: cpt
             }
         },

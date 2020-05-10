@@ -1,0 +1,40 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-keyboard": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-wkwebview-file-xhr": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-googlemaps": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    }
+  }
+}

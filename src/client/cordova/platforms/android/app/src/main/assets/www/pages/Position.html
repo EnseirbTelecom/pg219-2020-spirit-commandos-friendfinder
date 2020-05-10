@@ -1,0 +1,259 @@
+<template>
+    <div class="page" data-name="position">
+        <div class="scrollbar-warm-flame d-none" id="menu_pos">
+            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+                <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
+                        title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+
+            </div>
+        </div>
+
+        <div id="contain_pos">
+            <nav class="navbar navbar-dark">
+                <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                        style="color: white;">menu</i></a>
+                <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    {{#if cpt}}
+                    <span id="span_notifs"></span>
+                    {{/if}}
+                </a>
+                <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+            </nav>
+
+            <div style="margin-top: 2%;">
+                <center>
+                    <h1 id="posTitle">Partager une nouvelle position: </h1>
+                </center>
+            </div>
+            <form id="log">
+                <div id="formulaire">
+                    <!-- <div class="form-group row">
+                    <label>Durée</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="duree" placeholder="Duree de partage">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label>Durée en : </label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="type_duree">
+                            <option>secondes</option>
+                            <option>minutes</option>
+                            <option>heures</option>
+                            <option>jours</option>
+                            <option>mois</option>
+                        </select>
+                        </div>
+                </div>  -->
+                    <div class="form-group row">
+                        <label class="label1">Acceptez-vous de partager votre position ? </label>
+                        <div class="col-sm-10">
+                            <label class="switch">
+                                <input type="checkbox" id="pos">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div id="error" style="color: red;" class="d-none">
+                            <p>Veuillez d'abord accepter la récupération de votre localisation par notre application</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="msg" class="label1">Message: </label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="msg" rows="3" name="msg"></textarea>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label for="date" class="label1">Date d'activation: </label>
+                        <div class="col-sm-10">
+                            <a href="#" @click="show_da" id="edit_da"
+                                title="définir une date autre que la date d'aujourd'hui">
+                                <i class="icon f7-icons">pencil</i>
+                            </a>
+                            <a href="#" @click="cancel_da" id="cancel_da" class="d-none"
+                                title="utiliser la date d'aujourd'hui">
+                                <i class="icon f7-icons">multiply</i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-10 d-none" id="date_a">
+                        <input type="date" class="form-control" id="date" value="2020-05-30" name="date">
+                    </div>
+                    <div class="form-group row">
+                        <label for="heure" class="label1">Heure d'activation: </label>
+                        <div class="col-sm-10">
+                            <a href="#" @click="show" id="edit_h" title="définir une heure autre que l'heure système">
+                                <i class="icon f7-icons">pencil</i>
+                            </a>
+                            <a href="#" @click="cancel" id="cancel_h" class="d-none" title="utiliser l'heure système">
+                                <i class="icon f7-icons">multiply</i>
+                            </a>
+                        </div>
+                    </div> -->
+                    <!-- <div class="col-sm-10 d-none" id="heure">
+                        <input class="time" id="hh">
+                        <label>hh</label>
+                        <input class="time" id="mm">
+                        <label>min</label>
+                        <input class="time" id="ss">
+                        <label>sec</label>
+                    </div> -->
+                    <div class="form-group row">
+                        <label class="label1">Durée: </label>
+                        <div class="col-sm-10">
+                            <!-- <input placeholder="0" id="w" class="time">
+                        <label>weeks</label> -->
+                            <input placeholder="0" id="d" class="time">
+                            <label>dd</label>
+                            <input placeholder="00" id="h" class="time">
+                            <label>hh</label>
+                            <input placeholder="00" id="m" class="time">
+                            <label>mm</label>
+                            <input placeholder="00" id="s" class="time">
+                            <label>ss</label>
+                        </div>
+                    </div>
+
+
+            </form>
+            <!-- <a @click="getPosition" class="button button-round button-fill">Partager la position </a>  -->
+            <div class="add">
+                <a @click="getPosition" href="#" class="button button-round button-fill">Partager la position</a>
+            </div>
+            <div id="geolocalisation"> </div>
+
+        </div>
+        <div class="fab " id="back">
+            <a href="#" title="Ajouter un produit">
+                <i class="icon f7-icons">arrow_left</i>
+            </a>
+        </div>
+    </div>
+</template>
+<script>
+    return {
+        async data() {
+            // On cherche les notifications de l'utilisateur
+            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                try {
+                    notifs = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("Error " + err);
+                }
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
+            return {
+                notifs: notifs,
+                cpt: cpt
+            }
+        },
+        methods: {
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                if (document.getElementById("menu_pos").classList.contains("d-none")) {
+                    document.getElementById("menu_pos").classList.remove("d-none");
+                    document.getElementById("contain_pos").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menu_pos").classList.add("d-none");
+                    document.getElementById("contain_pos").style.marginLeft = "0px";
+                }
+            },
+            amis: function() {
+                this.$router.navigate("/amis/" + this.$route.params.token);
+            },
+            back: function() {
+                this.$router.back();
+            },
+            home: function() {
+                this.$router.navigate("/accueil/" + this.$route.params.token);
+            },
+            getPosition: function() {
+                console.log("test getPostion");
+                console.log(document.getElementById("pos").checked);
+                if (document.getElementById("pos").checked === false) {
+                    document.getElementById("error").classList = "d-visible";
+                } else {
+                    document.getElementById("error").classList = "d-none";
+                    var onSuccess = function(position) {
+                        console.log("recuperation position reussie");
+                        console.log(position.coords);
+                        var element = document.getElementById('geolocalisation');
+                        element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
+                            'Longitude: ' + position.coords.longitude + '<br />' +
+                            '<hr />' + element.innerHTML;
+                    };
+
+                    function onError(error) {
+                        alert('code: ' + error.code + '\n' +
+                            'message: ' + error.message + '\n');
+                    }
+                    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+                }
+            },
+            show: function() {
+                document.getElementById("heure").classList.remove("d-none");
+                document.getElementById("edit_h").classList.add("d-none");
+                document.getElementById("cancel_h").classList.remove("d-none");
+            },
+            cancel: function() {
+                document.getElementById("heure").classList.add("d-none");
+                document.getElementById("edit_h").classList.remove("d-none");
+                document.getElementById("cancel_h").classList.add("d-none");
+                document.getElementById("w").value = "";
+                document.getElementById("d").value = "";
+                document.getElementById("h").value = "";
+                document.getElementById("m").value = "";
+                document.getElementById("s").value = "";
+            },
+            show_da: function() {
+                document.getElementById("date_a").classList.remove("d-none");
+                document.getElementById("edit_da").classList.add("d-none");
+                document.getElementById("cancel_da").classList.remove("d-none");
+            },
+            cancel_da: function() {
+                document.getElementById("date_a").classList.add("d-none");
+                document.getElementById("edit_da").classList.remove("d-none");
+                document.getElementById("cancel_da").classList.add("d-none");
+                document.getElementById("date").value = "";
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
+            }
+        }
+    }
+</script>
