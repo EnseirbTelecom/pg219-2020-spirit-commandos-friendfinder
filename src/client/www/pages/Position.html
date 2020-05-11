@@ -232,6 +232,7 @@
                 } else {
                     document.getElementById("error").classList = "d-none";
                     let token = this.$route.params.token;
+                    let redirection = 0; //redirection interdite
                     let onSuccess = function(position) {
                         console.log("recuperation position reussie");
                         console.log(position.coords);
@@ -264,6 +265,9 @@
                                 if (JSON.stringify(data) === "null") {
                                     this.$app.dialog.alert("Error while adding the position");
                                 }
+                                else{
+                                    redirection = 1;
+                                }
                             })
                         } catch (err) {
                             url = "http://10.0.2.2:3000/position/" + token;
@@ -280,12 +284,19 @@
                                     if (JSON.stringify(data) === "null") {
                                         this.$app.dialog.alert("Error while adding the position");
                                     }
+                                    else{
+                                        redirection = 1;
+                                    }
                                 })
                             } catch (err) {
                                 console.log("Une erreur est survenue");
                             }
                         }
                         console.log(ReqBody);
+                        if(!redirection){
+                            this.$router.navigate("/map/" + this.$route.params.token);
+                        }
+                
 
                         // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
                         //     'Longitude: ' + position.coords.longitude + '<br />' +

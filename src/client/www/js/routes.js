@@ -69,6 +69,13 @@ var routes = [{
         }
     },
     {
+        path: '/map/:token',
+        componentUrl: "./pages/map.html",
+        options: {
+            transition: 'f7-circle',
+        }
+    },
+    {
         path: '/profile/:token/:friend',
         componentUrl: "./pages/profile.html",
         options: {
