@@ -123,18 +123,17 @@
                             <label>ss</label>
                         </div>
                     </div>
-
-
             </form>
             <!-- <a @click="getPosition" class="button button-round button-fill">Partager la position </a>  -->
             <div class="add">
                 <a @click="getPosition" href="#" class="button button-round button-fill">Partager la position</a>
             </div>
             <div id="geolocalisation"> </div>
+            <!--
             <div id="output"> 
                 <img id="map" src="" alt="Carte graphique affichant la positions">
             </div>
-
+            -->
         </div>
         <div class="fab " id="back">
             <a href="#" title="Ajouter un produit">
@@ -232,19 +231,10 @@
                     document.getElementById("error").classList = "d-visible";
                 } else {
                     document.getElementById("error").classList = "d-none";
+                    let token = this.$route.params.token;
                     let onSuccess = function(position) {
                         console.log("recuperation position reussie");
                         console.log(position.coords);
-<<<<<<< HEAD
-                        var element = document.getElementById('geolocalisation');
-                        element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
-                            'Longitude: ' + position.coords.longitude + '<br />' +
-                            '<hr />' + element.innerHTML;
-                        //var img = new Image();
-                        //img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
-                        //console.log(img.src);
-                        document.getElementById('map').src="https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
-=======
                         let element = document.getElementById('geolocalisation');
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
@@ -255,12 +245,51 @@
                             long: longitude,
                             msg: document.getElementById("msg").value,
                             duree: duree
+
                         });
+                        // let url = "http://localhost:3000/position/" + token;
+                        url = "http://10.0.2.2:3000/position/" + token;
+
+                        console.log("URL: " + url);
+                        try {
+                            fetch(url, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: ReqBody
+                            }).then(res => {
+                                return res.json();
+                            }).then(data => {
+                                if (JSON.stringify(data) === "null") {
+                                    this.$app.dialog.alert("Error while adding the position");
+                                }
+                            })
+                        } catch (err) {
+                            url = "http://10.0.2.2:3000/position/" + token;
+                            try {
+                                fetch(url, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: ReqBody
+                                }).then(res => {
+                                    return res.json();
+                                }).then(data => {
+                                    if (JSON.stringify(data) === "null") {
+                                        this.$app.dialog.alert("Error while adding the position");
+                                    }
+                                })
+                            } catch (err) {
+                                console.log("Une erreur est survenue");
+                            }
+                        }
                         console.log(ReqBody);
+
                         // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
                         //     'Longitude: ' + position.coords.longitude + '<br />' +
                         //     '<hr />' + element.innerHTML;
->>>>>>> 4acd596ce6af3c7878f94f6ac1845ade5b05a9e6
                     };
 
                     function onError(error) {

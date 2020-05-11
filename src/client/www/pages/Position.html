@@ -245,42 +245,48 @@
                             long: longitude,
                             msg: document.getElementById("msg").value,
                             duree: duree
-                        
+
                         });
-                        let url = "http://localhost:3000/position/" + token + ReqBody;
+                        let url = "http://localhost:3000/position/" + token;
+                        // url = "http://10.0.2.2:3000/position/" + token;
+
                         console.log("URL: " + url);
                         try {
                             fetch(url, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: ReqBody
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: ReqBody
                             }).then(res => {
-                            return res.json();
+                                return res.json();
                             }).then(data => {
-                            if (JSON.stringify(data) === "null") {
-                            this.$app.dialog.alert("Error while adding the position");
-                             }
-                             })
-                        } catch (err) {
-                        url = "http://10.0.2.2:3000/position/" + token + ReqBody;
-                        try {
-                            fetch(url, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: ReqBody
-                            }).then(res => {
-                            return res.json();
-                            }).then(data => {
-                            if (JSON.stringify(data) === "null") {
-                                this.$app.dialog.alert("Error while adding the position");
-                            }
+                                if (JSON.stringify(data) === "null") {
+                                    this.$app.dialog.alert("Error while adding the position");
+                                }
                             })
                         } catch (err) {
-                        console.log("Une erreur est survenue");
-                    }
-                    }
+                            url = "http://10.0.2.2:3000/position/" + token;
+                            try {
+                                fetch(url, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: ReqBody
+                                }).then(res => {
+                                    return res.json();
+                                }).then(data => {
+                                    if (JSON.stringify(data) === "null") {
+                                        this.$app.dialog.alert("Error while adding the position");
+                                    }
+                                })
+                            } catch (err) {
+                                console.log("Une erreur est survenue");
+                            }
+                        }
                         console.log(ReqBody);
-                        
+
                         // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
                         //     'Longitude: ' + position.coords.longitude + '<br />' +
                         //     '<hr />' + element.innerHTML;

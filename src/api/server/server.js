@@ -170,7 +170,7 @@ MongoClient.connect(url, {
                         .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
                     positions.insertOne(position, (err, resu) => {
                         console.log("Position Ajoutée");
-                        res.json(success);
+                        res.json("success");
                     })
                 } catch (err) {
                     console.log("erreur lors du décodage");
