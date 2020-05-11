@@ -30,10 +30,19 @@
     },
     "cordova-plugin-googlemaps": {
       "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-badge": {
       "PACKAGE_NAME": "io.framework7.friendFinder"
     }
   }

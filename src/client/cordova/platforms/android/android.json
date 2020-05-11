@@ -23,6 +23,10 @@
             {
               "xml": "<preference name=\"android-minSdkVersion\" value=\"19\" />",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"Badge\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.badge.Badge\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -105,6 +109,14 @@
             {
               "xml": "<feature name=\"PluginStreetViewPanorama\"><param name=\"android-package\" value=\"plugin.google.maps.PluginStreetViewPanorama\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"LocalNotification\"><param name=\"android-package\" value=\"de.appplant.cordova.plugin.localnotification.LocalNotification\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -137,6 +149,22 @@
             {
               "xml": "<uses-library android:name=\"org.apache.http.legacy\" android:required=\"false\" />",
               "count": 1
+            },
+            {
+              "xml": "<provider android:authorities=\"${applicationId}.provider\" android:exported=\"false\" android:grantUriPermissions=\"true\" android:name=\"de.appplant.cordova.plugin.notification.util.AssetProvider\"><meta-data android:name=\"android.support.FILE_PROVIDER_PATHS\" android:resource=\"@xml/localnotification_provider_paths\" /></provider>",
+              "count": 1
+            },
+            {
+              "xml": "<receiver android:exported=\"false\" android:name=\"de.appplant.cordova.plugin.localnotification.TriggerReceiver\" />",
+              "count": 1
+            },
+            {
+              "xml": "<receiver android:exported=\"false\" android:name=\"de.appplant.cordova.plugin.localnotification.ClearReceiver\" />",
+              "count": 1
+            },
+            {
+              "xml": "<activity android:exported=\"false\" android:launchMode=\"singleInstance\" android:name=\"de.appplant.cordova.plugin.localnotification.ClickReceiver\" android:theme=\"@android:style/Theme.Translucent\" />",
+              "count": 1
             }
           ],
           "/manifest": [
@@ -166,6 +194,10 @@
             },
             {
               "xml": "<uses-feature android:name=\"android.hardware.location.gps\" />",
+              "count": 1
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.WAKE_LOCK\" />",
               "count": 1
             }
           ]
@@ -221,6 +253,15 @@
       "PACKAGE_NAME": "io.framework7.friendFinder"
     },
     "cordova-plugin-googlemaps": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "io.framework7.friendFinder"
     }
   },
@@ -506,6 +547,48 @@
       "file": "plugins/cordova-plugin-googlemaps/www/js_CordovaGoogleMaps-for-android_ios.js",
       "pluginId": "cordova-plugin-googlemaps",
       "runs": true
+    },
+    {
+      "id": "cordova-plugin-device.device",
+      "file": "plugins/cordova-plugin-device/www/device.js",
+      "pluginId": "cordova-plugin-device",
+      "clobbers": [
+        "device"
+      ]
+    },
+    {
+      "id": "cordova-plugin-badge.Badge",
+      "file": "plugins/cordova-plugin-badge/www/badge.js",
+      "pluginId": "cordova-plugin-badge",
+      "clobbers": [
+        "cordova.plugins.notification.badge"
+      ]
+    },
+    {
+      "id": "cordova-plugin-local-notification.LocalNotification",
+      "file": "plugins/cordova-plugin-local-notification/www/local-notification.js",
+      "pluginId": "cordova-plugin-local-notification",
+      "clobbers": [
+        "cordova.plugins.notification.local"
+      ]
+    },
+    {
+      "id": "cordova-plugin-local-notification.LocalNotification.Core",
+      "file": "plugins/cordova-plugin-local-notification/www/local-notification-core.js",
+      "pluginId": "cordova-plugin-local-notification",
+      "clobbers": [
+        "cordova.plugins.notification.local.core",
+        "plugin.notification.local.core"
+      ]
+    },
+    {
+      "id": "cordova-plugin-local-notification.LocalNotification.Util",
+      "file": "plugins/cordova-plugin-local-notification/www/local-notification-util.js",
+      "pluginId": "cordova-plugin-local-notification",
+      "merges": [
+        "cordova.plugins.notification.local.core",
+        "plugin.notification.local.core"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -518,6 +601,9 @@
     "cordova-plugin-geolocation": "4.0.2",
     "es6-promise-plugin": "4.2.2",
     "cordova-plugin-screen-orientation": "3.0.2",
-    "cordova-plugin-googlemaps": "2.7.1"
+    "cordova-plugin-googlemaps": "2.7.1",
+    "cordova-plugin-device": "2.0.3",
+    "cordova-plugin-badge": "0.8.8",
+    "cordova-plugin-local-notification": "0.9.0-beta.2"
   }
 }
