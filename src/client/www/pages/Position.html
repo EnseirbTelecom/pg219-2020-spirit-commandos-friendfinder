@@ -123,18 +123,17 @@
                             <label>ss</label>
                         </div>
                     </div>
-
-
             </form>
             <!-- <a @click="getPosition" class="button button-round button-fill">Partager la position </a>  -->
             <div class="add">
                 <a @click="getPosition" href="#" class="button button-round button-fill">Partager la position</a>
             </div>
             <div id="geolocalisation"> </div>
+            <!--
             <div id="output"> 
                 <img id="map" src="" alt="Carte graphique affichant la positions">
             </div>
-
+            -->
         </div>
         <div class="fab " id="back">
             <a href="#" title="Ajouter un produit">
@@ -200,22 +199,91 @@
             },
             getPosition: function() {
                 console.log("test getPostion");
+                let now = new Date();
+                let month = now.getMonth() + 1;
+                let day = now.getDate();
+                let year = now.getFullYear();
+                let date = day + "/" + month + "/" + year;
+                let hours = now.getHours();
+                let minutes = now.getMinutes();
+                let seconds = now.getSeconds();
+                let heure = hours + ":" + minutes + ":" + seconds;
+                let latitude, longitude;
+                let d = document.getElementById("d").value;
+                let h = document.getElementById("h").value;
+                let m = document.getElementById("m").value;
+                let s = document.getElementById("s").value;
+                if (d === "") {
+                    d = "0";
+                }
+                if (h === "") {
+                    h = "0";
+                }
+                if (m === "") {
+                    m = "0";
+                }
+                if (s === "") {
+                    s = "0";
+                }
+                let duree = (((parseInt(d) * 24) + parseInt(h)) * 60 + parseInt(m)) * 60 + parseInt(s);
                 console.log(document.getElementById("pos").checked);
                 if (document.getElementById("pos").checked === false) {
                     document.getElementById("error").classList = "d-visible";
                 } else {
                     document.getElementById("error").classList = "d-none";
-                    var onSuccess = function(position) {
+                    let token = this.$route.params.token;
+                    let onSuccess = function(position) {
                         console.log("recuperation position reussie");
                         console.log(position.coords);
-                        var element = document.getElementById('geolocalisation');
-                        element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
-                            'Longitude: ' + position.coords.longitude + '<br />' +
-                            '<hr />' + element.innerHTML;
-                        //var img = new Image();
-                        //img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
-                        //console.log(img.src);
-                        document.getElementById('map').src="https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
+                        let element = document.getElementById('geolocalisation');
+                        latitude = position.coords.latitude;
+                        longitude = position.coords.longitude;
+                        let ReqBody = JSON.stringify({
+                            date: date,
+                            heure: heure,
+                            lat: latitude,
+                            long: longitude,
+                            msg: document.getElementById("msg").value,
+                            duree: duree
+                        
+                        });
+                        let url = "http://localhost:3000/position/" + token + ReqBody;
+                        console.log("URL: " + url);
+                        try {
+                            fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: ReqBody
+                            }).then(res => {
+                            return res.json();
+                            }).then(data => {
+                            if (JSON.stringify(data) === "null") {
+                            this.$app.dialog.alert("Error while adding the position");
+                             }
+                             })
+                        } catch (err) {
+                        url = "http://10.0.2.2:3000/position/" + token + ReqBody;
+                        try {
+                            fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: ReqBody
+                            }).then(res => {
+                            return res.json();
+                            }).then(data => {
+                            if (JSON.stringify(data) === "null") {
+                                this.$app.dialog.alert("Error while adding the position");
+                            }
+                            })
+                        } catch (err) {
+                        console.log("Une erreur est survenue");
+                    }
+                    }
+                        console.log(ReqBody);
+                        
+                        // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
+                        //     'Longitude: ' + position.coords.longitude + '<br />' +
+                        //     '<hr />' + element.innerHTML;
                     };
 
                     function onError(error) {

@@ -148,10 +148,13 @@ MongoClient.connect(url, {
 
                 }
             })
-            .get("/position/:token", (req, res) => {
+            .post("/position/:token", (req, res) => {
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 try {
                     let decoded = jwt.verify(req.params.token, privatekey);
                     console.log("decoded:" + decoded.data);
+                    console.log("reqBody:" + req.body);
                     let position = {
                             lat: req.body.lat,
                             long: req.body.long,
@@ -167,7 +170,7 @@ MongoClient.connect(url, {
                         .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
                     positions.insertOne(position, (err, resu) => {
                         console.log("Position Ajoutée");
-                        res.json(position);
+                        res.json(success);
                     })
                 } catch (err) {
                     console.log("erreur lors du décodage");
