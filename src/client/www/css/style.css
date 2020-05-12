@@ -28,9 +28,9 @@
     margin-right: 10%;
     border: white solid 0.1rem;
     border-radius: 1rem;
-    /* background-image: url("fond.jpg"); */
-    background-color: rgb(128, 246, 250);
-    background-image: linear-gradient(to right top, #0fede8, #00e1eb, #00d5ec, #00c8eb, #00bbe7, #00b4e6, #00ace5, #0aa5e3, #00a1e7, #009deb, #0099ee, #1194f0);
+    background-image: url("fond_formulaire.png");
+    /* background-color: rgb(128, 246, 250); */
+    /* background-image: linear-gradient(to right top, #0fede8, #00e1eb, #00d5ec, #00c8eb, #00bbe7, #00b4e6, #00ace5, #0aa5e3, #00a1e7, #009deb, #0099ee, #1194f0); */
     /* background-image: linear-gradient(to left top, #125ec2, #0e8ebd, #00a1aa, #00ce83, #12eb7f); */
     /* background: linear-gradient(to right top, var(--dark-blue), var(--blue-green), #00ce83); */
 }
@@ -133,8 +133,8 @@ header {
 }
 
 .label1 {
-    font-weight: 800;
-    color: rgb(8, 39, 97);
+    font-weight: 1000;
+    color: black;
 }
 
 .link:hover {
