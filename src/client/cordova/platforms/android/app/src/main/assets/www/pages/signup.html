@@ -84,11 +84,8 @@
 </template>
 <script>
     return {
-        async data() {
-
-        },
         methods: {
-            sign_up: async function() {
+            sign_up: function() {
                 if (document.getElementById("mail1").value === "") {
                     document.getElementById("mail1_needed").classList.remove("d-none");
                     document.getElementById("mail1").style.borderColor = "red";
@@ -127,68 +124,54 @@
                         "date": document.getElementById("date").value,
                     });
                     console.log("BODY: " + reqBody);
-                    let token = null;
                     try {
-                        token = await fetch(url, {
+                        fetch(url, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
                             body: reqBody
                         }).then(res => {
-                            return res.json();
-                        }).then(data => {
-                            console.log(JSON.stringify(data));
-                            let result = JSON.stringify(data);
-                            if (result === "null") {
+                            if (res.status === 200) {
+                                console.log("200 OK");
+                                console.log("Bienvenue dans notre appli !");
+                                res.json().then(data => {
+                                    let result = data.text;
+                                    let paths = "/accueil/" + result;
+                                    this.$router.navigate(paths);
+                                });
+                            } else if (res.status === 403) {
                                 console.log("@mail déjà utilisée");
-                                // this.$router.navigate("/signup/");
                                 this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                                // location.reload();
-                            } else {
-                                console.log("Bienvenue !");
-                                const regex = /"/gi;
-                                result = result.replace(regex, '');
-                                console.log(result);
-                                let paths = "/accueil/" + result;
-                                this.$router.navigate(paths);
                             }
                         });
                     } catch (err) {
                         url = "http://10.0.2.2:3000/signup";
                         try {
-                            token = await fetch(url, {
+                            fetch(url, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
                                 },
                                 body: reqBody
                             }).then(res => {
-                                return res.json();
-                            }).then(data => {
-                                console.log(JSON.stringify(data));
-                                let result = JSON.stringify(data);
-                                if (result === "null") {
+                                if (res.status === 200) {
+                                    console.log("200 OK");
+                                    console.log("Bienvenue dans notre appli !");
+                                    res.json().then(data => {
+                                        let result = data.text;
+                                        let paths = "/accueil/" + result;
+                                        this.$router.navigate(paths);
+                                    });
+                                } else if (res.status === 403) {
                                     console.log("@mail déjà utilisée");
-                                    // this.$router.navigate("/signup/");
                                     this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                                    // location.reload();
-                                } else {
-                                    console.log("Bienvenue !");
-                                    const regex = /"/gi;
-                                    result = result.replace(regex, '');
-                                    console.log(result);
-                                    let paths = "/accueil/" + result;
-                                    this.$router.navigate(paths);
                                 }
                             });
                         } catch (err) {
                             this.$app.dialog.alert("ERROR: ", err);
                         }
                     }
-
-
-
                 }
             },
             signin: function() {

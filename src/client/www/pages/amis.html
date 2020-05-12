@@ -219,24 +219,34 @@
                     fetch(url, {
                         method: "POST",
                     }).then(res => {
-                        return res.json();
-                    }).then(data => {
-                        if (JSON.stringify(data) === "null") {
+                        if (res.status === 401) {
+                            this.$app.dialog.alert("Cet utilisateur est déjà dans votre liste d'amis !");
+                        } else if (res.status === 200) {
+                            this.$app.dialog.alert("Invitation evoyée avec succès");
+                        } else if (res.status === 403) {
                             this.$app.dialog.alert("User not found");
                         }
-                    })
+                    });
+                    //     return res.json();
+                    // }).then(data => {
+                    //     if (JSON.stringify(data) === "null") {
+                    //         this.$app.dialog.alert("User not found");
+                    //     }
+                    // })
                 } catch (err) {
                     url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
                     try {
                         fetch(url, {
                             method: "POST",
                         }).then(res => {
-                            return res.json();
-                        }).then(data => {
-                            if (JSON.stringify(data) === "null") {
+                            if (res.status === 401) {
+                                this.$app.dialog.alert("Cet utilisateur est déjà dans votre liste d'amis !");
+                                // } else if (res.status === 200) {
+                                //     this.$app.dialog.alert("Invitation evoyée avec succès");
+                            } else if (res.status === 403) {
                                 this.$app.dialog.alert("User not found");
                             }
-                        })
+                        });
                     } catch (err) {
                         console.log("Une erreur est survenue");
                     }

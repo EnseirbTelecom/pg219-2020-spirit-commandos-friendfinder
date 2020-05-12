@@ -94,7 +94,9 @@ MongoClient.connect(url, {
                     if (result !== null) {
                         // L'utilisateur existe déjà dans la base de données
                         console.log("Cette @ mail est déjà utilisée");
-                        res.json(null);
+                        res.statusCode = 403;
+                        console.log(res.statusCode);
+                        res.json();
                     } else {
                         users.insertOne(user, (err, resu) => {
                             console.log("Utilisateur Ajouté");
@@ -102,7 +104,9 @@ MongoClient.connect(url, {
                             let token = jwt.sign({
                                 data: user._id
                             }, privatekey, { expiresIn: '24h' });
-                            res.json(token);
+                            res.status(200).json({
+                                text: token,
+                            });
                         })
                     }
                 })
@@ -117,14 +121,17 @@ MongoClient.connect(url, {
                 users.findOne(user, (err, result) => {
                     if (result === null) {
                         console.log("Vous n'êtes pas enregistré");
-                        res.json(null);
+                        res.statusCode = 403;
+                        res.json();
                     } else {
                         console.log("Bienvenue sur notre application !");
                         // Génération d'un token crypté
                         let token = jwt.sign({
                             data: result._id
                         }, privatekey, { expiresIn: '24h' });
-                        res.json(token);
+                        res.status(200).json({
+                            text: token,
+                        });
                     }
                 })
             })
@@ -197,6 +204,8 @@ MongoClient.connect(url, {
                                 if (search !== null) {
                                     if (search.id_2 === friend.id_2) {
                                         console.log("Vous êtes déjà amis");
+                                        res.statusCode = 401;
+                                        res.json();
                                     }
                                 } else {
                                     friend.status = "pending";
@@ -213,13 +222,15 @@ MongoClient.connect(url, {
                                     }
                                     notifications.insertOne(notif, (err, success) => {
                                         console.log("nouvelle notification");
-                                        res.json(success);
+                                        res.statusCode = 200;
+                                        res.json();
                                     })
                                 }
                             });
                         } else {
                             console.log("User not found");
-                            res.json(null);
+                            res.statusCode = 403;
+                            res.json();
                         }
                     })
                 } catch (err) {
@@ -278,14 +289,16 @@ MongoClient.connect(url, {
                                     console.log(JSON.stringify(friend1));
                                     friends.deleteOne({ _id: ObjectID(friend1._id) }, (err, result) => {
                                         console.log(result.deletedCount);
-                                        res.json("OK");
+                                        res.statusCode = 200;
+                                        res.json();
                                     })
                                 }
                             })
                         } else {
                             friends.deleteOne({ _id: ObjectID(friend._id) }, (err, result) => {
                                 console.log(result.deletedCount);
-                                res.json("OK");
+                                res.statusCode = 200;
+                                res.json();
                             })
                         }
                     })
@@ -354,10 +367,12 @@ MongoClient.connect(url, {
                             users.updateOne(result, { $set: { password: newPassword } }).then((err, res) => {
                                 console.log("Mot de passe modifié avec succès");
                             });
-                            res.json("OK");
+                            res.statusCode = 200;
+                            res.json();
                         } else {
                             console.log("Le password entré n'est pas conforme !");
-                            res.json(null);
+                            res.statusCode = 403;
+                            res.json();
                         }
                     })
                 } catch (err) {
@@ -407,6 +422,7 @@ MongoClient.connect(url, {
             })
             // On doit retourner uniquement les notifs non vues
             .get("/notifs/:token", (req, res) => {
+                console.log("Notifsssss");
                 try {
                     // on décode le token fourni
                     let decoded = jwt.verify(req.params.token, privatekey);
@@ -446,7 +462,8 @@ MongoClient.connect(url, {
                     let id = decoded.data;
                     notifications.update({ _id: ObjectID(req.query.id) }, { $set: { status: "vue" } }, (err, result) => {
                         console.log("notifs mise à jour");
-                        res.json(null);
+                        res.statusCode = 403;
+                        res.json();
                     })
                 } catch (err) {
                     console.log("Erreur lors du décodage");

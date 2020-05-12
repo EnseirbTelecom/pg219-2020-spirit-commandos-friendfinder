@@ -113,9 +113,11 @@
                 console.log("modify");
                 console.log("token: " + this.$route.params.token);
                 let old_mdp = document.getElementById("old_mdp").value;
+                console.log("mdp: " + old_mdp);
                 let new_mdp = document.getElementById("mdp").value;
+                console.log("mdp: " + new_mdp);
                 let mdp = document.getElementById("new_mdp").value;
-                if (new_mdp !== mdp) {
+                if (new_mdp !== old_mdp) {
                     document.getElementById("non_conforme").style.visibility = "visible";
                     console.log("mots de passe non conformes");
                 } else {
@@ -124,7 +126,7 @@
                     console.log("URL: " + url);
                     let reqBody = JSON.stringify({
                         old: old_mdp,
-                        new_mdp: new_mdp
+                        new_mdp: mdp
                     });
                     console.log("BODY:  " + reqBody);
                     try {
@@ -135,10 +137,11 @@
                             },
                             body: reqBody
                         }).then(res => {
-                            return res.json();
-                        }).then(data => {
-                            console.log(JSON.stringify(data));
-                            if (data === "OK") {
+                            //     return res.json();
+                            // }).then(data => {
+                            //     console.log(JSON.stringify(data));
+                            //     if (data === "OK") {
+                            if (res.status === 200) {
                                 this.$app.dialog.alert("Mot de passe changé avec succès !");
                                 document.getElementById("form_modify").classList = "d-none";
                             } else {
@@ -154,10 +157,7 @@
                             },
                             body: reqBody
                         }).then(res => {
-                            return res.json();
-                        }).then(data => {
-                            console.log(JSON.stringify(data));
-                            if (data === "OK") {
+                            if (res.status === 200) {
                                 this.$app.dialog.alert("Mot de passe changé avec succès !");
                                 document.getElementById("form_modify").classList = "d-none";
                             } else {
@@ -165,8 +165,6 @@
                             }
                         })
                     }
-
-
                 }
             },
             back: function() {

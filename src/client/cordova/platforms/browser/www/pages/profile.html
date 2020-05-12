@@ -133,10 +133,7 @@
                 fetch(url, {
                     method: "DELETE"
                 }).then(res => {
-                    return res.json()
-                }).then(data => {
-                    if (data === "OK") {
-                        console.log(data);
+                    if (res.status === 200) {
                         this.$app.dialog.alert('Cet utilisateur a été supprimé de la liste de vos amis', () => {
                             this.$router.navigate("/amis/" + this.$route.params.token);
                         });

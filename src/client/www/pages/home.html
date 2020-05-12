@@ -19,7 +19,7 @@
                 <div class="form-group row">
                     <label for="mdp" class="col-sm-2 col-form-label label1">Mot de passe: </label>
                     <div class="col-sm-10">
-                        <input id="mdp" class="form-control field" placeholder="password" type="password"/>
+                        <input id="mdp" class="form-control field" placeholder="password" type="password" />
                     </div>
                 </div>
                 <div class="add">
@@ -32,10 +32,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
     </form>
 </template>
 <script>
+    console.log(navigator.userAgent);
     return {
         methods: {
             signup: function() {
@@ -60,22 +61,19 @@
                             },
                             body: reqBody
                         }).then(res => {
-                            return res.json();
-                        }).then(data => {
-                            console.log(JSON.stringify(data));
-                            let result = JSON.stringify(data);
-                            if (result === "null") {
+                            if (res.status === 200) {
+                                console.log("200 OK");
+                                console.log("Bienvenue dans notre appli !");
+                                res.json().then(data => {
+                                    let result = data.text;
+                                    console.log(result);
+                                    let paths = "/accueil/" + result;
+                                    this.$router.navigate(paths);
+                                });
+                            } else if (res.status === 403) {
+                                console.log("NOT OK");
                                 console.log("Accès interdit");
                                 this.$app.dialog.alert("Identifiants erronés !");
-                            } else {
-                                console.log("Bienvenue dans notre appli !");
-                                console.log("Bienvenue !");
-                                const regex = /"/gi;
-                                result = result.replace(regex, '');
-                                console.log(result);
-                                let paths = "/accueil/" + result;
-                                console.log("pathhhhhhhhhhhhhhhhhhh: " + paths);
-                                this.$router.navigate(paths);
                             }
                         });
                     } catch (err) {
@@ -88,22 +86,19 @@
                                 },
                                 body: reqBody
                             }).then(res => {
-                                return res.json();
-                            }).then(data => {
-                                console.log(JSON.stringify(data));
-                                let result = JSON.stringify(data);
-                                if (result === "null") {
+                                if (res.status === 200) {
+                                    console.log("200 OK");
+                                    console.log("Bienvenue dans notre appli !");
+                                    res.json().then(data => {
+                                        let result = data.text;
+                                        console.log(result);
+                                        let paths = "/accueil/" + result;
+                                        this.$router.navigate(paths);
+                                    });
+                                } else if (res.status === 403) {
+                                    console.log("NOT OK");
                                     console.log("Accès interdit");
                                     this.$app.dialog.alert("Identifiants erronés !");
-                                } else {
-                                    console.log("Bienvenue dans notre appli !");
-                                    console.log("Bienvenue !");
-                                    const regex = /"/gi;
-                                    result = result.replace(regex, '');
-                                    console.log(result);
-                                    let paths = "/accueil/" + result;
-                                    console.log("path: " + paths);
-                                    this.$router.navigate(paths);
                                 }
                             });
                         } catch (err) {
@@ -151,73 +146,7 @@
                         }
                     }
                 });
-            },
-            sign_up: async function() {
-                let url = "http://localhost:3000/signup";
-                let reqBody = JSON.stringify({
-                    "mail": document.getElementById("mail").value,
-                    "password": document.getElementById("mdp").value,
-                    "nom": document.getElementById("nom").value,
-                    "prenom": document.getElementById("prenom").value,
-                    "pseudo": document.getElementById("pseudo").value,
-                    "date": document.getElementById("date").value
-                });
-                console.log("BODY: " + reqBody);
-                let token = null;
-                try {
-                    token = await fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: reqBody
-                    }).then(res => {
-                        return res.json();
-                    }).then(data => {
-                        console.log("HOME");
-                        console.log(JSON.stringify(data));
-                        let result = JSON.stringify(data);
-                        if (result === "null") {
-                            console.log("@mail déjà utilisée");
-                            this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                        } else {
-                            let paths = "/accueil/" + result;
-                            console.log("path: " + paths);
-                            console.log("Bienvenue dans notre appli !");
-                            this.$router.navigate(paths);
-                        }
-                    });
-                } catch (err) {
-                    let url = "http://10.0.2.2:3000/signup";
-                    try {
-                        token = await fetch(url, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: reqBody
-                        }).then(res => {
-                            return res.json();
-                        }).then(data => {
-                            console.log("HOME");
-                            console.log(JSON.stringify(data));
-                            let result = JSON.stringify(data);
-                            if (result === "null") {
-                                console.log("@mail déjà utilisée");
-                                this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                            } else {
-                                let paths = "/accueil/" + result;
-                                console.log("path: " + paths);
-                                console.log("Bienvenue dans notre appli !");
-                                this.$router.navigate(paths);
-                            }
-                        });
-                    } catch (err) {
-                        this.$app.dialog.alert("ERROR: ", err);
-                    }
-                }
             }
         }
-
     }
 </script>
