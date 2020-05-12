@@ -18,6 +18,7 @@
     background-image: linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, var(--light-green));
     background: linear-gradient(217deg, var(--light-blue), rgba(255, 0, 0, 0)), linear-gradient(127deg, var(--dark-green), rgba(0, 255, 0, 0)), linear-gradient(336deg, var(--light-green), rgba(0, 0, 255, 0));
     /* , linear-gradient(217deg, var(--dark-blue), rgba(255, 0, 0, 0)), linear-gradient(127deg, var(--blue-green), rgba(0, 255, 0, 0)); */
+    background-image: url("fond.jpg");
     overflow: scroll;
     overflow-x: scroll;
 }
@@ -27,28 +28,50 @@
     margin-right: 10%;
     border: white solid 0.1rem;
     border-radius: 1rem;
-    background-image: linear-gradient(to left top, #125ec2, #0e8ebd, #00a1aa, #00ce83, #12eb7f);
-    background: linear-gradient(to right top, var(--dark-blue), var(--blue-green), #00ce83);
+    /* background-image: url("fond.jpg"); */
+    background-color: rgb(128, 246, 250);
+    background-image: linear-gradient(to right top, #0fede8, #00e1eb, #00d5ec, #00c8eb, #00bbe7, #00b4e6, #00ace5, #0aa5e3, #00a1e7, #009deb, #0099ee, #1194f0);
+    /* background-image: linear-gradient(to left top, #125ec2, #0e8ebd, #00a1aa, #00ce83, #12eb7f); */
+    /* background: linear-gradient(to right top, var(--dark-blue), var(--blue-green), #00ce83); */
 }
 
 h1 h2 h3 h4 h5 h6 {
-    color: white;
+    color: black;
 }
 
 #posTitle {
-    color: white;
+    color: black;
 }
 
-.button {
-    /* background: linear-gradient(rgb(126, 176, 189), white, rgb(128, 162, 224)); */
-    /* background: linear-gradient(rgba(97, 190, 190, 0.884), rgba(122, 189, 243, 0.918), rgba(107, 132, 243, 0.74)); */
-    /* background: linear-gradient(var(--green), var(--blue)); */
-    /* background: linear-gradient(0.60turn, #12eb7f, #0e8ebd, #444444); */
-    /* background: linear-gradient(0.60turn, #444444, var(--light-green)); */
-    background: linear-gradient(0.60turn, #12eb7f, var(--blue-green));
-    /* background-color: transparent; */
-    /* background: linear-gradient(rgba(34, 189, 189, 0.884), rgba(0, 140, 255, 0.918), rgba(9, 52, 240, 0.74)); */
-}
+
+/* /* .button { */
+
+
+/* background: linear-gradient(rgb(126, 176, 189), white, rgb(128, 162, 224)); */
+
+
+/* background: linear-gradient(rgba(97, 190, 190, 0.884), rgba(122, 189, 243, 0.918), rgba(107, 132, 243, 0.74)); */
+
+
+/* background: linear-gradient(var(--green), var(--blue)); */
+
+
+/* background: linear-gradient(0.60turn, #12eb7f, #0e8ebd, #444444); */
+
+
+/* background: linear-gradient(0.60turn, #444444, var(--light-green)); */
+
+
+/* background: linear-gradient(0.60turn, #12eb7f, var(--blue-green)); */
+
+
+/* background-color: transparent; */
+
+
+/* background: linear-gradient(rgba(34, 189, 189, 0.884), rgba(0, 140, 255, 0.918), rgba(9, 52, 240, 0.74)); */
+
+
+/* } */
 
 .page-previous {
     display: none;
@@ -135,7 +158,8 @@ header {
     margin-top: 5%;
     /* margin-bottom: 35%; */
     font-weight: bold;
-    color: rgb(215, 240, 248);
+    /* color: rgb(215, 240, 248); */
+    color: black;
     text-shadow: 1px 1px 2px rgb(48, 207, 181), 0 0 25px rgb(8, 105, 231), 0 0 5px rgb(196, 196, 169);
 }
 
@@ -390,7 +414,7 @@ ul li:hover .text {
 }
 
 #btn {
-    color: white;
+    color: black;
 }
 
 .navbar {
