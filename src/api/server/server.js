@@ -177,7 +177,27 @@ MongoClient.connect(url, {
                         .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
                     positions.insertOne(position, (err, resu) => {
                         console.log("Position Ajoutée");
-                        res.json("success");
+                        console.log(decoded.data);
+                        friends.find({ $or: [{ id_1: decoded.data }, { id_2: decoded.data }] }).toArray().then(result => {
+                            console.log(JSON.stringify(result));
+                            result.forEach(friend => {
+                                let notif = {
+                                    code: 1,
+                                    id_src: decoded.data,
+                                    status: "en attente"
+                                };
+                                if (result.id_1 === decoded.data) {
+                                    notif.id_dst = ObjectID(friend.id_2).toString();
+                                } else {
+                                    notif.id_dst = ObjectID(friend.id_1).toString();
+                                }
+                                notifications.insertOne(notif).then((err, notifInserted) => {
+                                    console.log(JSON.stringify(notifInserted));
+                                })
+                            })
+
+                            res.json("success");
+                        })
                     })
                 } catch (err) {
                     console.log("erreur lors du décodage");

@@ -263,38 +263,37 @@
                         console.log("URL: " + url);
                         try {
                             fetch(url, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: ReqBody
-                            }).then(res => {
-                                return res.json();
-                            }).then(data => {
-                                if (JSON.stringify(data) === "null") {
-                                    this.$app.dialog.alert("Error while adding the position");
-                                } else {
-                                    redirection = 1;
-                                    router.navigate("/map/" + token);
-                                    console.log("redirection 1");
-                                }
-                            })
-                            var time = now.getTime(),
-                                _5_sec_from_now = new Date(time + duree * 1000);
-                            console.log("now: " + now);
-                            cordova.plugins.notification.local.schedule({
-                                text: "Votre dernière position active a été archivée",
-                                trigger: { in: duree,
-                                    unit: 'second'
-                                },
-                                led: "FF0000",
-                                sound: null,
-                            });
-                            cordova.plugins.notification.local.on("trigger", function(notification) {
-                                let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
-                                fetch(url);
-                            })
-                            let url = "http://localhost:3000/ArchivePosition/" + token;
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: ReqBody
+                                }).then(res => {
+                                    return res.json();
+                                }).then(data => {
+                                    if (JSON.stringify(data) === "null") {
+                                        this.$app.dialog.alert("Error while adding the position");
+                                    } else {
+                                        redirection = 1;
+                                        router.navigate("/map/" + token);
+                                        console.log("redirection 1");
+                                    }
+                                })
+                                // var time = now.getTime(),
+                                //     _5_sec_from_now = new Date(time + duree * 1000);
+                                // console.log("now: " + now);
+                                // cordova.plugins.notification.local.schedule({
+                                //     text: "Votre dernière position active a été archivée",
+                                //     trigger: { in: duree,
+                                //         unit: 'second'
+                                //     },
+                                //     led: "FF0000",
+                                //     sound: null,
+                                // });
+                                // cordova.plugins.notification.local.on("trigger", function(notification) {
+                                //         let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
+                                //         fetch(url);
+                                //     })
                         } catch (err) {
                             console.log("Une erreur est survenue");
                         }

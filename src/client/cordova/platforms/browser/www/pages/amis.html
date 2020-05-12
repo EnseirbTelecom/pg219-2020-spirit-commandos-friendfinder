@@ -101,6 +101,7 @@
             }
             let notifs = [];
             let cpt = 0;
+            let id = 0;
             try {
                 notifs = await fetch(url)
                     .then(res =>
@@ -125,6 +126,7 @@
                 this.$app.dialog.alert("ERROR: " + err);
             }
             if (this.$route.params.id) {
+                console.log("id: " + id);
                 id = 1;
             }
             console.log(JSON.stringify(friends));
