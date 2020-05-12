@@ -266,6 +266,7 @@ MongoClient.connect(url, {
                     let id = decoded.data;
                     let friendsListId = [];
                     friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
+                        console.log("friends: " + JSON.stringify(result));
                         result.forEach(item => {
                             if (item.id_1 === id) {
                                 friendsListId.push(ObjectID(item.id_2));
@@ -273,7 +274,9 @@ MongoClient.connect(url, {
                                 friendsListId.push(ObjectID(item.id_1));
                             }
                         });
+                        console.log("length: " + friendsListId.length); // correct
                         users.find({ _id: { $in: friendsListId } }).toArray().then(friendsListProfile => {
+                            console.log("LISTE: " + JSON.stringify(friendsListProfile));
                             res.json(friendsListProfile);
                         })
                     })
