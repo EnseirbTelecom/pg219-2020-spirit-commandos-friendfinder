@@ -47,16 +47,34 @@
                 </div>
             </div>
             {{/if}}
-            <ul>
+            <div class="d-inline">
                 {{#each friends}}
-
-                <a @click="getProfile('{{_id}}'">
-                    <li>{{mail}}</li>
-                </a>
+                {{#js_if "@index%2 === 0"}}
+                <div class="card" id="cv1">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
+                    <div class="container">
+                        <h4><b>{{pseudo}}</b></h4>
+                    </div>
+                    <a @click="getProfile('{{_id}}'" class="link-profile">
+                        profil
+                    </a>
+                </div>
+                {{else}}
+                <div class="card" id="cv2">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
+                    <div class="container">
+                        <h4><b>{{pseudo}}</b></h4>
+                    </div>
+                    <a @click="getProfile('{{_id}}'" class="link-profile">
+                        profil
+                    </a>
+                </div>
+                {{/js_if}}
                 {{/each}}
-            </ul>
+            </div>
+
             <div class="fab fab-center" id="plus">
-                <a @click="add_friend" href="#" title="Ajouter un produit">
+                <a @click="add_friend" href="#" title="Ajouter un ami">
                     <i class="icon f7-icons">plus</i>
                 </a>
             </div>
@@ -129,7 +147,7 @@
                 console.log("id: " + id);
                 id = 1;
             }
-            console.log(JSON.stringify(friends));
+            console.log("friends: " + JSON.stringify(friends));
             return {
                 friends: friends,
                 id: id,

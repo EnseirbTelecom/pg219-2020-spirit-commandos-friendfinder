@@ -43,8 +43,18 @@
                     <div class="block">
                         <div class="row" id="buttons">
                             <!-- <a class="col button button-fill btn-accept" style="margin-right: 1%;">Accepter</a> -->
-                            <a @click="delete('{{_id}}')" class="col button button-fill btn-delete" id="btn">Supprimer</a>
+                            <a @click="delete('{{_id}}')" class="col button button-fill btn-delete"
+                                id="btn">Supprimer</a>
                         </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
+                    <div class="container">
+                        <h4><b>{{nom}} {{prenom}}</b></h4>
+                        <p>{{pseudo}}</p>
+                        <p>{{mail}}</p>
                     </div>
                 </div>
                 {{/profile}}

@@ -23,10 +23,24 @@
     overflow-x: scroll;
 }
 
+#cv1 {
+    float: left;
+    width: 40%;
+    margin-right: 2.5%;
+    margin-left: 5.5%;
+}
+
+#cv2 {
+    float: left;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #log {
     margin-left: 10%;
     margin-right: 10%;
-    border: white solid 0.1rem;
+    border: rgb(42, 60, 119) solid 0.3rem;
     border-radius: 1rem;
     background-image: url("fond_formulaire.png");
     /* background-color: rgb(128, 246, 250); */
@@ -43,38 +57,24 @@ h1 h2 h3 h4 h5 h6 {
     color: black;
 }
 
-
-/* /* .button { */
-
-
-/* background: linear-gradient(rgb(126, 176, 189), white, rgb(128, 162, 224)); */
-
-
-/* background: linear-gradient(rgba(97, 190, 190, 0.884), rgba(122, 189, 243, 0.918), rgba(107, 132, 243, 0.74)); */
-
-
-/* background: linear-gradient(var(--green), var(--blue)); */
-
-
-/* background: linear-gradient(0.60turn, #12eb7f, #0e8ebd, #444444); */
-
-
-/* background: linear-gradient(0.60turn, #444444, var(--light-green)); */
-
-
-/* background: linear-gradient(0.60turn, #12eb7f, var(--blue-green)); */
-
-
-/* background-color: transparent; */
-
-
-/* background: linear-gradient(rgba(34, 189, 189, 0.884), rgba(0, 140, 255, 0.918), rgba(9, 52, 240, 0.74)); */
-
-
-/* } */
+.button {
+    /* background: linear-gradient(rgb(126, 176, 189), white, rgb(128, 162, 224)); */
+    /* background: linear-gradient(rgba(97, 190, 190, 0.884), rgba(122, 189, 243, 0.918), rgba(107, 132, 243, 0.74)); */
+    /* background: linear-gradient(var(--green), var(--blue)); */
+    /* background: linear-gradient(0.60turn, #12eb7f, #0e8ebd, #444444); */
+    /* background: linear-gradient(0.60turn, #444444, var(--light-green)); */
+    /* background: linear-gradient(0.60turn, #12eb7f, var(--blue-green)); */
+    /* background-color: transparent; */
+    /* background: linear-gradient(rgba(34, 189, 189, 0.884), rgba(0, 140, 255, 0.918), rgba(9, 52, 240, 0.74)); */
+    background-color: rgb(42, 60, 119);
+}
 
 .page-previous {
     display: none;
+}
+
+#plus {
+    margin-top: 70%;
 }
 
 input[type] {
@@ -111,7 +111,7 @@ input[type] {
     width: 30cm;
     margin-right: 10%;
     margin-left: 20%;
-    margin-top: 10%;
+    /* margin-top: 10%; */
 }
 
 
@@ -134,7 +134,7 @@ header {
 
 .label1 {
     font-weight: 1000;
-    color: black;
+    color: rgb(42, 60, 119);
 }
 
 .link:hover {
@@ -145,7 +145,7 @@ header {
 #formulaire {
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 10%;
+    /* margin-top: 10%; */
     margin-bottom: 20%;
 }
 
@@ -349,6 +349,31 @@ ul li .text {
 ul li:hover .text {
     font-weight: bold;
     /* color: #ff2c74; */
+}
+
+li:hover {
+    font-weight: 1000;
+    color: black;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    background: transparent;
+    width: 40%;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+    background: transparent;
+    padding: 2px 16px;
+}
+
+.link-profile {
+    float: right;
 }
 
 #icon-profile {

@@ -47,14 +47,43 @@
                 </div>
             </div>
             {{/if}}
-            <ul>
+            <div class="d-inline">
+                <!-- <ul> -->
                 {{#each friends}}
-
-                <a @click="getProfile('{{_id}}'">
-                    <li>{{mail}}</li>
-                </a>
+                {{#js_if "@index%2 === 0"}}
+                <div class="card" id="cv1">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
+                    <div class="container">
+                        <h4><b>{{nom}} {{prenom}}</b></h4>
+                        <p>{{pseudo}}</p>
+                        <p>{{mail}}</p>
+                    </div>
+                    <a @click="getProfile('{{_id}}'">
+                        <!-- <li>{{mail}}</li> -->
+                        profil
+                    </a>
+                </div>
+                {{else}}
+                <div class="card" id="cv1">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
+                    <div class="container">
+                        <h4><b>{{nom}} {{prenom}}</b></h4>
+                        <p>{{pseudo}}</p>
+                        <p>{{mail}}</p>
+                    </div>
+                    <a @click="getProfile('{{_id}}'">
+                        <!-- <li>{{mail}}</li> -->
+                        profil
+                    </a>
+                </div>
+                {{/js_if}}
+                <!-- <a @click="getProfile('{{_id}}'">
+        <li>{{mail}}</li>
+    </a> -->
                 {{/each}}
-            </ul>
+                <!-- </ul> -->
+            </div>
+
             <div class="fab fab-center" id="plus">
                 <a @click="add_friend" href="#" title="Ajouter un produit">
                     <i class="icon f7-icons">plus</i>
