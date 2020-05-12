@@ -61,8 +61,15 @@
 <script>
     return {
         async data() {
+            let url;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
             // On cherche les notifications de l'utilisateur
-            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
             let notifs = [];
             let cpt = 0;
             try {
@@ -70,15 +77,9 @@
                     .then(res =>
                         res.json())
             } catch (err) {
-                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                try {
-                    notifs = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("Error " + err);
-                }
+                this.$app.dialog.alert("Error " + err);
             }
+
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
             return {

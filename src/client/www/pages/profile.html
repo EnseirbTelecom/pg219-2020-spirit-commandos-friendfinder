@@ -55,7 +55,14 @@
     return {
         async data() {
             // On cherche les notifications de l'utilisateur
-            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let url;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
             let notifs = [];
             let cpt = 0;
             try {
@@ -63,33 +70,24 @@
                     .then(res =>
                         res.json())
             } catch (err) {
-                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                try {
-                    notifs = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("Error " + err);
-                }
+                this.$app.dialog.alert("Error " + err);
             }
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
-            // console.log(JSON.stringify(this.$route.params.friend));
-            url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + this.$route.params.friend;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + this.$route.params.friend;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + this.$route.params.friend;
+                console.log(window.cordova.platformId);
+            }
             let profile = [];
             try {
                 profile = await fetch(url)
                     .then(res =>
                         res.json())
             } catch (err) {
-                url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + this.$route.params.friend;
-                try {
-                    profile = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("Error: " + err);
-                }
+                this.$app.dialog.alert("Error: " + err);
             }
             return {
                 notifs: notifs,
@@ -129,7 +127,14 @@
                 this.$router.navigate("/notifs/" + this.$route.params.token);
             },
             delete: function(id) {
-                let url = "http://10.0.2.2:3000/friend/" + this.$route.params.token + "/" + id;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/friend/" + this.$route.params.token + "/" + id;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/friend/" + this.$route.params.token + "/" + id;
+                    console.log(window.cordova.platformId);
+                }
                 fetch(url, {
                     method: "DELETE"
                 }).then(res => {
