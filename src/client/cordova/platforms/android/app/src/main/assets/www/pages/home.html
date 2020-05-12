@@ -63,7 +63,6 @@
                         url = "http://10.0.2.2:3000/signin";
                         console.log(window.cordova.platformId);
                     }
-                    // let url = "http://localhost:3000/signin";
                     try {
                         console.log("URL: " + url);
                         fetch(url, {
@@ -98,7 +97,13 @@
 
                 this.$app.dialog.prompt("Veuillez saisir votre adresse mail: ", res => {
                     console.log(res);
-                    let url = "http://localhost:3000/changePassword?mail=" + res;
+                    if (window.cordova === undefined) {
+                        url = "http://localhost:3000/changePassword?mail=" + res;
+                        console.log("Browser");
+                    } else {
+                        url = "http://10.0.2.2:3000/changePassword?mail=" + res;
+                        console.log(window.cordova.platformId);
+                    }
                     console.log("URL: " + url);
                     try {
                         fetch(url).then(res => {
@@ -114,23 +119,7 @@
                             }
                         })
                     } catch (err) {
-                        try {
-                            url = "http://10.0.2.2:3000/changePassword?mail=" + res;
-                            fetch(url).then(res => {
-                                return res.json();
-                            }).then(data => {
-                                let response = JSON.stringify(data);
-                                console.log("response: " + response);
-                                if (response === "null") {
-                                    this.$app.dialog.alert("Cette adresse mail n'est pas enregistrée dans la base de données !");
-                                } else {
-                                    console.log("ok");
-                                    this.$app.dialog.alert("Un mail a été envoyé à l'adresse mail " + res + " avec vos nouveaux identifiants !");
-                                }
-                            })
-                        } catch (err) {
-                            this.$app.dialog.alert("Error", err);
-                        }
+                        this.$app.dialog.alert("Error", err);
                     }
                 });
             }

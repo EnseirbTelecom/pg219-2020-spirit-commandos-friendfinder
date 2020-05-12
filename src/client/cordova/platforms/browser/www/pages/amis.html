@@ -91,41 +91,38 @@
     return {
         async data() {
             // On cherche les notifications de l'utilisateur
-            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let url;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
             let notifs = [];
             let cpt = 0;
-            let friends = [];
-            let id = 0;
             try {
                 notifs = await fetch(url)
                     .then(res =>
                         res.json())
             } catch (err) {
-                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                try {
-                    notifs = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("Error " + err);
-                }
+                this.$app.dialog.alert("Error " + err);
             }
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
-            url = "http://10.0.2.2:3000/friends/" + this.$route.params.token;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/friends/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/friends/" + this.$route.params.token;
+                console.log(window.cordova.platformId);
+            }
             try {
                 friends = await fetch(url)
                     .then(res =>
                         res.json())
             } catch (err) {
-                url = "http://localhost:3000/friends/" + this.$route.params.token;
-                try {
-                    friends = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("ERROR: " + err);
-                }
+                this.$app.dialog.alert("ERROR: " + err);
             }
             if (this.$route.params.id) {
                 id = 1;
@@ -170,20 +167,20 @@
                 let search = document.getElementById("mail");
                 let results = document.querySelector('#results');
                 let users = [];
-                let url = "http://10.0.2.2:3000/users/" + this.$route.params.token;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/users/" + this.$route.params.token;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/users/" + this.$route.params.token;
+                    console.log(window.cordova.platformId);
+                }
                 try {
                     users = await fetch(url)
                         .then(res =>
                             res.json())
                 } catch (err) {
-                    url = "http://localhost:3000/users/" + this.$route.params.token;
-                    try {
-                        users = await fetch(url)
-                            .then(res =>
-                                res.json())
-                    } catch (err) {
-                        this.$app.dialog.alert("ERROR: " + err);
-                    }
+                    this.$app.dialog.alert("ERROR: " + err);
                 }
                 console.log("users: " + JSON.stringify(users));
 
@@ -206,14 +203,19 @@
                         }
                     })
                 }
-
                 search.addEventListener('input', searchFilter);
             },
             addf: function() {
                 document.getElementById("search").classList.add("d-none");
                 document.getElementById("plus").classList.remove("d-none");
-                // let url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
-                let url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    console.log(window.cordova.platformId);
+                }
                 console.log("URL: " + url);
                 try {
                     fetch(url, {
@@ -227,29 +229,8 @@
                             this.$app.dialog.alert("User not found");
                         }
                     });
-                    //     return res.json();
-                    // }).then(data => {
-                    //     if (JSON.stringify(data) === "null") {
-                    //         this.$app.dialog.alert("User not found");
-                    //     }
-                    // })
                 } catch (err) {
-                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
-                    try {
-                        fetch(url, {
-                            method: "POST",
-                        }).then(res => {
-                            if (res.status === 401) {
-                                this.$app.dialog.alert("Cet utilisateur est déjà dans votre liste d'amis !");
-                                // } else if (res.status === 200) {
-                                //     this.$app.dialog.alert("Invitation evoyée avec succès");
-                            } else if (res.status === 403) {
-                                this.$app.dialog.alert("User not found");
-                            }
-                        });
-                    } catch (err) {
-                        console.log("Une erreur est survenue");
-                    }
+                    console.log("Une erreur est survenue");
                 }
             },
             back: function() {
@@ -260,35 +241,37 @@
             },
             accept: function() {
                 console.log("You want to accept the invitation");
-                let url = "http://10.0.2.2:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                    console.log(window.cordova.platformId);
+                }
+                console.log("URL: " + url);
                 try {
                     fetch(url);
                     document.getElementById("card-accept").classList.add("d-none");
                 } catch (err) {
-                    url = "http://localhost:3000/acceptFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
-                    try {
-                        fetch(url);
-                        // this.$router.navigate("/amis/" + this.$route.params.token);
-                        document.getElementById("card-accept").classList.add("d-none");
-                    } catch (err) {
 
-                    }
                 }
             },
             cancel: function() {
                 console.log("You want to cancel the invitation");
-                let url = "http://10.0.2.2:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
+                    console.log(window.cordova.platformId);
+                }
                 try {
                     fetch(url);
                     document.getElementById("card-accept").classList.add("d-none");
                 } catch (err) {
-                    url = "http://localhost:3000/refuseFriend/" + this.$route.params.token + "?id=" + this.$route.params.id;
-                    try {
-                        fetch(url);
-                        document.getElementById("card-accept").classList.add("d-none");
-                    } catch (err) {
 
-                    }
                 }
             },
             getProfile: function(id) {

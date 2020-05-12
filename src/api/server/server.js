@@ -471,6 +471,16 @@ MongoClient.connect(url, {
             })
             .get("/ArchivePosition/:token", (req, res) => {
                 console.log("Position archivée!!!!!!!!");
+                try {
+                    // On décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    //  On cherche la position active dans la BDD
+                    positions.findOne({ status: "active" })
+                        .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
+                } catch (err) {
+                    console.log("Erreur lors du décodage");
+                }
             });
         app.listen(3000, () => {
             console.log("En attente de requêtes...");

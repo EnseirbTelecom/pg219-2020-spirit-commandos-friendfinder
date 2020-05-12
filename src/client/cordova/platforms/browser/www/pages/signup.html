@@ -1,85 +1,87 @@
 <template>
     <div class="page" data-name="signup">
         <header>
-            <ceter><h1 id="title">Friend Finder</h1></ceter>
+            <ceter>
+                <h1 id="title">Friend Finder</h1>
+            </ceter>
         </header>
         <form id="log" action="sign">
             <div id="formulaire">
-            <div class="form-group row">
-              <label for="mail1" class="col-sm-2 col-form-label label1">Email: </label>
-              <div class="col-sm-10">
-                <input id="mail1" class="form-control field" placeholder="you@email.com">
-              </div>
-              <div class="d-none" style="color: red;" id="error_mail1">
-                <p>Veuillez entrer une adresse mail valide (contenant les caractères @ et .)</p>
-            </div>
-            <div class="d-none" style="color: red;" id="mail1_needed">
-                <p>Ce champ est obligatoire pour votre inscription </p>
-            </div>
-            </div>
-            <div class="form-group row">
-              <label for="mdp1" class="col-sm-2 col-form-label label1">Mot de passe: </label>
-              <div class="col-sm-10">
-                <input id="mdp1" type="password" class="form-control field" placeholder="password">
-              </div>
-              <div class="d-none" style="color: red;" id="mdp_needed">
-                <p>Ce champ est obligatoire pour votre inscription </p>
-            </div>
-            </div>
-            <div class="form-group row">
-                <label for="nom" class="col-sm-2 col-form-label label1">Nom: </label>
-              <div class="col-sm-10">
-                <input id="nom" class="form-control field" placeholder="First name">
-            </div>
-            <div class="d-none" style="color: red;" id="nom_needed">
-                <p>Ce champ est obligatoire pour votre inscription </p>
-            </div>
-            </div>
-            <div class="form-group row">
-                <label for="prenom" class="col-sm-2 col-form-label label1">Prénom: </label>
-              <div class="col-sm-10">
-                <input id="prenom"  class="form-control field" placeholder="Last name">
-            </div>
-            <div class="d-none" style="color: red;" id="prenom_needed">
-                <p>Ce champ est obligatoire pour votre inscription </p>
-            </div>
-            </div>
-            <div class="form-group row">
-                <label for="pseudo" class="col-sm-2 col-form-label label1">Pseudo: </label>
-              <div class="col-sm-10">
-                <input id="pseudo"  class="form-control field" placeholder="Pseudo">
-            </div>
-            <div class="d-none" style="color: red;" id="pseudo_needed">
-                <p>Ce champ est obligatoire pour votre inscription </p>
-            </div>
-            </div>
-            <div class="form-group row">
-                <label for="date" class="col-sm-2 col-form-label label1">Date de naissance: </label>
-                <div class="col-sm-10">
-                    <input type="date" class="form-control" id="date" value="" name="date">
+                <div class="form-group row">
+                    <label for="mail1" class="col-sm-2 col-form-label label1">Email: </label>
+                    <div class="col-sm-10">
+                        <input id="mail1" class="form-control field" placeholder="you@email.com">
+                    </div>
+                    <div class="d-none" style="color: red;" id="error_mail1">
+                        <p>Veuillez entrer une adresse mail valide (contenant les caractères @ et .)</p>
+                    </div>
+                    <div class="d-none" style="color: red;" id="mail1_needed">
+                        <p>Ce champ est obligatoire pour votre inscription </p>
+                    </div>
                 </div>
-                <div class="d-none" style="color: red;" id="date_needed">
-                    <p>Ce champ est obligatoire pour votre inscription </p>
+                <div class="form-group row">
+                    <label for="mdp1" class="col-sm-2 col-form-label label1">Mot de passe: </label>
+                    <div class="col-sm-10">
+                        <input id="mdp1" type="password" class="form-control field" placeholder="password">
+                    </div>
+                    <div class="d-none" style="color: red;" id="mdp_needed">
+                        <p>Ce champ est obligatoire pour votre inscription </p>
+                    </div>
                 </div>
-            </div>
-            <div class="add">
-              <a  @click="sign_up" href="#" class="button button-round button-fill" >Sign up</a>
-          </div>
-          <div class="list">
-            <div style="float: right;">
-                <a @click="signin" class="d-block link">S'authentifier</a>
-            </div>
-            <!-- <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login
+                <div class="form-group row">
+                    <label for="nom" class="col-sm-2 col-form-label label1">Nom: </label>
+                    <div class="col-sm-10">
+                        <input id="nom" class="form-control field" placeholder="First name">
+                    </div>
+                    <div class="d-none" style="color: red;" id="nom_needed">
+                        <p>Ce champ est obligatoire pour votre inscription </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="prenom" class="col-sm-2 col-form-label label1">Prénom: </label>
+                    <div class="col-sm-10">
+                        <input id="prenom" class="form-control field" placeholder="Last name">
+                    </div>
+                    <div class="d-none" style="color: red;" id="prenom_needed">
+                        <p>Ce champ est obligatoire pour votre inscription </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="pseudo" class="col-sm-2 col-form-label label1">Pseudo: </label>
+                    <div class="col-sm-10">
+                        <input id="pseudo" class="form-control field" placeholder="Pseudo">
+                    </div>
+                    <div class="d-none" style="color: red;" id="pseudo_needed">
+                        <p>Ce champ est obligatoire pour votre inscription </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="date" class="col-sm-2 col-form-label label1">Date de naissance: </label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="date" value="" name="date">
+                    </div>
+                    <div class="d-none" style="color: red;" id="date_needed">
+                        <p>Ce champ est obligatoire pour votre inscription </p>
+                    </div>
+                </div>
+                <div class="add">
+                    <a @click="sign_up" href="#" class="button button-round button-fill">Sign up</a>
+                </div>
+                <div class="list">
+                    <div style="float: right;">
+                        <a @click="signin" class="d-block link">S'authentifier</a>
+                    </div>
+                    <!-- <div class="block-footer">Some text about login information.<br>Click "Sign In" to close Login
                 Screen</div> -->
-        </div>
+                </div>
+            </div>
     </div>
-</div>
-        </form>
-        <div class="fab " id="back">
-            <a  @click="back" href="#" title="Ajouter un produit">
-                <i class="icon f7-icons">arrow_left</i>
-            </a>
-        </div>
+    </form>
+    <div class="fab " id="back">
+        <a @click="back" href="#" title="Ajouter un produit">
+            <i class="icon f7-icons">arrow_left</i>
+        </a>
+    </div>
     </div>
 </template>
 <script>
@@ -114,7 +116,14 @@
                     document.getElementById("date_needed").classList.remove("d-none");
                     document.getElementById("date").style.borderColor = "red";
                 } else {
-                    let url = "http://localhost:3000/signup";
+                    let url;
+                    if (window.cordova === undefined) {
+                        url = "http://localhost:3000/signup";
+                        console.log("Browser");
+                    } else {
+                        url = "http://10.0.2.2:3000/signup";
+                        console.log(window.cordova.platformId);
+                    }
                     let reqBody = JSON.stringify({
                         "mail": document.getElementById("mail1").value,
                         "password": document.getElementById("mdp1").value,
@@ -146,31 +155,7 @@
                             }
                         });
                     } catch (err) {
-                        url = "http://10.0.2.2:3000/signup";
-                        try {
-                            fetch(url, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json"
-                                },
-                                body: reqBody
-                            }).then(res => {
-                                if (res.status === 200) {
-                                    console.log("200 OK");
-                                    console.log("Bienvenue dans notre appli !");
-                                    res.json().then(data => {
-                                        let result = data.text;
-                                        let paths = "/accueil/" + result;
-                                        this.$router.navigate(paths);
-                                    });
-                                } else if (res.status === 403) {
-                                    console.log("@mail déjà utilisée");
-                                    this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
-                                }
-                            });
-                        } catch (err) {
-                            this.$app.dialog.alert("ERROR: ", err);
-                        }
+                        this.$app.dialog.alert("ERROR: ", err);
                     }
                 }
             },

@@ -76,7 +76,14 @@
     return {
         async data() {
             // On cherche les notifications de l'utilisateur
-            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let url;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
             let notifs = [];
             let usr;
             let user_src = [];
@@ -86,35 +93,26 @@
                     .then(res =>
                         res.json())
             } catch (err) {
-                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                try {
-                    notifs = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("Error " + err);
-                }
+                this.$app.dialog.alert("Error " + err);
             }
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
             for (let index = 0; index < cpt; index++) {
-                try {
+                if (window.cordova === undefined) {
                     url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
+                    console.log(window.cordova.platformId);
+                }
+                try {
                     usr = await fetch(url)
                         .then(res => res.json())
                 } catch (err) {
-                    url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
-                    try {
-                        usr = await fetch(url)
-                            .then(res => res.json())
-                    } catch (err) {
-                        this.$app.dialog.alert("Error " + err);
-                    }
+                    this.$app.dialog.alert("Error " + err);
                 } finally {
                     console.log(JSON.stringify(usr));
                     notifs[index].id_src = usr.mail;
-                    // usr.code = element.code;
-                    // user_src.push(usr);
                 }
             };
 
@@ -158,15 +156,19 @@
             },
             vu: function(id) {
                 console.log(id);
-                let url = "http://10.0.2.2:3000/SetNotifAsSeen/" + this.$route.params.token + "?id=" + id;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/SetNotifAsSeen/" + this.$route.params.token + "?id=" + id;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/SetNotifAsSeen/" + this.$route.params.token + "?id=" + id;
+                    console.log(window.cordova.platformId);
+                }
                 console.log("URL: " + url)
                 try {
                     fetch(url);
-                    // .then(res => res.json());
                     this.$router.navigate("/amis/" + this.$route.params.token + "/" + id);
-
                 } catch (err) {
-                    url = "http://localhost:3000/SetNotifAsSeen/" + this.$route.params.token + "?id=" + id;
                     console.log("Une erreur est survenue");
                 }
             },

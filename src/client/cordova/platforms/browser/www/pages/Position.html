@@ -149,7 +149,14 @@
     return {
         async data() {
             // On cherche les notifications de l'utilisateur
-            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let url;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
             let notifs = [];
             let cpt = 0;
             try {
@@ -157,14 +164,7 @@
                     .then(res =>
                         res.json())
             } catch (err) {
-                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                try {
-                    notifs = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    this.$app.dialog.alert("Error " + err);
-                }
+                this.$app.dialog.alert("Error " + err);
             }
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
@@ -252,9 +252,14 @@
                             duree: duree
 
                         });
-                        let url = "http://localhost:3000/position/" + token;
-                        // url = "http://10.0.2.2:3000/position/" + token;
-
+                        let url;
+                        if (window.cordova === undefined) {
+                            url = "http://localhost:3000/position/" + token;
+                            console.log("Browser");
+                        } else {
+                            url = "http://10.0.2.2:3000/position/" + token;
+                            console.log(window.cordova.platformId);
+                        }
                         console.log("URL: " + url);
                         try {
                             fetch(url, {
@@ -274,29 +279,26 @@
                                     console.log("redirection 1");
                                 }
                             })
+                            var time = now.getTime(),
+                                _5_sec_from_now = new Date(time + duree * 1000);
+                            console.log("now: " + now);
+                            cordova.plugins.notification.local.schedule({
+                                text: "Votre dernière position active a été archivée",
+                                trigger: { in: duree,
+                                    unit: 'second'
+                                },
+                                led: "FF0000",
+                                sound: null,
+                            });
+                            cordova.plugins.notification.local.on("trigger", function(notification) {
+                                let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
+                                fetch(url);
+                            })
+                            let url = "http://localhost:3000/ArchivePosition/" + token;
                         } catch (err) {
-                            url = "http://10.0.2.2:3000/position/" + token;
-                            try {
-                                fetch(url, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: ReqBody
-                                }).then(res => {
-                                    return res.json();
-                                }).then(data => {
-                                    if (JSON.stringify(data) === "null") {
-                                        this.$app.dialog.alert("Error while adding the position");
-                                    } else {
-                                        redirection = 1;
-                                        router.navigate("/map/" + token);
-                                    }
-                                })
-                            } catch (err) {
-                                console.log("Une erreur est survenue");
-                            }
+                            console.log("Une erreur est survenue");
                         }
+
                         console.log(ReqBody);
                         if (redirection === 1) {
                             console.log("redirection en cours");
@@ -353,18 +355,20 @@
                 this.$router.navigate("/notifs/" + this.$route.params.token);
             },
             sendNotif: function() {
+                let token = this.$route.params.token;
                 var now = new Date().getTime(),
                     _5_sec_from_now = new Date(now + 10 * 1000);
-
+                console.log("now: " + now);
                 cordova.plugins.notification.local.schedule({
                     text: "Delayed Notification",
-                    at: _5_sec_from_now,
+                    trigger: {
+                        at: _5_sec_from_now
+                    },
                     led: "FF0000",
                     sound: null,
                 });
                 cordova.plugins.notification.local.on("trigger", function(notification) {
-                    document.getElementById("geolocalisation").innerText = "TRIGGER";
-                    let url = "http://10.0.2.2:3000/ArchivePosition/" + this.$route.params.token;
+                    let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
                     fetch(url);
                 })
 

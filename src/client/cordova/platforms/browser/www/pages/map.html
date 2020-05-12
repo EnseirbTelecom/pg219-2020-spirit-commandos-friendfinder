@@ -39,64 +39,63 @@
                 </div>
             </div>
  </template>
- <script>
-        return {
-            async data() {
-                // On cherche les notifications de l'utilisateur
-                let url = "http://localhost:3000/notifs/" + this.$route.params.token;
-                let notifs = [];
-                let cpt = 0;
-                try {
-                    notifs = await fetch(url)
-                        .then(res =>
-                            res.json())
-                } catch (err) {
-                    let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                    try {
-                        notifs = await fetch(url)
-                            .then(res =>
-                                res.json())
-                    } catch (err) {
-                        this.$app.dialog.alert("Error " + err);
-                    }
-                }
-                console.log("notifs: " + JSON.stringify(notifs));
-                cpt = notifs.length;
-                return {
-                    notifs: notifs,
-                    cpt: cpt
+<script>
+    return {
+        async data() {
+            // On cherche les notifications de l'utilisateur
+            let url;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                this.$app.dialog.alert("Error " + err);
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
+            return {
+                notifs: notifs,
+                cpt: cpt
+            }
+        },
+        methods: {
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                console.log("menu: " + document.getElementById("menu").innerHTML);
+                if (document.getElementById("menu").classList.contains("d-none")) {
+                    document.getElementById("menu").classList.remove("d-none");
+                    document.getElementById("contain").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menu").classList.add("d-none");
+                    document.getElementById("contain").classList.remove("w3-container");
+                    document.getElementById("contain").style.marginLeft = "0px";
                 }
             },
-            methods: {
-                params: function() {
-                    console.log("Vous voulez modifier votre mot de passe");
-                    console.log(this.$route.params.token);
-                    this.$router.navigate("/parameters/" + this.$route.params.token);
-                },
-                getPos: function() {
-                    this.$router.navigate("/AddPosition/" + this.$route.params.token);
-                },
-                show_menu: function() {
-                    console.log("menu: " + document.getElementById("menu").innerHTML);
-                    if (document.getElementById("menu").classList.contains("d-none")) {
-                        document.getElementById("menu").classList.remove("d-none");
-                        document.getElementById("contain").style.marginLeft = "70px";
-                    } else {
-                        document.getElementById("menu").classList.add("d-none");
-                        document.getElementById("contain").classList.remove("w3-container");
-                        document.getElementById("contain").style.marginLeft = "0px";
-                    }
-                },
-                amis: function() {
-                    this.$router.navigate("/amis/" + this.$route.params.token);
-                },
-                deconnecter: function() {
-                    this.$router.navigate("/");
-                },
-                bell: function() {
-                    this.$router.navigate("/notifs/" + this.$route.params.token);
-                }        
+            amis: function() {
+                this.$router.navigate("/amis/" + this.$route.params.token);
+            },
+            deconnecter: function() {
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
             }
         }
+    }
 </script>
-    
