@@ -172,10 +172,19 @@
                         lat: parseFloat(latitude),
                         lng: parseFloat(longitude)
                     },
+
                     zoom: 12,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 });
-                // 
+                var marker = map.addMarker({
+                    position: {
+                        lat: 37.422858,
+                        lng: -122.085065
+                    },
+                    title: "Hello Cordova Google Maps for iOS and Android",
+                    snippet: "This plugin is awesome!"
+                })
+
             }
         }
     }

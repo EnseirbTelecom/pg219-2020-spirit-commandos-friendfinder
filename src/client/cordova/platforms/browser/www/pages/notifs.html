@@ -60,7 +60,7 @@
                         {{else}}
                         <a @click="vu('{{_id}}')">
                             <span class="icon"><i class="fas fa-user"></i></span>
-                            <span class="text">Vous avez une nouvelle demande d'amitié de {{id_src}}</span>
+                            <span class="text">Vous avez une nouvelle demande d'amitié de "{{id_src}}"</span>
                         </a>
                         {{/if}}
                     </li>
@@ -97,13 +97,13 @@
             }
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
-            notifs.forEach(element => {
+            for (let index = 0; index < cpt; index++) {
                 try {
-                    url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + element.id_src;
+                    url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
                     usr = await fetch(url)
                         .then(res => res.json())
                 } catch (err) {
-                    url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + element.id_src;
+                    url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
                     try {
                         usr = await fetch(url)
                             .then(res => res.json())
@@ -111,13 +111,15 @@
                         this.$app.dialog.alert("Error " + err);
                     }
                 } finally {
-                    usr.code = element.code;
-                    user_src.push(usr);
+                    console.log(JSON.stringify(usr));
+                    notifs[index].id_src = usr.mail;
+                    // usr.code = element.code;
+                    // user_src.push(usr);
                 }
-            });
+            };
 
             return {
-                notifs: user_src,
+                notifs: notifs,
                 cpt: cpt
             }
         },
@@ -146,9 +148,10 @@
             },
             deconnecter: function() {
                 console.log("Deconnexion!!!!");
-                this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                    this.$router.navigate("/off/");
-                })
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     this.$router.navigate("/off/");
+                // })
+                this.$router.navigate("/");
             },
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);

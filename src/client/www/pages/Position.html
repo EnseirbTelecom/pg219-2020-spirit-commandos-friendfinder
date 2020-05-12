@@ -268,8 +268,7 @@
                             }).then(data => {
                                 if (JSON.stringify(data) === "null") {
                                     this.$app.dialog.alert("Error while adding the position");
-                                }
-                                else{
+                                } else {
                                     redirection = 1;
                                     router.navigate("/map/" + token);
                                     console.log("redirection 1");
@@ -289,8 +288,7 @@
                                 }).then(data => {
                                     if (JSON.stringify(data) === "null") {
                                         this.$app.dialog.alert("Error while adding the position");
-                                    }
-                                    else{
+                                    } else {
                                         redirection = 1;
                                         router.navigate("/map/" + token);
                                     }
@@ -300,11 +298,11 @@
                             }
                         }
                         console.log(ReqBody);
-                        if(redirection===1){
-                           console.log("redirection en cours");  
-                           
+                        if (redirection === 1) {
+                            console.log("redirection en cours");
+
                         }
-                    
+
 
                         // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
                         //     'Longitude: ' + position.coords.longitude + '<br />' +
@@ -353,6 +351,31 @@
             },
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
+            },
+            sendNotif: function() {
+                // var now = new Date().getTime(),
+                //     _5_sec_from_now = new Date(now + 10 * 1000);
+
+                // cordova.plugins.notification.local.schedule({
+                //     text: "Delayed Notification",
+                //     at: _5_sec_from_now,
+                //     led: "FF0000",
+                //     sound: null,
+                // });
+                // cordova.plugins.notification.local.on("trigger", function(notification) {
+                //     document.getElementById("geolocalisation").innerText = "TRIGGER";
+                //     let url = "http://10.0.2.2:3000/ArchivePosition/" + this.$route.params.token;
+                //     fetch(url);
+                // })
+
+                // let promise = Notification.requestPermission();
+
+                Notification.requestPermission().then(function(result) {
+                    console.log(result);
+                });
+
+
+
             }
         }
     }

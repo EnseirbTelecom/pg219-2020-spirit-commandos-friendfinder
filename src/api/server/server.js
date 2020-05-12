@@ -451,6 +451,9 @@ MongoClient.connect(url, {
                 } catch (err) {
                     console.log("Erreur lors du décodage");
                 }
+            })
+            .get("/ArchivePosition/:token", (req, res) => {
+                console.log("Position archivée!!!!!!!!");
             });
         app.listen(3000, () => {
             console.log("En attente de requêtes...");

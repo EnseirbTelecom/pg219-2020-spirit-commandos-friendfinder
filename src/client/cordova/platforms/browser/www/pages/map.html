@@ -1,0 +1,102 @@
+<template>
+        <div class="page" data-name="accueil">
+            <div class="scrollbar-warm-flame d-none" id="menu">
+                <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
+                    <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                            title="Ajouter une nouvelle position"></i></a>
+                    <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                            title="modifier les paramètres de votre compte"></i></a>
+                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                    <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                            title="liste des amis"></i></a>
+                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                            title="historique des positions"></i></a>
+                    <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
+                            title="Déconnexion"></i></a>
+    
+                </div>
+            </div>
+    
+            <div>
+                <div id="contain">
+                    <nav class="navbar navbar-dark">
+                        <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                                style="color: white;">menu</i></a>
+                        <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                            {{#if cpt}}
+                            <span id="span_notifs"></span>
+                            {{/if}}
+                        </a>
+                        <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                    </nav>
+                    <center>
+                        <h1 id="title">Friend Finder</h1>
+                    </center>
+                    <center>
+                        <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
+                    </center>
+                </div>
+            </div>
+ </template>
+ <script>
+        return {
+            async data() {
+                // On cherche les notifications de l'utilisateur
+                let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                let notifs = [];
+                let cpt = 0;
+                try {
+                    notifs = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
+                    try {
+                        notifs = await fetch(url)
+                            .then(res =>
+                                res.json())
+                    } catch (err) {
+                        this.$app.dialog.alert("Error " + err);
+                    }
+                }
+                console.log("notifs: " + JSON.stringify(notifs));
+                cpt = notifs.length;
+                return {
+                    notifs: notifs,
+                    cpt: cpt
+                }
+            },
+            methods: {
+                params: function() {
+                    console.log("Vous voulez modifier votre mot de passe");
+                    console.log(this.$route.params.token);
+                    this.$router.navigate("/parameters/" + this.$route.params.token);
+                },
+                getPos: function() {
+                    this.$router.navigate("/AddPosition/" + this.$route.params.token);
+                },
+                show_menu: function() {
+                    console.log("menu: " + document.getElementById("menu").innerHTML);
+                    if (document.getElementById("menu").classList.contains("d-none")) {
+                        document.getElementById("menu").classList.remove("d-none");
+                        document.getElementById("contain").style.marginLeft = "70px";
+                    } else {
+                        document.getElementById("menu").classList.add("d-none");
+                        document.getElementById("contain").classList.remove("w3-container");
+                        document.getElementById("contain").style.marginLeft = "0px";
+                    }
+                },
+                amis: function() {
+                    this.$router.navigate("/amis/" + this.$route.params.token);
+                },
+                deconnecter: function() {
+                    this.$router.navigate("/");
+                },
+                bell: function() {
+                    this.$router.navigate("/notifs/" + this.$route.params.token);
+                }        
+            }
+        }
+</script>
+    
