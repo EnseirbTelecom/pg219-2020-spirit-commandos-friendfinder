@@ -2,6 +2,11 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 let nodemailer = require('nodemailer');
+//test timer
+function myFunc() {
+    console.log("Debut code test timer après 10secondes");
+}
+setTimeout(myFunc, 10000, 'funky');
 
 let transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -134,6 +139,11 @@ MongoClient.connect(url, {
                         });
                     }
                 })
+                //test timer
+                function myFunc() {
+                console.log("Apres signin test timer après 1minute");
+                }
+                setTimeout(myFunc, 60000, 'funky');
             })
             .get("/users/:token", (req, res) => {
                 try {
