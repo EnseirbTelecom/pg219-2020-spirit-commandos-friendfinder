@@ -444,7 +444,24 @@ li:hover {
 
 .navbar {
     /* background: linear-gradient(white, black); */
-    background: black;
+    /* background: black; */
+    background: rgb(42, 60, 119);
+}
+
+.w3-sidebar {
+    background: rgb(42, 60, 119);
+}
+
+.scrollbar-warm-flame {
+    background: rgb(42, 60, 119);
+}
+
+.w3-bar-block {
+    background: rgb(42, 60, 119);
+}
+
+.fa {
+    color: white;
 }
 
 

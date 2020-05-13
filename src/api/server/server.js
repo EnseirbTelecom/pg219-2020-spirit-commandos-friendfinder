@@ -2,11 +2,6 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 let nodemailer = require('nodemailer');
-//test timer
-function myFunc() {
-    console.log("Debut code test timer après 10secondes");
-}
-setTimeout(myFunc, 10000, 'funky');
 
 let transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -139,11 +134,6 @@ MongoClient.connect(url, {
                         });
                     }
                 })
-                //test timer
-                function myFunc() {
-                console.log("Apres signin test timer après 1minute");
-                }
-                setTimeout(myFunc, 60000, 'funky');
             })
             .get("/users/:token", (req, res) => {
                 try {
@@ -215,6 +205,7 @@ MongoClient.connect(url, {
             })
 
         .post("/friends/:token", (req, res) => {
+                console.log("Vous voulez AJOUTER UN AMI");
                 // Ajouter un nouvel ami
                 try {
                     // on décode le token fourni
@@ -226,17 +217,22 @@ MongoClient.connect(url, {
                         if (user !== null) {
                             let friend = {
                                 id_1: id_1,
-                                id_2: ObjectID(user._id).toString(),
+                                id_2: ObjectID(user._id).toString()
                             };
-                            // On vérifie que les deux utilisateurs ne sont pas déjà amis
-                            friends.findOne({ id_1: id_1 }, (error, search) => {
+                            let friend2 = {
+                                    id_1: ObjectID(user._id).toString(),
+                                    id_2: id_1
+                                }
+                                // On vérifie que les deux utilisateurs ne sont pas déjà amis
+                                // friends.findOne({ $or: [{ id_1: id_1 }, { id_2: id_1 }] }, (error, search) => {
+                            friends.findOne({ $or: [friend, friend2] }, (error, search) => {
                                 console.log("search: " + JSON.stringify(search));
                                 if (search !== null) {
-                                    if (search.id_2 === friend.id_2) {
-                                        console.log("Vous êtes déjà amis");
-                                        res.statusCode = 401;
-                                        res.json();
-                                    }
+                                    // if ((search.id_2 === friend.id_2) || (search.id_1 === friend.id_2)) {
+                                    console.log("Vous êtes déjà amis");
+                                    res.statusCode = 401;
+                                    res.json();
+                                    // }
                                 } else {
                                     friend.status = "pending";
                                     console.log("FRIEND: " + JSON.stringify(friend));
@@ -285,6 +281,14 @@ MongoClient.connect(url, {
                             }
                         });
                         console.log("length: " + friendsListId.length); // correct
+                        // let friendsListProfile = [];
+                        // for (let index = 0; index > friendsListId.length; index++) {
+                        //     users.findOne({ _id: friendsListId[index] }).then(friend => {
+                        //         friendsListProfile.push(friend);
+                        //     })
+                        // }
+                        // console.log(JSON.stringify(friendsListProfile));
+                        // res.json(friendsListProfile);
                         users.find({ _id: { $in: friendsListId } }).toArray().then(friendsListProfile => {
                             console.log("LISTE: " + JSON.stringify(friendsListProfile));
                             res.json(friendsListProfile);
