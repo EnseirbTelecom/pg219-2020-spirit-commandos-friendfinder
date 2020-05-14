@@ -207,9 +207,10 @@ MongoClient.connect(url, {
                                     console.log(JSON.stringify(notifInserted));
                                 })
                             })
+                            setTimeout(() => { archivePosition(position,positions) }, position.duree*1000);
                             res.json("success");
                         })
-                    }).then(setTimeout(myFuncArch, position.duree*1000, 'funky'))
+                    })
                 } catch (err) {
                     console.log("erreur lors du décodage");
                 }
