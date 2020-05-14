@@ -38,6 +38,9 @@
                     </center>
                 </div>
             </div>
+            <div class="add">
+                    <a @click="starttick" href="#" class="button button-round button-fill">StartTick</a>
+            </div>
  </template>
  <script>
         return {
@@ -95,7 +98,14 @@
                 },
                 bell: function() {
                     this.$router.navigate("/notifs/" + this.$route.params.token);
-                }        
+                },
+                starttick : function(){
+                    var timer = new cordova.nativeTimer();
+                    timer.onTick = function(tick) {
+                        // invoked on tick
+                        console.log("tick");
+                    };
+                }       
             }
         }
 </script>

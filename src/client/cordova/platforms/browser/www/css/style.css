@@ -25,13 +25,14 @@
 
 #cv1 {
     float: left;
-    width: 30%;
+    width: 40%;
     margin-right: 2.5%;
+    margin-left: 5.5%;
 }
 
 #cv2 {
     float: left;
-    width: 30%;
+    width: 40%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -70,6 +71,10 @@ h1 h2 h3 h4 h5 h6 {
 
 .page-previous {
     display: none;
+}
+
+#plus {
+    margin-top: 70%;
 }
 
 input[type] {
@@ -354,6 +359,7 @@ li:hover {
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
+    background: transparent;
     width: 40%;
 }
 
@@ -362,7 +368,12 @@ li:hover {
 }
 
 .container {
+    background: transparent;
     padding: 2px 16px;
+}
+
+.link-profile {
+    float: right;
 }
 
 #icon-profile {

@@ -102,5 +102,13 @@
     },
     "is_top_level": false,
     "variables": {}
+  },
+  "cordova-plugin-timer": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-timer"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

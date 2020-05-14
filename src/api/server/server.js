@@ -4,10 +4,12 @@ const jwt = require("jsonwebtoken");
 let nodemailer = require('nodemailer');
 //test timer
 function myFunc() {
-    console.log("Debut code test timer après 10secondes");
+    console.log("10 secondes après ouverture serveur");
 }
 setTimeout(myFunc, 10000, 'funky');
-
+function myFuncArch(){
+    console.log("test timer pour archiver");
+}
 let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -141,9 +143,9 @@ MongoClient.connect(url, {
                 })
                 //test timer
                 function myFunc() {
-                console.log("Apres signin test timer après 1minute");
+                console.log("Apres signin test timer après 10 secondes");
                 }
-                setTimeout(myFunc, 60000, 'funky');
+                setTimeout(myFunc, 10000, 'funky');
             })
             .get("/users/:token", (req, res) => {
                 try {
@@ -205,10 +207,9 @@ MongoClient.connect(url, {
                                     console.log(JSON.stringify(notifInserted));
                                 })
                             })
-
                             res.json("success");
                         })
-                    })
+                    }).then(setTimeout(myFuncArch, position.duree*1000, 'funky'))
                 } catch (err) {
                     console.log("erreur lors du décodage");
                 }

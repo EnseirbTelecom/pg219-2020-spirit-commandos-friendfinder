@@ -322,6 +322,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
         "cordova.plugins.notification.local.core",
         "plugin.notification.local.core"
       ]
+    },
+    {
+      "id": "cordova-plugin-timer.NativeTimer",
+      "file": "plugins/cordova-plugin-timer/www/nativetimer.js",
+      "pluginId": "cordova-plugin-timer",
+      "clobbers": [
+        "window.nativeTimer"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -337,6 +345,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-googlemaps": "2.7.1",
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-badge": "0.8.8",
-    "cordova-plugin-local-notification": "0.9.0-beta.2"
+    "cordova-plugin-local-notification": "0.9.0-beta.2",
+    "cordova-plugin-timer": "1.0.1"
   };
 });

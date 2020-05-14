@@ -74,6 +74,9 @@
     <feature name="LocalNotification">
         <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
+    <feature name="NativeTimer">
+        <param name="android-package" value="com.applurk.nativetimer.NativeTimerPlugin" />
+    </feature>
     <name>Friend Finder</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

@@ -33,6 +33,9 @@
     },
     "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "io.framework7.friendFinder"
+    },
+    "cordova-plugin-timer": {
+      "PACKAGE_NAME": "io.framework7.friendFinder"
     }
   },
   "dependent_plugins": {

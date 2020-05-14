@@ -1,0 +1,87 @@
+{
+  "_from": "cordova-plugin-timer",
+  "_id": "cordova-plugin-timer@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha512-+9b/utqct1WBtqW59OMlPT7NcQY+Sy5VRRSvKt8T5dRYKNFh5Bx16JbnjMGh0mWmq/+minG0r/PVDh5YKu4n7A==",
+  "_location": "/cordova-plugin-timer",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-timer",
+    "name": "cordova-plugin-timer",
+    "escapedName": "cordova-plugin-timer",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-timer/-/cordova-plugin-timer-1.0.1.tgz",
+  "_shasum": "c47a531036452e56ca71092f83eb57073f1a3b30",
+  "_spec": "cordova-plugin-timer",
+  "_where": "/Users/sarrajaballah/Desktop/applications_mobiles/projet/pg219-2020-spirit-commandos-friendfinder/src/client/cordova",
+  "author": {
+    "name": "kitolog"
+  },
+  "bugs": {
+    "url": "https://github.com/kitolog/cordova-plugin-timer"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-timer",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Cordova Native Timer Plugin",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "2.0.0": {
+        "cordova-android": ">=3.6.0"
+      },
+      "4.0.0": {
+        "cordova-android": ">=3.6.0"
+      },
+      "6.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
+  "homepage": "https://github.com/kitolog/cordova-plugin-timer#readme",
+  "keywords": [
+    "cordova",
+    "timer",
+    "interval",
+    "native",
+    "native timer",
+    "ios timer",
+    "android timer",
+    "cordova timer",
+    "android interval",
+    "ios interval",
+    "cordova interval",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "Apache-2.0",
+  "name": "cordova-plugin-timer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kitolog/cordova-plugin-timer.git"
+  },
+  "scripts": {
+    "jshint": "node node_modules/jshint/bin/jshint www && node node_modules/jshint/bin/jshint src && node node_modules/jshint/bin/jshint tests",
+    "test": "npm run jshint"
+  },
+  "types": "./types/index.d.ts",
+  "version": "1.0.1"
+}
