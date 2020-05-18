@@ -22,6 +22,9 @@
     overflow: scroll;
     overflow-x: scroll;
 }
+#map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+    height:400px;
+}
 
 #cv1 {
     float: left;

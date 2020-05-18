@@ -31,16 +31,16 @@
                         <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
                     </nav>
                     <center>
-                        <h1 id="title">Friend Finder</h1>
+                        <img src="./logo1.png" width="250px" height="100px" style="margin-left: 15%; margin-top: 15%;">
                     </center>
-                    <center>
-                        <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
-                    </center>
+                    
                 </div>
             </div>
+            <div id="map"></div>
             <div class="add">
-                    <a @click="starttick" href="#" class="button button-round button-fill">StartTick</a>
+                <a @click="getMap" href="#" class="button button-round button-fill">Afficher la carte</a>
             </div>
+
  </template>
  <script>
         return {
@@ -99,14 +99,25 @@
                 bell: function() {
                     this.$router.navigate("/notifs/" + this.$route.params.token);
                 },
-                starttick : function(){
-                    var timer = new cordova.nativeTimer();
-                    timer.onTick = function(tick) {
-                        // invoked on tick
-                        console.log("tick");
-                    };
-                }       
+                getMap: function(){
+                    // On initialise la latitude et la longitude de Paris (centre de la carte)
+                    var lat = 48.852969;
+                    var lon = 2.349903;
+                    var macarte = null;
+                    // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+                     macarte = L.map('map').setView([lat, lon], 11);
+                    // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+                    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    // Il est toujours bien de laisser le lien vers la source des données
+                    attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                    minZoom: 1,
+                    maxZoom: 20
+                    }).addTo(macarte);
+                    var marker = L.marker([lat, lon]).addTo(macarte);
+                    marker.bindPopup("position1");
+                 }
+                     
+                }     
             }
-        }
 </script>
     
