@@ -1,10 +1,22 @@
 <template>
     <div class="page" data-name="historique">
-        <ul>
-            {{#each positions}}
-            <li><a>{{lat}}:{{long}} => {{date_activation}}</a></li>
-            {{/each}}
-        </ul>
+        <!-- <ul> -->
+        {{#each positions}}
+        <!-- <li> -->
+        <div>
+            <h3>Position {{@index}}: </h3>
+            <div style="margin-left: 5%;">
+                <h6>{{address}}</h6>
+                <h6>{{context}}</h6>
+                <h6>partagée le {{date_activation}} à {{heure_activation}}</h6>
+                <h6>message: {{msg}}</h6>
+            </div>
+            <!-- <h6></h6> -->
+        </div>
+
+        <!-- </li> -->
+        {{/each}}
+        <!-- </ul> -->
         <a @click="getMap">show map</a>
         <div id="map"></div>
 
@@ -50,6 +62,16 @@
                     res.json())
             } catch (err) {
                 this.$app.dialog.alert("ERROR: " + err);
+            }
+            for (let i = 0; i < positions.length; i++) {
+                let address = await fetch('https://api-adresse.data.gouv.fr/reverse/?lon=' + positions[i].long + '&lat=' + positions[i].lat).then(res =>
+                    res.json());
+                // console.log(address.features[0].properties.label + address.features[0].properties.context);
+                positions[i].address = address.features[0].properties.label;
+                positions[i].context = address.features[0].properties.context;
+                console.log(positions[i].address);
+                console.log(positions[i].context);
+
             }
             return {
                 positions: positions
