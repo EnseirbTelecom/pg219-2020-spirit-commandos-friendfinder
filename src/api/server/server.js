@@ -7,7 +7,8 @@ function myFunc() {
     console.log("10 secondes après ouverture serveur");
 }
 setTimeout(myFunc, 10000, 'funky');
-function myFuncArch(){
+
+function myFuncArch() {
     console.log("test timer pour archiver");
 }
 let transporter = nodemailer.createTransport({
@@ -126,24 +127,24 @@ MongoClient.connect(url, {
                 console.log("USER: " + JSON.stringify(user));
                 // On cherche l'utilisateur dans la base de données
                 users.findOne(user, (err, result) => {
-                    if (result === null) {
-                        console.log("Vous n'êtes pas enregistré");
-                        res.statusCode = 403;
-                        res.json();
-                    } else {
-                        console.log("Bienvenue sur notre application !");
-                        // Génération d'un token crypté
-                        let token = jwt.sign({
-                            data: result._id
-                        }, privatekey, { expiresIn: '24h' });
-                        res.status(200).json({
-                            text: token,
-                        });
-                    }
-                })
-                //test timer
+                        if (result === null) {
+                            console.log("Vous n'êtes pas enregistré");
+                            res.statusCode = 403;
+                            res.json();
+                        } else {
+                            console.log("Bienvenue sur notre application !");
+                            // Génération d'un token crypté
+                            let token = jwt.sign({
+                                data: result._id
+                            }, privatekey, { expiresIn: '24h' });
+                            res.status(200).json({
+                                text: token,
+                            });
+                        }
+                    })
+                    //test timer
                 function myFunc() {
-                console.log("Apres signin test timer après 10 secondes");
+                    console.log("Apres signin test timer après 10 secondes");
                 }
                 setTimeout(myFunc, 10000, 'funky');
             })
@@ -207,7 +208,8 @@ MongoClient.connect(url, {
                                     console.log(JSON.stringify(notifInserted));
                                 })
                             })
-                            setTimeout(() => { archivePosition(position,positions) }, position.duree*1000);
+                            setTimeout(() => { archivePosition(position, positions) }, position.duree * 1000);
+                            res.statusCode = 200;
                             res.json("success");
                         })
                     })
@@ -215,6 +217,27 @@ MongoClient.connect(url, {
                     console.log("erreur lors du décodage");
                 }
             })
+
+        .get("/positions/:token", (req, res) => {
+            console.log("GET positions' list");
+            try {
+                // on décode le token fourni
+                let decoded = jwt.verify(req.params.token, privatekey);
+                console.log("decoded:" + decoded.data);
+                let id = decoded.data;;
+                console.log(req.query.id);
+                if (req.query.id !== undefined) {
+                    // Si on envoie l'id dans la query string, c'est qu'on a veut l'historique des positions d'un autre utilisateur 
+                    id = req.query.id;
+                }
+                positions.find({ user: id }).toArray().then(positionList => {
+                    console.log(JSON.stringify(positionList));
+                    res.json(positionList);
+                })
+            } catch (err) {
+                console.log("Erreur lors du décodage");
+            }
+        })
 
         .post("/friends/:token", (req, res) => {
                 console.log("Vous voulez AJOUTER UN AMI");

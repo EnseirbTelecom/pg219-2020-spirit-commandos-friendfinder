@@ -11,7 +11,7 @@
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
                 <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
                         title="liste des amis"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                <a href="#" @click="historique" class="w3-bar-item w3-button"><i class="fa fa-history"
                         title="historique des positions"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
 
@@ -263,37 +263,54 @@
                         console.log("URL: " + url);
                         try {
                             fetch(url, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: ReqBody
-                                }).then(res => {
-                                    return res.json();
-                                }).then(data => {
-                                    if (JSON.stringify(data) === "null") {
-                                        this.$app.dialog.alert("Error while adding the position");
-                                    } else {
-                                        redirection = 1;
-                                        router.navigate("/map/" + token);
-                                        console.log("redirection 1");
-                                    }
-                                })
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: ReqBody
+                            }).then(res => {
+                                return res.json();
+                            }).then(data => {
+                                if (JSON.stringify(data) === "null") {
+                                    this.$app.dialog.alert("Error while adding the position");
+                                } else {
+                                    redirection = 1;
+                                    router.navigate("/map/" + token);
+                                    console.log("redirection 1");
+                                }
+                            })
+                            if (window.cordova === undefined) {
+                                // On est dans le browser
+                                if (!("Notification" in window)) {
+                                    alert("This browser does not support desktop notification");
+                                }
+
+                                // Let's check whether notification permissions have already been granted
+                                else if (Notification.permission === "granted") {
+                                    // If it's okay let's create a notification
+                                    var notification = new Notification("Votre position a été partagé avec succès !");
+                                }
+
+                                // Otherwise, we need to ask the user for permission
+                                else if (Notification.permission !== "denied") {
+                                    Notification.requestPermission().then(function(permission) {
+                                        // If the user accepts, let's create a notification
+                                        if (permission === "granted") {
+                                            var notification = new Notification("Votre position a été partagé avec succès !");
+                                        }
+                                    });
+                                }
+                            } else {
                                 // var time = now.getTime(),
                                 //     _5_sec_from_now = new Date(time + duree * 1000);
-                                // console.log("now: " + now);
-                                // cordova.plugins.notification.local.schedule({
-                                //     text: "Votre dernière position active a été archivée",
-                                //     trigger: { in: duree,
-                                //         unit: 'second'
-                                //     },
-                                //     led: "FF0000",
-                                //     sound: null,
-                                // });
-                                // cordova.plugins.notification.local.on("trigger", function(notification) {
-                                //         let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
-                                //         fetch(url);
-                                //     })
+                                console.log("now: " + now);
+                                cordova.plugins.notification.local.schedule({
+                                    text: "Votre position a été partagé avec succès !",
+                                    led: "FF0000",
+                                    sound: null,
+                                });
+                            }
+
                         } catch (err) {
                             console.log("Une erreur est survenue");
                         }
@@ -353,24 +370,47 @@
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
             },
+            historique: function() {
+                this.$router.navigate("/historique/" + this.$route.params.token);
+            },
             sendNotif: function() {
-                let token = this.$route.params.token;
-                var now = new Date().getTime(),
-                    _5_sec_from_now = new Date(now + 10 * 1000);
-                console.log("now: " + now);
-                cordova.plugins.notification.local.schedule({
-                    text: "Delayed Notification",
-                    trigger: {
-                        at: _5_sec_from_now
-                    },
-                    led: "FF0000",
-                    sound: null,
-                });
-                cordova.plugins.notification.local.on("trigger", function(notification) {
-                    let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
-                    fetch(url);
-                })
+                // let token = this.$route.params.token;
+                // var now = new Date().getTime(),
+                //     _5_sec_from_now = new Date(now + 10 * 1000);
+                // console.log("now: " + now);
+                // cordova.plugins.notification.local.schedule({
+                //     text: "Delayed Notification",
+                //     trigger: {
+                //         at: _5_sec_from_now
+                //     },
+                //     led: "FF0000",
+                //     sound: null,
+                // });
+                // cordova.plugins.notification.local.on("trigger", function(notification) {
+                //     let url = "http://10.0.2.2:3000/ArchivePosition/" + token;
+                //     fetch(url);
+                // })
 
+                // Notifications pour le browser
+                // if (!("Notification" in window)) {
+                //     alert("This browser does not support desktop notification");
+                // }
+
+                // // Let's check whether notification permissions have already been granted
+                // else if (Notification.permission === "granted") {
+                //     // If it's okay let's create a notification
+                //     var notification = new Notification("Hi there!");
+                // }
+
+                // // Otherwise, we need to ask the user for permission
+                // else if (Notification.permission !== "denied") {
+                //     Notification.requestPermission().then(function(permission) {
+                //         // If the user accepts, let's create a notification
+                //         if (permission === "granted") {
+                //             var notification = new Notification("Hi there!");
+                //         }
+                //     });
+                // }
                 // let promise = Notification.requestPermission();
 
                 // Notification.requestPermission().then(function(result) {

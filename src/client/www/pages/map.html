@@ -42,82 +42,81 @@
             </div>
 
  </template>
- <script>
-        return {
-            async data() {
-                // On cherche les notifications de l'utilisateur
-                let url = "http://localhost:3000/notifs/" + this.$route.params.token;
-                let notifs = [];
-                let cpt = 0;
+<script>
+    return {
+        async data() {
+            // On cherche les notifications de l'utilisateur
+            let url = "http://localhost:3000/notifs/" + this.$route.params.token;
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
                 try {
                     notifs = await fetch(url)
                         .then(res =>
                             res.json())
                 } catch (err) {
-                    let url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;
-                    try {
-                        notifs = await fetch(url)
-                            .then(res =>
-                                res.json())
-                    } catch (err) {
-                        this.$app.dialog.alert("Error " + err);
-                    }
+                    this.$app.dialog.alert("Error " + err);
                 }
-                console.log("notifs: " + JSON.stringify(notifs));
-                cpt = notifs.length;
-                return {
-                    notifs: notifs,
-                    cpt: cpt
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
+            return {
+                notifs: notifs,
+                cpt: cpt
+            }
+        },
+        methods: {
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                console.log("menu: " + document.getElementById("menu").innerHTML);
+                if (document.getElementById("menu").classList.contains("d-none")) {
+                    document.getElementById("menu").classList.remove("d-none");
+                    document.getElementById("contain").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menu").classList.add("d-none");
+                    document.getElementById("contain").classList.remove("w3-container");
+                    document.getElementById("contain").style.marginLeft = "0px";
                 }
             },
-            methods: {
-                params: function() {
-                    console.log("Vous voulez modifier votre mot de passe");
-                    console.log(this.$route.params.token);
-                    this.$router.navigate("/parameters/" + this.$route.params.token);
-                },
-                getPos: function() {
-                    this.$router.navigate("/AddPosition/" + this.$route.params.token);
-                },
-                show_menu: function() {
-                    console.log("menu: " + document.getElementById("menu").innerHTML);
-                    if (document.getElementById("menu").classList.contains("d-none")) {
-                        document.getElementById("menu").classList.remove("d-none");
-                        document.getElementById("contain").style.marginLeft = "70px";
-                    } else {
-                        document.getElementById("menu").classList.add("d-none");
-                        document.getElementById("contain").classList.remove("w3-container");
-                        document.getElementById("contain").style.marginLeft = "0px";
-                    }
-                },
-                amis: function() {
-                    this.$router.navigate("/amis/" + this.$route.params.token);
-                },
-                deconnecter: function() {
-                    this.$router.navigate("/");
-                },
-                bell: function() {
-                    this.$router.navigate("/notifs/" + this.$route.params.token);
-                },
-                getMap: function(){
-                    // On initialise la latitude et la longitude de Paris (centre de la carte)
-                    var lat = 48.852969;
-                    var lon = 2.349903;
-                    var macarte = null;
-                    // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
-                     macarte = L.map('map').setView([lat, lon], 11);
-                    // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
-                    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+            amis: function() {
+                this.$router.navigate("/amis/" + this.$route.params.token);
+            },
+            deconnecter: function() {
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
+            },
+            getMap: function() {
+                // On initialise la latitude et la longitude de Paris (centre de la carte)
+                var lat = 48.852969;
+                var lon = 2.349903;
+                var macarte = null;
+                // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+                macarte = L.map('map').setView([lat, lon], 11);
+                // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+                L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                     // Il est toujours bien de laisser le lien vers la source des données
                     attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
                     minZoom: 1,
                     maxZoom: 20
-                    }).addTo(macarte);
-                    var marker = L.marker([lat, lon]).addTo(macarte);
-                    marker.bindPopup("position1");
-                 }
-                     
-                }     
+                }).addTo(macarte);
+                var marker = L.marker([lat, lon]).addTo(macarte);
+                marker.bindPopup("position1");
             }
+
+        }
+    }
 </script>
-    

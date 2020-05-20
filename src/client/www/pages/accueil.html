@@ -10,7 +10,7 @@
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
                 <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
                         title="liste des amis"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                <a href="#" @click="historique" class="w3-bar-item w3-button"><i class="fa fa-history"
                         title="historique des positions"></i></a>
                 <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
                         title="Déconnexion"></i></a>
@@ -23,7 +23,8 @@
                 <nav class="navbar navbar-dark">
                     <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
-                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                            <img src="./logo1.png" width="200px" height="50px" />
+                    <a href="#" @click="bell" style="color: white; margin-right: 2%;"><i class="icon f7-icons">bell</i>
                         {{#if cpt}}
                         <span id="span_notifs"></span>
                         {{/if}}
@@ -120,7 +121,9 @@
             bell: function() {
                 this.$router.navigate("/notifs/" + this.$route.params.token);
             },
-
+            historique: function() {
+                this.$router.navigate("/historique/" + this.$route.params.token);
+            },
             showMap: function() {
                 // var mapDiv = document.getElementById("map_canvas");
                 // var GOOGLE = new plugin.google.maps.LatLng(37.422858, -122.085065);

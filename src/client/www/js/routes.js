@@ -76,6 +76,10 @@ var routes = [{
         }
     },
     {
+        path: '/historique/:token',
+        componentUrl: "./pages/historique.html"
+    },
+    {
         path: '/profile/:token/:friend',
         componentUrl: "./pages/profile.html",
         options: {
