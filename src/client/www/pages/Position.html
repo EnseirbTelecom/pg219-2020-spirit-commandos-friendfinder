@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="position">
         <div class="scrollbar-warm-flame d-none" id="menu_pos">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
                 <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
                         title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
@@ -142,6 +142,9 @@
             <a href="#" title="Ajouter un produit">
                 <i class="icon f7-icons">arrow_left</i>
             </a>
+        </div>
+        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+            <h6>&copy; spirit_commandos 2020</h6>
         </div>
     </div>
 </template>

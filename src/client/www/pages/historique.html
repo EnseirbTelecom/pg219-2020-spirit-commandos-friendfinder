@@ -20,6 +20,9 @@
         <a @click="getMap">show map</a>
         <div id="map"></div>
 
+        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+            <h6>&copy; spirit_commandos 2020</h6>
+        </div>
     </div>
 </template>
 <script>
@@ -95,11 +98,11 @@
                 }
                 console.log("liste des positions: " + JSON.stringify(positions));
                 for (pos in positions) {
-                    console.log("pos latitude : "+ positions[pos].lat + " longitude : " + positions[pos].long);
+                    console.log("pos latitude : " + positions[pos].lat + " longitude : " + positions[pos].long);
                 }
                 let macarte = null;
                 var lat = 44.839683;
-                var lon = -0.570618; 
+                var lon = -0.570618;
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
                 macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr

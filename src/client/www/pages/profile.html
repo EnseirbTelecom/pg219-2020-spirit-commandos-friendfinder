@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="notifs">
         <div class="scrollbar-warm-flame d-none" id="menuProfile">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -58,6 +58,9 @@
                     </div>
                 </div>
                 {{/profile}}
+            </div>
+            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                <h6>&copy; spirit_commandos 2020</h6>
             </div>
         </div>
 </template>

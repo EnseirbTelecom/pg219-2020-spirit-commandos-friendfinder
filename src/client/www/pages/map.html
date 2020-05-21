@@ -1,47 +1,50 @@
 <template>
-        <div class="page" data-name="accueil">
-            <div class="scrollbar-warm-flame d-none" id="menu">
-                <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
-                    <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
-                            title="Ajouter une nouvelle position"></i></a>
-                    <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
-                            title="modifier les paramètres de votre compte"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                    <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
-                            title="liste des amis"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
-                            title="historique des positions"></i></a>
-                    <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
-                            title="Déconnexion"></i></a>
-    
-                </div>
+    <div class="page" data-name="accueil">
+        <div class="scrollbar-warm-flame d-none" id="menu">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
+                        title="Déconnexion"></i></a>
+
             </div>
-    
-            <div>
-                <div id="contain">
-                    <nav class="navbar navbar-dark">
-                        <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
-                                style="color: white;">menu</i></a>
-                        <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
-                            {{#if cpt}}
-                            <span id="span_notifs"></span>
-                            {{/if}}
-                        </a>
-                        <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
-                    </nav>
-                    <center>
-                        <img src="./logo1.png" width="250px" height="100px" style="margin-left: 15%; margin-top: 15%;">
-                    </center>
-                    
-                </div>
+        </div>
+
+        <div>
+            <div id="contain">
+                <nav class="navbar navbar-dark">
+                    <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                            style="color: white;">menu</i></a>
+                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                        {{#if cpt}}
+                        <span id="span_notifs"></span>
+                        {{/if}}
+                    </a>
+                    <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                </nav>
+                <center>
+                    <img src="./logo1.png" width="250px" height="100px" style="margin-left: 15%; margin-top: 15%;">
+                </center>
+
             </div>
             <div id="map"></div>
             <div class="add">
                 <a @click="getMap" href="#" class="button button-round button-fill">Afficher la carte</a>
             </div>
+            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                <h6>&copy; spirit_commandos 2020</h6>
+            </div>
+        </div>
 
- </template>
+</template>
 <script>
     return {
         async data() {

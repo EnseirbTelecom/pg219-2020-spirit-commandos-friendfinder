@@ -1,7 +1,8 @@
 <template>
     <div class="page" data-name="accueil">
         <div class="scrollbar-warm-flame d-none" id="menu">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+            <!-- <div  w3-include-html="./menu.html"></div> -->
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -14,7 +15,6 @@
                         title="historique des positions"></i></a>
                 <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
                         title="Déconnexion"></i></a>
-
             </div>
         </div>
 
@@ -23,8 +23,7 @@
                 <nav class="navbar navbar-dark">
                     <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
-                            <img src="./logo1.png" width="200px" height="50px" />
-                    <a href="#" @click="bell" style="color: white; margin-right: 2%;"><i class="icon f7-icons">bell</i>
+                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
                         {{#if cpt}}
                         <span id="span_notifs"></span>
                         {{/if}}
@@ -41,6 +40,9 @@
                 <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
                 <div id="map_canvas" style="width: 100%; height: 500px;"> MAP CANVA</div>
 
+                <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                    <h6>&copy; spirit_commandos 2020</h6>
+                </div>
                 <!-- <div>
                     <p>
                         {{#if cpt}}
@@ -98,7 +100,7 @@
                 this.$router.navigate("/AddPosition/" + this.$route.params.token);
             },
             show_menu: function() {
-                console.log("menu: " + document.getElementById("menu").innerHTML);
+                // console.log("menu: " + document.getElementById("menu").innerHTML);
                 if (document.getElementById("menu").classList.contains("d-none")) {
                     document.getElementById("menu").classList.remove("d-none");
                     document.getElementById("contain").style.marginLeft = "70px";
@@ -189,6 +191,14 @@
                     snippet: "This plugin is awesome!"
                 })
 
+            }
+        },
+        on: {
+            pageInit: function() {
+                console.log("PAGE INIT");
+                document.getElementById("map_canvas").innerText = "PAGE INIT";
+                // w3.includeHTML();
+                // console.log("menu content: " + document.getElementById("menu").innerHTML);
             }
         }
     }

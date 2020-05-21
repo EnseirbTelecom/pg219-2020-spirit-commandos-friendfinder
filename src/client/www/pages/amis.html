@@ -1,7 +1,7 @@
 <template>
     <div class="page" data-name="params">
         <div class="scrollbar-warm-flame d-none" id="menu1">
-            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px; background: rgb(42, 60, 119);">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
                 <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
                         title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
@@ -87,7 +87,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">@</div>
                         </div>
-                        <input class="form-control" id="mail" placeholder="Username">
+                        <input class="form-control" id="username" placeholder="Username">
                     </div>
                 </div>
                 <ul id="results"></ul>
@@ -97,12 +97,15 @@
             </div>
             <!-- </ul> -->
         </div>
-    </div>
 
-    <div class="fab " id="back">
-        <a @click="back" href="#" title="Ajouter un produit">
-            <i class="icon f7-icons">arrow_left</i>
-        </a>
+        <div class="fab " id="back">
+            <a @click="back" href="#" title="Ajouter un produit">
+                <i class="icon f7-icons">arrow_left</i>
+            </a>
+        </div>
+        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+            <h6>&copy; spirit_commandos 2020</h6>
+        </div>
     </div>
 </template>
 <script>
@@ -184,7 +187,7 @@
                 console.log("Ajouter un ami");
                 document.getElementById("plus").classList.add("d-none");
                 document.getElementById("search").classList.remove("d-none");
-                let search = document.getElementById("mail");
+                let search = document.getElementById("username");
                 let results = document.querySelector('#results');
                 let users = [];
                 let url;
