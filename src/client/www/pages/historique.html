@@ -84,7 +84,7 @@
                     url = "http://localhost:3000/positions/" + this.$route.params.token;
                     console.log("Browser");
                 } else {
-                    url = "http://10.0.2.2:3000/positions/" + this.$route.params.token;;
+                    url = "http://10.0.2.2:3000/positions/" + this.$route.params.token;
                     console.log(window.cordova.platformId);
                 }
                 try {
@@ -94,27 +94,14 @@
                     this.$app.dialog.alert("ERROR: " + err);
                 }
                 console.log("liste des positions: " + JSON.stringify(positions));
+                for (pos in positions) {
+                    //var marker = L.marker([villes[ville].lat, villes[ville].lon]).addTo(macarte);
+                    console.log("pos latitude : "+ positions[pos].lat + " longitude : " + positions[pos].long);
+                }
                 let macarte = null;
-                var lat = 48.852969;
-                var lon = 2.349903;
-                var villes = {
-                    "Paris": {
-                        "lat": 48.852969,
-                        "lon": 2.349903
-                    },
-                    "Brest": {
-                        "lat": 48.383,
-                        "lon": -4.500
-                    },
-                    "Quimper": {
-                        "lat": 48.000,
-                        "lon": -4.100
-                    },
-                    "Bayonne": {
-                        "lat": 43.500,
-                        "lon": -1.467
-                    }
-                };
+                var lat = 44.839683;
+                var lon = -0.570618;
+                
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
                 macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
@@ -124,27 +111,11 @@
                     minZoom: 1,
                     maxZoom: 20
                 }).addTo(macarte);
-                // var marker = L.marker([lat, lon]).addTo(macarte);
-                // let villes = {};
-                // let marker;
-                // let marker1 = L.marker([positions[0].lat, positions[0].long]).addTo(macarte);
-                // marker1.bindPopup("position1");
-                // marker = L.marker([positions[1].lat, positions[1].long]).addTo(macarte);
-
-                // for (let i = 0; i < positions.length; i++) {
-                //     // marker = L.marker([positions[1].lat, positions[1].long]).addTo(macarte);
-                // }
-                for (ville in villes) {
-                    var marker = L.marker([villes[ville].lat, villes[ville].lon]).addTo(macarte);
+                
+                for (pos in positions) {
+                    var marker = L.marker([positions[pos].lat, positions[pos].long]).addTo(macarte);
+                    marker.bindPopup("date: " + positions[pos].date_activation);
                 }
-                // marker.bindPopup("position1");
-
-                // On initialise la latitude et la longitude de Paris (centre de la carte)
-
-
-                // document.getElementById("map").innerHTML = '';
-                // console.log("LAT: " + lat + " LONG: " + lon);
-
             }
         }
     }
