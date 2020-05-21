@@ -6,8 +6,8 @@
         <div>
             <h3>Position {{@index}}: </h3>
             <div style="margin-left: 5%;">
-                <h6>{{address}}</h6>
-                <h6>{{context}}</h6>
+                <h6 id="address">{{address}}</h6>
+                <h6 id="context">{{context}}</h6>
                 <h6>partagée le {{date_activation}} à {{heure_activation}}</h6>
                 <h6>message: {{msg}}</h6>
             </div>
@@ -95,13 +95,11 @@
                 }
                 console.log("liste des positions: " + JSON.stringify(positions));
                 for (pos in positions) {
-                    //var marker = L.marker([villes[ville].lat, villes[ville].lon]).addTo(macarte);
                     console.log("pos latitude : "+ positions[pos].lat + " longitude : " + positions[pos].long);
                 }
                 let macarte = null;
                 var lat = 44.839683;
-                var lon = -0.570618;
-                
+                var lon = -0.570618; 
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
                 macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
@@ -111,10 +109,9 @@
                     minZoom: 1,
                     maxZoom: 20
                 }).addTo(macarte);
-                
                 for (pos in positions) {
                     var marker = L.marker([positions[pos].lat, positions[pos].long]).addTo(macarte);
-                    marker.bindPopup("date: " + positions[pos].date_activation);
+                    marker.bindPopup("address: " + document.getElementById("address").innerText);
                 }
             }
         }
