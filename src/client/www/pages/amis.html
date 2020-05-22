@@ -233,10 +233,10 @@
                 document.getElementById("plus").classList.remove("d-none");
                 let url;
                 if (window.cordova === undefined) {
-                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("username").value;
                     console.log("Browser");
                 } else {
-                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("username").value;
                     console.log(window.cordova.platformId);
                 }
                 console.log("URL: " + url);
