@@ -80,6 +80,10 @@ var routes = [{
         componentUrl: "./pages/historique.html"
     },
     {
+        path: '/detailsPos/:token/:idPos',
+        componentUrl: "./pages/details.html"
+    },
+    {
         path: '/profile/:token/:friend',
         componentUrl: "./pages/profile.html",
         options: {

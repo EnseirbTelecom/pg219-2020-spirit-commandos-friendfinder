@@ -1,57 +1,98 @@
 <template>
     <div class="page" data-name="historique">
-        <!-- <ul> -->
-        {{#each positions}}
-        <!-- <li> -->
-        <div>
-            <h3>Position {{@index}}: </h3>
-            <div style="margin-left: 5%;">
-                <h6 id="address">{{address}}</h6>
-                <h6 id="context">{{context}}</h6>
-                <h6>partagée le {{date_activation}} à {{heure_activation}}</h6>
-                <h6>message: {{msg}}</h6>
+        <div class="scrollbar-warm-flame d-none" id="menuHist">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
+                <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
+                        title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+
             </div>
-            <!-- <h6></h6> -->
         </div>
 
-        <!-- </li> -->
-        {{/each}}
-        <!-- </ul> -->
-        <a @click="getMap">show map</a>
-        <div id="map"></div>
+        <div id="containHist">
+            <nav class="navbar navbar-dark">
+                <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                        style="color: white;">menu</i></a>
+                <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    {{#if cpt}}
+                    <span id="span_notifs"></span>
+                    {{/if}}
+                </a>
+                <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+            </nav>
 
-        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
-            <h6>&copy; spirit_commandos 2020</h6>
+            <center>
+                <h1 id="title">Friend Finder</h1>
+            </center>
+
+            <div id="historique">
+                {{#each positions}}
+                <div>
+                    <div class="d-inline">
+                        <h3 id="indexPos">Position {{@index}}: ({{status}}) </h3>
+                        <a href="#" @click="getDetails('{{_id}}')" title="edit" style="float: right; margin-right: 5%;">
+                            <i class="icon f7-icons">pencil</i>
+                        </a>
+                    </div>
+                    
+                    <div style="margin-left: 10%; margin-right: 5%;">
+                        <h6 id="address">{{address}}</h6>
+                        <h6 id="context">{{context}}</h6>
+                        <!-- <div class="fab "> -->
+                            
+                        <!-- </div> -->
+                        <!-- <h6>partagée le {{date_activation}} à {{heure_activation}}</h6> -->
+                        <!-- <h6>message: {{msg}}</h6> -->
+                    </div>
+                </div>
+                {{#if @last}}
+                {{else}}
+                <hr class="barre" />
+                {{/if}}
+                {{/each}}
+            </div>
+            <div id="map" class="d-none"></div>
+            <a @click="getMap" class="button button-round button-fill" style="margin: 5%; color: white;">Afficher la
+                carte</a>
+
+            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                <h6>&copy; spirit_commandos 2020</h6>
+            </div>
         </div>
     </div>
 </template>
 <script>
     return {
         async data() {
-            // // On cherche les notifications de l'utilisateur
+            // On cherche les notifications de l'utilisateur
             let url;
-            // if (window.cordova === undefined) {
-            //     url = "http://localhost:3000/notifs/" + this.$route.params.token;
-            //     console.log("Browser");
-            // } else {
-            //     url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
-            //     console.log(window.cordova.platformId);
-            // }
-            // let notifs = [];
-            // let cpt = 0;
-            // try {
-            //     notifs = await fetch(url)
-            //         .then(res =>
-            //             res.json())
-            // } catch (err) {
-            //     this.$app.dialog.alert("Error " + err);
-            // }
-            // console.log("notifs: " + JSON.stringify(notifs));
-            // cpt = notifs.length;
-            // return {
-            //     notifs: notifs,
-            //     cpt: cpt
-            // }
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                console.log(window.cordova.platformId);
+            }
+            let notifs = [];
+            let cpt = 0;
+            try {
+                notifs = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                this.$app.dialog.alert("Error " + err);
+            }
+            console.log("notifs: " + JSON.stringify(notifs));
+            cpt = notifs.length;
             let positions = [];
             if (window.cordova === undefined) {
                 url = "http://localhost:3000/positions/" + this.$route.params.token;
@@ -69,7 +110,6 @@
             for (let i = 0; i < positions.length; i++) {
                 let address = await fetch('https://api-adresse.data.gouv.fr/reverse/?lon=' + positions[i].long + '&lat=' + positions[i].lat).then(res =>
                     res.json());
-                // console.log(address.features[0].properties.label + address.features[0].properties.context);
                 positions[i].address = address.features[0].properties.label;
                 positions[i].context = address.features[0].properties.context;
                 console.log(positions[i].address);
@@ -77,11 +117,14 @@
 
             }
             return {
-                positions: positions
+                positions: positions,
+                notifs: notifs,
+                cpt: cpt
             }
         },
         methods: {
             getMap: async function() {
+                document.getElementById("map").classList.remove("d-none");
                 let positions = [];
                 if (window.cordova === undefined) {
                     url = "http://localhost:3000/positions/" + this.$route.params.token;
@@ -104,7 +147,7 @@
                 var lat = 44.839683;
                 var lon = -0.570618;
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
-                macarte = L.map('map').setView([lat, lon], 11);
+                macarte = L.map('map').setView([lat, lon], 5);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
                 L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                     // Il est toujours bien de laisser le lien vers la source des données
@@ -116,6 +159,43 @@
                     var marker = L.marker([positions[pos].lat, positions[pos].long]).addTo(macarte);
                     marker.bindPopup("address: " + document.getElementById("address").innerText);
                 }
+            },
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                // this.$router.navigate("/position");
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                if (document.getElementById("menuHist").classList.contains("d-none")) {
+                    document.getElementById("menuHist").classList.remove("d-none");
+                    document.getElementById("containHist").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menuHist").classList.add("d-none");
+                    document.getElementById("containHist").style.marginLeft = "0px";
+                }
+            },
+            amis: function() {
+                this.$router.navigate("/amis");
+            },
+            home: function() {
+                this.$router.navigate("/accueil/" + this.$route.params.token);
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
+            },
+            getDetails: function(id) {
+                this.$router.navigate("/detailsPos/" + this.$route.params.token + "/" + id);
             }
         }
     }

@@ -230,7 +230,7 @@ MongoClient.connect(url, {
                     // Si on envoie l'id dans la query string, c'est qu'on a veut l'historique des positions d'un autre utilisateur 
                     id = req.query.id;
                 }
-                positions.find({ user: id }).toArray().then(positionList => {
+                positions.find({ user: id }).sort({ date_activation: -1 }).toArray().then(positionList => {
                     console.log(JSON.stringify(positionList));
                     res.json(positionList);
                 })

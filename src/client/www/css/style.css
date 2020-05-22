@@ -222,6 +222,29 @@ header {
     transition: .4s;
 }
 
+#historique {
+    border: rgb(42, 60, 119) solid 0.3rem;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
+    margin: 5%;
+    height: 400px;
+    overflow: scroll;
+}
+
+.barre {
+    border-style: solid;
+    border-width: 7px;
+    color: rgb(42, 60, 119);
+    border-radius: 3rem;
+    width: 50%;
+    margin-left: 25%;
+}
+
+#indexPos {
+    color: rgb(42, 60, 119);
+    margin-left: 3%;
+}
+
 #sidebar {
     background-color: rgb(42, 60, 119);
 }
