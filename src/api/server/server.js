@@ -186,7 +186,7 @@ MongoClient.connect(url, {
                             status: "active"
                         }
                         //  Si on a une position active lors de l'ajout d'une nouvelle position, on l'archive
-                    positions.findOne({ status: "active" })
+                    positions.findOne({ $and: [{ status: "active" }, { user: decoded.data }] })
                         .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
                     positions.insertOne(position, (err, resu) => {
                         console.log("Position Ajoutée");
