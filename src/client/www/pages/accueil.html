@@ -37,9 +37,12 @@
                     <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
                 </center>
 
-                <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
-                <div id="map_canvas" style="width: 100%; height: 500px;"> MAP CANVA</div>
+                <!--
+                    <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
+               -->
+                    <div id="map"></div>
 
+                 
                 <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                     <h6>&copy; spirit_commandos 2020</h6>
                 </div>
@@ -125,80 +128,23 @@
             },
             historique: function() {
                 this.$router.navigate("/historique/" + this.$route.params.token);
-            },
-            showMap: function() {
-                // var mapDiv = document.getElementById("map_canvas");
-                // var GOOGLE = new plugin.google.maps.LatLng(37.422858, -122.085065);
-                // var map = plugin.google.maps.Map.getMap(mapDiv);
-                // map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
-                //     map.setCenter(GOOGLE);
-                // });
-                const GOOGLE = {
-                    "lat": 37.422476,
-                    "lng": -122.08425
-                };
-                // Define a div tag with id="map_canvas"
-                var mapDiv = document.getElementById("map_canvas");
-
-                // // Initialize the map plugin
-                // // var map = plugin.google.maps.Map.getMap(mapDiv, {
-                // //     controls: {
-                // //         myLocationButton: true
-                // //     },
-                // //     gestures: {
-                // //         'scroll': true,
-                // //         'tilt': true,
-                // //         'rotate': true,
-                // //         'zoom': true
-                // //     }
-                // // });
-                // var map = plugin.google.maps.Map.getMap(mapDiv, {
-                //     'camera': {
-                //         'latLng': GOOGLE,
-                //         'zoom': 17
-                //     }
-                // });
-                // You have to wait the MAP_READY event.
-                // map.on(plugin.google.maps.event.MAP_READY, (map) => {
-                //     console.log("FFFFFFFFFFFF");
-                //     var marker = map.addMarker({
-                //         position: {
-                //             lat: 37.422858,
-                //             lng: -122.085065
-                //         },
-                //         title: "Hello Cordova Google Maps for iOS and Android",
-                //         snippet: "This plugin is awesome!"
-                //     })
-                //     marker.showInfoWindow();
-
-                let latitude = 37.422476;
-                let longitude = -122.08425;
-                let map = new google.maps.Map(document.getElementById('map_canvas'), {
-                    center: {
-                        lat: parseFloat(latitude),
-                        lng: parseFloat(longitude)
-                    },
-
-                    zoom: 12,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-                var marker = map.addMarker({
-                    position: {
-                        lat: 37.422858,
-                        lng: -122.085065
-                    },
-                    title: "Hello Cordova Google Maps for iOS and Android",
-                    snippet: "This plugin is awesome!"
-                })
-
             }
         },
         on: {
             pageInit: function() {
-                console.log("PAGE INIT");
-                document.getElementById("map_canvas").innerText = "PAGE INIT";
-                // w3.includeHTML();
-                // console.log("menu content: " + document.getElementById("menu").innerHTML);
+                let macarte = null;
+                var lat = 44.839683;
+                var lon = -0.570618;
+                // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+                macarte = L.map('map').setView([lat, lon], 11);
+                // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+                L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    // Il est toujours bien de laisser le lien vers la source des données
+                    attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                    minZoom: 1,
+                    maxZoom: 20
+                }).addTo(macarte);
+                
             }
         }
     }
