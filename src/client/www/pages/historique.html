@@ -110,6 +110,10 @@
             for (let i = 0; i < positions.length; i++) {
                 let address = await fetch('https://api-adresse.data.gouv.fr/reverse/?lon=' + positions[i].long + '&lat=' + positions[i].lat).then(res =>
                     res.json());
+                if (address.features[0] === undefined) {
+                    positions[i].address = "Seules les adresses en france sont prises en compte";
+                    positions[i].context = "Seules les adresses en france sont prises en compte";
+                }
                 positions[i].address = address.features[0].properties.label;
                 positions[i].context = address.features[0].properties.context;
                 console.log(positions[i].address);
