@@ -245,24 +245,36 @@ MongoClient.connect(url, {
                     let decoded = jwt.verify(req.params.token, privatekey);
                     console.log("decoded:" + decoded.data);
                     let id = decoded.data;
-                    let friendsListId = [];
+                    // let friendsListId = [];
                     //recherche des amis de l'utilisateur
-                    friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
-                            console.log("friends: " + JSON.stringify(result));
-                            result.forEach(item => {
-                                if (item.id_1 === id) {
-                                    friendsListId.push(ObjectID(item.id_2));
-                                } else {
-                                    friendsListId.push(ObjectID(item.id_1));
-                                }
-                                console.log("id des amis : " + friendsListId);
-                            })
+                    let friend1 = {
+                        id_1: id
+                    };
+                    let friend2 = {
+                        id_2: id
+                    };
+                    friends.find({ $or: [friend1, friend2] }).toArray().then(friendsListId => {
+                        console.log("friendsList: " + JSON.stringify(friendsListId));
+                        positions.find({ $and: [{ user: { $in: friendsListId.id_1 } }, { status: "active" }] }).toArray().then(positionsFriendsList => {
+                            console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
+                            res.json(positionsFriendsList);
                         })
-                        //recherche des positions actives des amis
-                    positions.find({ $and: [{ user: { $in: friendsListId } }, { status: "active" }] }).toArray().then(positionsFriendsList => {
-                        console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
-                        res.json(positionsFriendsList);
                     })
+
+                    // friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
+                    //     console.log("friends: " + JSON.stringify(result));
+                    //     result.forEach(item => {
+                    //         if (item.id_1 === id) {
+                    //             friendsListId.push(ObjectID(item.id_2));
+                    //         } else {
+                    //             friendsListId.push(ObjectID(item.id_1));
+                    //         }
+                    //         console.log("id des amis : " + friendsListId);
+                    //     })
+                    // })
+                    // console.log("friends list: " + JSON.stringify(friendsListId));
+                    //recherche des positions actives des amis
+
 
                 } catch (err) {
                     console.log("Erreur lors du décodage");
@@ -303,11 +315,11 @@ MongoClient.connect(url, {
                                 id_2: ObjectID(user._id).toString()
                             };
                             let friend2 = {
-                                    id_1: ObjectID(user._id).toString(),
-                                    id_2: id_1
-                                }
-                                // On vérifie que les deux utilisateurs ne sont pas déjà amis
-                                // friends.findOne({ $or: [{ id_1: id_1 }, { id_2: id_1 }] }, (error, search) => {
+                                id_1: ObjectID(user._id).toString(),
+                                id_2: id_1
+                            };
+                            // On vérifie que les deux utilisateurs ne sont pas déjà amis
+                            // friends.findOne({ $or: [{ id_1: id_1 }, { id_2: id_1 }] }, (error, search) => {
                             friends.findOne({ $or: [friend, friend2] }, (error, search) => {
                                 console.log("search: " + JSON.stringify(search));
                                 if (search !== null) {
