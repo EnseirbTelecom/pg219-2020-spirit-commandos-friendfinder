@@ -2,11 +2,7 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 let nodemailer = require('nodemailer');
-//test timer
-function myFunc() {
-    console.log("10 secondes après ouverture serveur");
-}
-setTimeout(myFunc, 10000, 'funky');
+
 
 function myFuncArch() {
     console.log("test timer pour archiver");
@@ -45,6 +41,7 @@ let archivePosition = function(position, positions) {
     })
 }
 
+
 let answerFriendshipInvitation = function(token, id, str) {
     try {
         // On décode le token fourni
@@ -82,7 +79,39 @@ MongoClient.connect(url, {
         let positions = client.db("FriendFinder").collection("positions");
         let friends = client.db("FriendFinder").collection("friends");
         let notifications = client.db("FriendFinder").collection("notifications");
-
+        //archiver une position après ouverture du serveur
+        let archPosApOuverture = function() {
+            //calcul de l'heure d'ouverture du serveur en millisecondes
+            let heureActuelle = new Date().getTime();
+            console.log("Parcours des positions et test d'archivage");
+            console.log("Date en H ouverture serveur : "+ heureActuelle);
+            positions.find({status:"active"}).toArray().then(positionList => {
+                console.log("liste des positions actives : " +JSON.stringify(positionList));
+                positionList.forEach(position => {
+                    console.log("calcul date ajout de la position");
+                    //on parse la date pour la construire sous la bonne forme
+                    let dateActivation = position.date_activation.match(/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})/);
+                    //on construit la date sous le bon format
+                    let dateAjoutPosition = new Date(dateActivation[2]+"/"+dateActivation[1]+"/"+dateActivation[3]);
+                    console.log("diff deux dates");
+                    //Calcul en milliseconde de la date d'archivage
+                    let dateArchivage = dateAjoutPosition.getTime()+position.duree*1000;
+                    console.log(dateArchivage);
+                    console.log(heureActuelle);
+                    if((dateArchivage-heureActuelle)<=0 ){
+                        console.log("position à archiver retrouvée");
+                        archivePosition(position, positions);
+                    }
+                    else{
+                        console.log("les positions actives sont encore valables");
+                        console.log("duree restante en secondes : ");
+                        let dureeNv = (dateArchivage-heureActuelle)/1000;
+                        console.log(dureeNv);
+                    }                    
+                })
+            })
+         } 
+        setTimeout(archPosApOuverture, 1, 'funky');
         // Rajouter les routes et les traitements
         app.post("/signup", (req, res) => {
                 console.log("BODY: " + JSON.stringify(req.body));
