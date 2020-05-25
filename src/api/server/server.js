@@ -238,36 +238,36 @@ MongoClient.connect(url, {
                     console.log("Erreur lors du décodage");
                 }
             })
-            .get("/positionsActives/:token", (req, res) => {
-                console.log("GET active positions' list");
-                try {
-                    // on décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    console.log("decoded:" + decoded.data);
-                    let id = decoded.data;
-                    let friendsListId = [];
-                    //recherche des amis de l'utilisateur
-                    friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
-                            console.log("friends: " + JSON.stringify(result));
-                            result.forEach(item => {
-                                if (item.id_1 === id) {
-                                    friendsListId.push(ObjectID(item.id_2));
-                                } else {
-                                    friendsListId.push(ObjectID(item.id_1));
-                                }
-                                console.log("id des amis : " + friendsListId);
-                            })
+        .get("/positionsActives/:token", (req, res) => {
+            console.log("GET active positions' list");
+            try {
+                // on décode le token fourni
+                let decoded = jwt.verify(req.params.token, privatekey);
+                console.log("decoded:" + decoded.data);
+                let id = decoded.data;
+                let friendsListId = [];
+                //recherche des amis de l'utilisateur
+                friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
+                        console.log("friends: " + JSON.stringify(result));
+                        result.forEach(item => {
+                            if (item.id_1 === id) {
+                                friendsListId.push(ObjectID(item.id_2));
+                            } else {
+                                friendsListId.push(ObjectID(item.id_1));
+                            }
+                            console.log("id des amis : " + friendsListId);
                         })
-                        //recherche des positions actives des amis
-                    positions.find({ $and: [{ user: { $in: friendsListId } }, { status: "active" }] }).toArray().then(positionsFriendsList => {
-                        console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
-                        res.json(positionsFriendsList);
                     })
+                //recherche des positions actives des amis
+                positions.find({ $and: [{ user: { $in: friendsListId } }, { status: "active" }] }).toArray().then(positionsFriendsList => {
+                    console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
+                    res.json(positionsFriendsList);
+                })
 
-                } catch (err) {
-                    console.log("Erreur lors du décodage");
-                }
-            })
+            } catch (err) {
+                console.log("Erreur lors du décodage");
+            }
+        })
 
         .post("/friends/:token", (req, res) => {
                 console.log("Vous voulez AJOUTER UN AMI");
