@@ -410,6 +410,36 @@ MongoClient.connect(url, {
                     console.log("Erreur s'est produite lors du décodage");
                 }
             })
+            .delete("/deletePos/:token/:posId",(req,res) =>{
+                try{
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    let idPos = req.params.posId;
+                    positions.deleteOne({ _id: ObjectID(idPos) }, (err, result) => {
+                        console.log(result.deletedCount);
+                        res.statusCode = 200;
+                        res.json();
+                    })
+                    console.log("position supprimée avec succes");
+
+                }catch (err) {
+                    console.log("Erreur s'est produite lors du décodage");
+                }
+            })
+            .post("/archiverPos/:token/:posId", (req, res) => {
+                try {
+                    // On décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    let idPos = req.params.posId;
+                    //  On cherche la position active dans la BDD
+                    positions.findOne({ _id: ObjectID(idPos) })
+                    .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position trouvée"))
+                } catch (err) {
+                    console.log("Erreur lors du décodage");
+                }
+            })
+            
             .delete("/friend/:token/:id", (req, res) => {
                 try {
                     // on décode le token fourni

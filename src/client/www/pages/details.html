@@ -204,10 +204,41 @@
                 this.$router.back();
             },
             supprimer: function() {
-
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/deletePos/" + this.$route.params.token + "/" + this.$route.params.idPos;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/deletePos/" + this.$route.params.token + "/" + this.$route.params.idPos;
+                    console.log(window.cordova.platformId);
+                }
+                fetch(url,{
+                    method: "DELETE"
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.$app.dialog.alert('Cette position a été supprimée de votre historique ', () => {
+                        this.$router.navigate("/historique/" + this.$route.params.token);
+                        });
+                    }
+                })
+                console.log("La position : "+ this.$route.params.idPos + " est suprimée.");
+                
             },
             archiver: function() {
-
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/archiverPos/" + this.$route.params.token + "/" + this.$route.params.idPos;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/archiverPos/" + this.$route.params.token + "/" + this.$route.params.idPos;
+                    console.log(window.cordova.platformId);
+                }
+                fetch(url,{
+                    method: "POST"
+                });
+                this.$app.dialog.alert('Cette position a été archivée. ');
+                this.$router.navigate("/historique/" + this.$route.params.token);
+                 
+                console.log("La position : "+ this.$route.params.idPos + " est archivée.");
+             
             }
         }
     }
