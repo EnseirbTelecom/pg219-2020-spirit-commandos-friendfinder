@@ -268,6 +268,24 @@ MongoClient.connect(url, {
                     console.log("Erreur lors du décodage");
                 }
             })
+            .get("/positionDetails/:token", (req, res) => {
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    let id_1 = decoded.data;
+                    positions.findOne({ _id: ObjectID(req.query.posId) }, (err, position) => {
+                        if (position === null) {
+                            console.log("Position introuvable ! ");
+                            res.statusCode = 404;
+                        } else {
+                            res.statusCode = 200;
+                            res.json(position);
+                        }
+                    })
+                } catch (err) {
+
+                }
+            })
 
         .post("/friends/:token", (req, res) => {
                 console.log("Vous voulez AJOUTER UN AMI");

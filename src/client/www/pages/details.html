@@ -1,6 +1,87 @@
 <template>
     <div class="page" data-name="detailsPos">
+        <div class="scrollbar-warm-flame d-none" id="menuDetail">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
+                <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
+                        title="page d'accueil"></i></a>
+                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                        title="Ajouter une nouvelle position"></i></a>
+                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                        title="modifier les paramètres de votre compte"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                        title="liste des amis"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
+                        title="historique des positions"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
 
+            </div>
+        </div>
+
+        <div id="containDetail">
+            <nav class="navbar navbar-dark">
+                <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                        style="color: white;">menu</i></a>
+                <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    {{#if cpt}}
+                    <span id="span_notifs"></span>
+                    {{/if}}
+                </a>
+                <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+            </nav>
+            <center>
+                <h1 id="title">Friend Finder</h1>
+            </center>
+            {{#position}}
+            <div id="map"></div>
+            <div id="log">
+                <div>
+                    <ul>
+                        <li>Partagée le: {{date_activation}} à {{heure_activation}}</li>
+                        {{#js_if "this.status === 'Archivée'"}}
+                        <li>Archivée après {{duree}} secondes du partage</li>
+                        {{else}}
+                        <li>Sera archivée après {{duree}} secondes du partage</li>
+                        {{/js_if}}
+                        <li><strong>Coordonnées: </strong>
+                            <ul>
+                                <li>
+                                    <strong>Latitude: </strong>
+                                    <div id="col-li" style="margin-left: 20px;"> {{lat}}</div>
+                                </li>
+                                <li>
+                                    <strong>Longitude: </strong>
+                                    <div id="col-li" style="margin-left: 20px;">{{long}}</div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Message: </strong>
+                            <div id="col-li" style="margin-left: 20px;">{{msg}}</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row" style="margin-bottom: 2%; margin-right: 1%; margin-left: 1%;">
+                    <a @click="back" class="col button button-fill button-raised"
+                        style="margin-left: 5%; margin-right: 1.5%; color: white;"><i
+                            class="icon f7-icons">hand_point_left</i></a>
+                    {{#js_if "this.status === 'Archivée'"}}
+                    <a @click="archiver" class="col button button-fill button-raised disabled"
+                        style="margin-left: 3%; margin-right: 1.5%; color: white;"><i
+                            class="icon f7-icons">clock</i></a>
+                    {{else}}
+                    <a @click="archiver" class="col button button-fill button-raised"
+                        style="margin-left: 3%; margin-right: 1.5%; color: white;"><i
+                            class="icon f7-icons">clock</i></a>
+                    {{/js_if}}
+                    <a @click="supprimer" class="col button button-fill button-raised"
+                        style="margin-left: 3%; margin-right: 5%; color: white;"><i
+                            class="icon f7-icons">multiply</i></a>
+                </div>
+            </div>
+            {{/position}}
+
+        </div>
+    </div>
     </div>
 </template>
 <script>
@@ -27,14 +108,106 @@
             console.log("notifs: " + JSON.stringify(notifs));
             cpt = notifs.length;
             // On doit faire une requête à l'API pour récupérer les données d'une position donnée
+            let position = null;
+            if (window.cordova === undefined) {
+                url = "http://localhost:3000/positionDetails/" + this.$route.params.token + "?posId=" + this.$route.params.idPos;
+                console.log("Browser");
+            } else {
+                url = "http://10.0.2.2:3000/positionDetails/" + this.$route.params.token + "?posId=" + this.$route.params.idPos;
+                console.log(window.cordova.platformId);
+            }
+            try {
+                position = await fetch(url)
+                    .then(res =>
+                        res.json())
+            } catch (err) {
+                this.$app.dialog.alert("Error: " + err);
+            }
             return {
                 notifs: notifs,
-                cpt: cpt
+                cpt: cpt,
+                position: position
             }
         },
         on: {
-            pageInit: function() {
+            pageInit: async function() {
                 console.log("Page chargée");
+                let position = null;
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/positionDetails/" + this.$route.params.token + "?posId=" + this.$route.params.idPos;
+                    console.log("Browser");
+                } else {
+                    url = "http://10.0.2.2:3000/positionDetails/" + this.$route.params.token + "?posId=" + this.$route.params.idPos;
+                    console.log(window.cordova.platformId);
+                }
+                try {
+                    position = await fetch(url)
+                        .then(res =>
+                            res.json())
+                } catch (err) {
+                    this.$app.dialog.alert("Error: " + err);
+                }
+                let macarte = null;
+                let lat = position.lat;
+                let lon = position.long;
+                // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
+                macarte = L.map('map').setView([lat, lon], 5);
+                // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+                L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                    // Il est toujours bien de laisser le lien vers la source des données
+                    attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                    minZoom: 1,
+                    maxZoom: 20
+                }).addTo(macarte);
+                let marker = L.marker([lat, lon]).addTo(macarte);
+                marker.bindPopup("test page init");
+                console.log(marker);
+            }
+        },
+        methods: {
+            params: function() {
+                console.log("Vous voulez modifier votre mot de passe");
+                console.log(this.$route.params.token);
+                this.$router.navigate("/parameters/" + this.$route.params.token);
+            },
+            getPos: function() {
+                // this.$router.navigate("/position");
+                this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            },
+            show_menu: function() {
+                if (document.getElementById("menuDetail").classList.contains("d-none")) {
+                    document.getElementById("menuDetail").classList.remove("d-none");
+                    document.getElementById("containDetail").style.marginLeft = "70px";
+                } else {
+                    document.getElementById("menuDetail").classList.add("d-none");
+                    document.getElementById("containDetail").style.marginLeft = "0px";
+                }
+            },
+            amis: function() {
+                this.$router.navigate("/amis");
+            },
+            home: function() {
+                this.$router.navigate("/accueil/" + this.$route.params.token);
+            },
+            deconnecter: function() {
+                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+                //     // this.$router.navigate("/");
+                //     this.$app.dialog.alert("GREAT!");
+                // });
+                this.$router.navigate("/");
+            },
+            bell: function() {
+                this.$router.navigate("/notifs/" + this.$route.params.token);
+            },
+            back: function() {
+                this.$router.back();
+            },
+            supprimer: function() {
+
+            },
+            archiver: function() {
+
             }
         }
     }

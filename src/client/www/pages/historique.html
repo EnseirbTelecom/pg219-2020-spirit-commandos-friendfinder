@@ -43,12 +43,12 @@
                             <i class="icon f7-icons">pencil</i>
                         </a>
                     </div>
-                    
+
                     <div style="margin-left: 10%; margin-right: 5%;">
                         <h6 id="address">{{address}}</h6>
                         <h6 id="context">{{context}}</h6>
                         <!-- <div class="fab "> -->
-                            
+
                         <!-- </div> -->
                         <!-- <h6>partagée le {{date_activation}} à {{heure_activation}}</h6> -->
                         <!-- <h6>message: {{msg}}</h6> -->
@@ -146,6 +146,22 @@
                 let macarte = null;
                 var lat = 44.839683;
                 var lon = -0.570618;
+                // var container = L.DomUtil.get('map');
+                // console.log(container);
+                // if (container != null) {
+                //     console.log("map already initialized " + container._leaflet_id);
+                //     // container = null;
+                //     container._leaflet_id = null;
+                // }
+                // document.getElementById('map').innerHTML = "< div id='map' style='width: 100%; height: 100%;'>";
+                // if (L.map('map') != undefined) {
+                //     L.map('map').remove();
+                // }
+                var container = L.DomUtil.get('map');
+                if (container != null) {
+                    container._leaflet_id = null;
+                }
+                // document.getElementById("map").innerHTML = "<div id=\"map\"></div>";
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
                 macarte = L.map('map').setView([lat, lon], 5);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
@@ -196,6 +212,12 @@
             },
             getDetails: function(id) {
                 this.$router.navigate("/detailsPos/" + this.$route.params.token + "/" + id);
+            }
+        },
+        on: {
+            pageAfterout: function() {
+                // console.log("leaving page");
+                // document.getElementById("map").parentNode.removeChild(document.getElementById("map"));
             }
         }
     }

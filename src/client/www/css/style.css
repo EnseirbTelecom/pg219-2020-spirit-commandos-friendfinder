@@ -334,16 +334,18 @@ input:checked+.slider:before {
     border-radius: 2rem;
 }
 
-ul li {
+
+/* ul li {
     list-style: none;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
     padding: 8px 0;
     display: flex;
-}
+} */
 
-ul li:last-child {
+
+/* ul li:last-child {
     border-bottom: none;
-}
+} */
 
 
 /* ul li .icon {
