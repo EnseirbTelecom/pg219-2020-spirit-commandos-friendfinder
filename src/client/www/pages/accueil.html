@@ -40,9 +40,9 @@
                 <!--
                     <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
                -->
-                    <div id="map"></div>
+                <div id="map"></div>
 
-                 
+
                 <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                     <h6>&copy; spirit_commandos 2020</h6>
                 </div>
@@ -135,6 +135,16 @@
                 let macarte = null;
                 var lat = 44.839683;
                 var lon = -0.570618;
+                var container = L.DomUtil.get('map');
+                if (container != null) {
+                    container._leaflet_id = null;
+                }
+                // if (document.getElementsByClassName("page-previous")[0] !== null) {
+                // let page_previous = document.getElementsByClassName("page-previous")[0].children;
+                // console.log(page_previous);
+                // }
+                // let classs = document.getElementsByClassName("page-previous")[0].childNodes.childNodes;
+                // console.log(classs);
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
                 macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
@@ -144,7 +154,11 @@
                     minZoom: 1,
                     maxZoom: 20
                 }).addTo(macarte);
-                
+                console.log("AFTER: " + container._leaflet_id);
+
+            },
+            pageAfterout: function() {
+                document.getElementById("map").parentNode.removeChild(document.getElementById("map"));
             }
         }
     }
