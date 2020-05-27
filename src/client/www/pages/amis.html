@@ -1,5 +1,5 @@
 <template>
-    <div class="page" data-name="params">
+    <div class="page" data-name="profile">
         <div class="scrollbar-warm-flame d-none" id="menu1">
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
                 <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
@@ -37,6 +37,10 @@
             <center>
                 <h2 id="secondTitle">Liste des amis: </h2>
             </center>
+
+            <!-- / =============================================================================================== \ -->
+            <!--  -->
+            <!-- / =============================================================================================== \ -->
             {{#if id}}
             <div id="card-accept">
                 Acceptez vous l'invitation de "xxxxxx" ?
@@ -50,11 +54,14 @@
                 </div>
             </div>
             {{/if}}
+
+
+
             <div style="margin-bottom: 10%;">
             <!-- <div class="d-inline"> -->
                 {{#each friends}}
                 {{#js_if "@index%2 === 0"}}
-                <div class="card" id="cv1">
+                <div class="card" id="cv1" >
                     <img src="./avatar-7.png" alt="Avatar" id="avatar">
                     <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>

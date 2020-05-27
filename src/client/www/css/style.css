@@ -146,11 +146,6 @@ input[type] {
 
 /* } */
 
-header {
-    margin-top: 10%;
-    margin-left: 42%;
-}
-
 .label1 {
     font-weight: 1000;
     color: rgb(42, 60, 119);
@@ -166,11 +161,6 @@ header {
     margin-right: 10%;
     /* margin-top: 10%; */
     margin-bottom: 20%;
-}
-
-header {
-    margin-right: 100%;
-    /* margin-bottom: 15%; */
 }
 
 #title {
@@ -432,6 +422,20 @@ li:hover {
 
 #pseudo {
     color: rgb(42, 60, 119);
+}
+
+#profileImg {
+    border-radius: 50%;
+    width: 60%;
+    margin: 3%;
+    margin-left: 20%;
+}
+
+#card-profile {
+    margin: 5%;
+    border: rgb(42, 60, 119) solid 0.3rem;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
 }
 
 #icon-profile {
