@@ -40,7 +40,8 @@
                 <!--
                     <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
                -->
-                <div id="map"></div>
+
+                <div id="mapAccueil"></div>
 
 
                 <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
@@ -139,12 +140,13 @@
                 if (container != null) {
                     container._leaflet_id = null;
                 }
-                // if (document.getElementsByClassName("page-previous")[0] !== null) {
-                // let page_previous = document.getElementsByClassName("page-previous")[0].children;
-                // console.log(page_previous);
-                // }
-                // let classs = document.getElementsByClassName("page-previous")[0].childNodes.childNodes;
-                // console.log(classs);
+                if (document.getElementById("map")) {
+                    document.getElementById("map").parentNode.removeChild(document.getElementById("map"));
+                }
+                let divmap = document.createElement("div");
+                divmap.id = "map";
+                document.getElementById("mapAccueil").appendChild(divmap);
+
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
                 macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
@@ -154,10 +156,9 @@
                     minZoom: 1,
                     maxZoom: 20
                 }).addTo(macarte);
-                console.log("AFTER: " + container._leaflet_id);
 
             },
-            pageAfterout: function() {
+            pageBeforeout: function() {
                 document.getElementById("map").parentNode.removeChild(document.getElementById("map"));
             }
         }
