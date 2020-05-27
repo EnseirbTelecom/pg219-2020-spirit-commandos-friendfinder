@@ -28,18 +28,28 @@
     height: 400px;
 }
 
+#avatar {
+    width: 100%;
+    border-radius: 1rem;
+}
+
 #cv1 {
     float: left;
     width: 40%;
     margin-right: 2.5%;
     margin-left: 5.5%;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
 }
 
 #cv2 {
     float: left;
     width: 40%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 5.5%;
+    /* margin-right: auto; */
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
+    /* border: rgb(42, 60, 119) solid 0.3rem; */
 }
 
 #log {
@@ -62,6 +72,11 @@ h1 h2 h3 h4 h5 h6 {
     color: black;
 }
 
+#secondTitle {
+    color: rgb(42, 60, 119);
+    font-weight: 800;
+}
+
 
 /* .button { */
 
@@ -70,7 +85,15 @@ h1 h2 h3 h4 h5 h6 {
 }
 
 #plus {
-    margin-top: 70%;
+    /* margin-bottom: -50px; */
+    /* margin-top: -50%; */
+    /* margin-top: 70%; */
+    margin-top: 5%;
+    border-radius: 50%;
+    width: 50px;
+    height: 40px;
+    margin-left: 43%;
+    /* margin-right: 25%; */
 }
 
 input[type] {
@@ -166,6 +189,7 @@ header {
 }
 
 #back {
+    /* position: fixed; */
     margin-left: 5%;
     margin-top: 5%;
 }
@@ -399,8 +423,15 @@ li:hover {
     padding: 2px 16px;
 }
 
-.link-profile {
+#profile {
     float: right;
+    margin-right: 3%;
+    /* font-size: large; */
+    font-weight: bold;
+}
+
+#pseudo {
+    color: rgb(42, 60, 119);
 }
 
 #icon-profile {

@@ -34,6 +34,9 @@
                 <h1 id="title">Friend Finder</h1>
             </center>
 
+            <center>
+                <h2 id="secondTitle">Liste des amis: </h2>
+            </center>
             {{#if id}}
             <div id="card-accept">
                 Acceptez vous l'invitation de "xxxxxx" ?
@@ -47,34 +50,38 @@
                 </div>
             </div>
             {{/if}}
-            <div class="d-inline">
+            <div style="margin-bottom: 10%;">
+            <!-- <div class="d-inline"> -->
                 {{#each friends}}
                 {{#js_if "@index%2 === 0"}}
                 <div class="card" id="cv1">
-                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
-                    <div class="container">
+                    <img src="./avatar-7.png" alt="Avatar" id="avatar">
+                    <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
-                    <a @click="getProfile('{{_id}}'" class="link-profile">
-                        profil
-                    </a>
+                    <div id="profile">
+                        <a @click="getProfile('{{_id}}'" id="profile">profil</a>
+                    </div>
                 </div>
                 {{else}}
                 <div class="card" id="cv2">
-                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
-                    <div class="container">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%" id="avatar">
+                    <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
-                    <a @click="getProfile('{{_id}}'" class="link-profile">
-                        profil
-                    </a>
+                    <div id="profile">
+                        <a @click="getProfile('{{_id}}'" id="profile">profil</a>
+                    </div>
                 </div>
                 {{/js_if}}
                 {{/each}}
             </div>
+            <!-- </div> -->
 
-            <div class="fab fab-center" id="plus">
-                <a @click="add_friend" href="#" title="Ajouter un ami">
+
+            <!-- <div class="fab fab-center-bottom" id="plus"> -->
+            <div >
+                <a @click="add_friend" href="#" class="button button-fill" title="Ajouter un ami" id="plus">
                     <i class="icon f7-icons">plus</i>
                 </a>
             </div>
@@ -96,16 +103,17 @@
                 </div>
             </div>
             <!-- </ul> -->
+
+            <div class="fab " id="back">
+                <a @click="back" href="#" title="Ajouter un produit">
+                    <i class="icon f7-icons">arrow_left</i>
+                </a>
+            </div>
+            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                <h6>&copy; spirit_commandos 2020</h6>
+            </div>
         </div>
 
-        <div class="fab " id="back">
-            <a @click="back" href="#" title="Ajouter un produit">
-                <i class="icon f7-icons">arrow_left</i>
-            </a>
-        </div>
-        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
-            <h6>&copy; spirit_commandos 2020</h6>
-        </div>
     </div>
 </template>
 <script>
