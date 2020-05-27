@@ -277,9 +277,11 @@
                                 if (JSON.stringify(data) === "null") {
                                     this.$app.dialog.alert("Error while adding the position");
                                 } else {
-                                    redirection = 1;
-                                    router.navigate("/map/" + token);
-                                    console.log("redirection 1");
+                                    console.log("id_pos: " + data.text);
+                                    // redirection = 1;
+                                    router.navigate("/detailsPos/" + token + "/" + data.text);
+                                    // router.navigate("/map/" + token);
+                                    // console.log("redirection 1");
                                 }
                             })
                             if (window.cordova === undefined) {

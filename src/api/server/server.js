@@ -241,13 +241,17 @@ MongoClient.connect(url, {
                                     status: "en attente"
                                 };
                                 notifications.insertOne(notif, (err, notifInserted) => {
-                                    console.log("notif inserted: " + JSON.stringify(notifInserted));
+                                    // console.log("notif inserted: " + JSON.stringify(notifInserted));
                                 })
                             })
                         });
                         setTimeout(() => { archivePosition(position, positions) }, position.duree * 1000);
-                        res.statusCode = 200;
-                        res.json("success");
+                        // res.statusCode = 200;
+                        console.log("RESULT: " + JSON.stringify(resu.insertedId));
+                        res.status(200).json({
+                                text: resu.insertedId,
+                            })
+                            // res.json(resu.insertedId);
                     })
                 } catch (err) {
                     console.log("erreur lors du décodage");
