@@ -39,11 +39,11 @@
             </center>
 
             <!-- / =============================================================================================== \ -->
-            <!--  -->
+            <!--                                             Invitation                                              -->
             <!-- / =============================================================================================== \ -->
             {{#if id}}
             <div id="card-accept">
-                Acceptez vous l'invitation de "xxxxxx" ?
+                Acceptez vous l'invitation de {{invitation}} ?
                 <div class="block">
                     <div class="row" id="buttons">
                         <a @click="accept" class="col button button-fill btn-accept"
@@ -56,12 +56,14 @@
             {{/if}}
 
 
-
+            <!-- / =============================================================================================== \ -->
+            <!--                                          Liste des amis                                             -->
+            <!-- / =============================================================================================== \ -->
             <div style="margin-bottom: 10%;">
-            <!-- <div class="d-inline"> -->
+                <!-- <div class="d-inline"> -->
                 {{#each friends}}
                 {{#js_if "@index%2 === 0"}}
-                <div class="card" id="cv1" >
+                <div class="card" id="cv1">
                     <img src="./avatar-7.png" alt="Avatar" id="avatar">
                     <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
@@ -86,8 +88,11 @@
             <!-- </div> -->
 
 
+            <!-- / =============================================================================================== \ -->
+            <!--                                       Ajouter des amis                                              -->
+            <!-- / =============================================================================================== \ -->
             <!-- <div class="fab fab-center-bottom" id="plus"> -->
-            <div >
+            <div>
                 <a @click="add_friend" href="#" class="button button-fill" title="Ajouter un ami" id="plus">
                     <i class="icon f7-icons">plus</i>
                 </a>
@@ -136,6 +141,7 @@
                 console.log(window.cordova.platformId);
             }
             let notifs = [];
+            let invitation = null;
             let cpt = 0;
             let id = 0;
             try {
@@ -162,15 +168,17 @@
                 this.$app.dialog.alert("ERROR: " + err);
             }
             if (this.$route.params.id) {
-                console.log("id: " + id);
                 id = 1;
+                invitation = this.$route.params.id;
+                console.log("PARAMS: " + invitation);
+
             }
-            console.log("friends: " + JSON.stringify(friends));
             return {
                 friends: friends,
                 id: id,
                 notifs: notifs,
-                cpt: cpt
+                cpt: cpt,
+                invitation: this.$route.params.id
             }
         },
         methods: {

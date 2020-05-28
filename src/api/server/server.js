@@ -225,6 +225,7 @@ MongoClient.connect(url, {
                                     code: 1,
                                     id_src: decoded.data,
                                     id_dst: friend.id_2,
+                                    target: resu.insertedId,
                                     status: "en attente"
                                 };
                                 notifications.insertOne(notif, (err, notifInserted) => {
@@ -238,6 +239,7 @@ MongoClient.connect(url, {
                                     code: 1,
                                     id_src: decoded.data,
                                     id_dst: friend.id_1,
+                                    target: resu.insertedId,
                                     status: "en attente"
                                 };
                                 notifications.insertOne(notif, (err, notifInserted) => {
@@ -661,7 +663,7 @@ MongoClient.connect(url, {
                 }
             })
             .get("/SetNotifAsSeen/:token", (req, res) => {
-                // res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Origin", "*");
                 try {
                     // On décode le token fourni
                     let decoded = jwt.verify(req.params.token, privatekey);
@@ -669,8 +671,22 @@ MongoClient.connect(url, {
                     let id = decoded.data;
                     notifications.update({ _id: ObjectID(req.query.id) }, { $set: { status: "vue" } }, (err, result) => {
                         console.log("notifs mise à jour");
-                        res.statusCode = 403;
+                        res.statusCode = 200;
                         res.json();
+                    })
+                } catch (err) {
+                    console.log("Erreur lors du décodage");
+                }
+            })
+            .get("/TargetNotif/:token/:id", (req, res) => {
+                try {
+                    // On décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    let id = decoded.data;
+                    notifications.findOne({ _id: ObjectID(req.params.id) }, (err, result) => {
+                        console.log("NOTIF: " + result);
+                        res.json(result);
                     })
                 } catch (err) {
                     console.log("Erreur lors du décodage");

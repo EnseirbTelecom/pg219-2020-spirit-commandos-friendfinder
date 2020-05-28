@@ -373,26 +373,30 @@ input:checked+.slider:before {
 } */
 
 ul li .icon .fas {
-    color: #fff;
+    margin: 5%;
+    color: black;
     font-size: 16px;
     line-height: 24px;
 }
 
 ul li .text {
+    margin: 5%;
     position: relative;
     font-family: sans-serif;
     font-weight: 100;
-    color: white;
+    /* color: white; */
     top: 3px;
     cursor: pointer;
 }
 
 ul li:hover .text {
+    margin: 5%;
     font-weight: bold;
     /* color: #ff2c74; */
 }
 
 li:hover {
+    margin: 5%;
     font-weight: 1000;
     color: black;
 }
@@ -524,6 +528,10 @@ li:hover {
 
 .fa {
     color: white;
+}
+
+#fa-notifs {
+    color: rgb(42, 60, 119);
 }
 
 
