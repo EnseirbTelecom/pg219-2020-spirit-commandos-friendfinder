@@ -88,5 +88,3 @@ $$('#my-login-screen .login-button').on('click', function() {
 app.views.create('.view-main', {
     url: '/'
 });
-
-console.log(app);

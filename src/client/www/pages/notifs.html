@@ -33,8 +33,8 @@
                     <h1 id="title">Friend Finder</h1>
                     <h2 id="secondTitle">Liste des notifications</h2>
                 </center>
-                <div id="log">
-                    <ul>
+                <div style="margin-top: 10%;">
+                    <ul id="notifications">
                         {{#each notifs}}
                         <li>
                             {{#if code}}
@@ -54,7 +54,7 @@
                     </ul>
                 </div>
 
-                <a @click="AllNotifs">Afficher toutes les notifs</a>
+                <a @click="AllNotifs" id="allNotifs">Afficher toutes les notifs</a>
 
                 <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                     <h6>&copy; spirit_commandos 2020</h6>
