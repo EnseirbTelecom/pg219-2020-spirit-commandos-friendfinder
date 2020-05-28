@@ -150,32 +150,32 @@
 </template>
 <script>
     return {
-        async data() {
-            // On cherche les notifications de l'utilisateur
-            let url;
-            if (window.cordova === undefined) {
-                url = "http://localhost:3000/notifs/" + this.$route.params.token;
-                console.log("Browser");
-            } else {
-                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
-                console.log(window.cordova.platformId);
-            }
-            let notifs = [];
-            let cpt = 0;
-            try {
-                notifs = await fetch(url)
-                    .then(res =>
-                        res.json())
-            } catch (err) {
-                this.$app.dialog.alert("Error " + err);
-            }
-            console.log("notifs: " + JSON.stringify(notifs));
-            cpt = notifs.length;
-            return {
-                notifs: notifs,
-                cpt: cpt
-            }
-        },
+        // async data() {
+        //     // On cherche les notifications de l'utilisateur
+        //     // let url;
+        //     // if (window.cordova === undefined) {
+        //     //     url = "http://localhost:3000/notifs/" + this.$route.params.token;
+        //     //     console.log("Browser");
+        //     // } else {
+        //     //     url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+        //     //     console.log(window.cordova.platformId);
+        //     // }
+        //     // let notifs = [];
+        //     // let cpt = 0;
+        //     // try {
+        //     //     notifs = await fetch(url)
+        //     //         .then(res =>
+        //     //             res.json())
+        //     // } catch (err) {
+        //     //     this.$app.dialog.alert("Error " + err);
+        //     // }
+        //     // console.log("notifs: " + JSON.stringify(notifs));
+        //     // cpt = notifs.length;
+        //     // return {
+        //     //     notifs: notifs,
+        //     //     cpt: cpt
+        //     // }
+        // },
         methods: {
             params: function() {
                 console.log("Vous voulez modifier votre mot de passe");

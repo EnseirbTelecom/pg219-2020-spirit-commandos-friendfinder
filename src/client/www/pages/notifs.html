@@ -1,6 +1,6 @@
 <template>
     <div class="page" data-name="notifs">
-        <div class="scrollbar-warm-flame d-none" id="menu">
+        <div class="scrollbar-warm-flame d-none" id="menuNotif">
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
@@ -18,8 +18,8 @@
             </div>
         </div>
         <div>
-            <div id="contain">
-                <nav class="navbar navbar-dark bg-dark">
+            <div id="containNotif">
+                <nav class="navbar navbar-dark">
                     <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
                     <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
@@ -33,25 +33,9 @@
                     <h1 id="title">Friend Finder</h1>
                     <h2 id="secondTitle">Liste des notifications</h2>
                 </center>
-                <!-- <div>
-            <p>
-                {{#if cpt}}
-                var
-                {{else}}
-                yok
-                {{/if}}
-            </p>
-
-            <ul>
-                {{#each notifs}}
-                <li>{{code}}: {{id_src}} => {{id_dst}}</li>
-                {{/each}}
-            </ul>
-        </div> -->
                 <div id="log">
                     <ul>
                         {{#each notifs}}
-                        <!-- <div > -->
                         <li>
                             {{#if code}}
                             <a @click="vu('{{_id}}', '{{id_src}}', 1)">
@@ -136,24 +120,18 @@
                 this.$router.navigate("/AddPosition/" + this.$route.params.token);
             },
             show_menu: function() {
-                if (document.getElementById("menu").classList.contains("d-none")) {
-                    document.getElementById("menu").classList.remove("d-none");
-                    document.getElementById("contain").classList.add("w3-container");
-                    document.getElementById("contain").style.marginLeft = "70px";
+                if (document.getElementById("menuNotif").classList.contains("d-none")) {
+                    document.getElementById("menuNotif").classList.remove("d-none");
+                    document.getElementById("containNotif").style.marginLeft = "70px";
                 } else {
-                    document.getElementById("menu").classList.add("d-none");
-                    document.getElementById("contain").classList.remove("w3-container");
-                    document.getElementById("contain").style.marginLeft = "0px";
+                    document.getElementById("menuNotif").classList.add("d-none");
+                    document.getElementById("containNotif").style.marginLeft = "0px";
                 }
             },
             amis: function() {
                 this.$router.navigate("/amis/" + this.$route.params.token);
             },
             deconnecter: function() {
-                console.log("Deconnexion!!!!");
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                //     this.$router.navigate("/off/");
-                // })
                 this.$router.navigate("/");
             },
             bell: function() {

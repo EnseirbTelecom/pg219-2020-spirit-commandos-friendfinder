@@ -31,12 +31,15 @@
             </nav>
             <center>
                 <h1 id="title">Friend Finder</h1>
+                <h2 id="secondTitle">Détails position: </h2>
             </center>
             {{#position}}
-            <div id="mapDetails"></div>
             <div id="log">
+                <h4 id="secondTitle" style="margin-left: 5px;">Carte: </h4>
+                <div id="mapDetails"></div>
                 <div>
-                    <ul>
+                    <h4 id="secondTitle" style="margin-left: 5px;">Détails: </h4>
+                    <ul id="details">
                         <li>Partagée le: {{date_activation}} à {{heure_activation}}</li>
                         {{#js_if "this.status === 'Archivée'"}}
                         <li>Archivée après {{duree}} secondes du partage</li>
@@ -164,7 +167,7 @@
                 let lon = position.long;
                 console.log("AFFICHAGE MAP");
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
-                macarte = L.map('map').setView([lat, lon], 5);
+                macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
                 L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                     // Il est toujours bien de laisser le lien vers la source des données
