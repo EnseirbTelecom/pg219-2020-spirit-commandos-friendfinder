@@ -84,32 +84,28 @@ MongoClient.connect(url, {
             //calcul de l'heure d'ouverture du serveur en millisecondes
             let heureActuelle = new Date().getTime();
             console.log("Parcours des positions et test d'archivage");
-            console.log("Date en H ouverture serveur : "+ heureActuelle);
-            positions.find({status:"active"}).toArray().then(positionList => {
-                console.log("liste des positions actives : " +JSON.stringify(positionList));
+            console.log("Date en H ouverture serveur : " + heureActuelle);
+            positions.find({ status: "active" }).toArray().then(positionList => {
+                console.log("liste des positions actives : " + JSON.stringify(positionList));
                 positionList.forEach(position => {
                     console.log("calcul date ajout de la position");
                     //on parse la date pour la construire sous la bonne forme
                     let dateActivation = position.date_activation.match(/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})/);
                     console.log("dateActivation: " + dateActivation);
                     //on construit la date sous le bon format
-                    let dateAjoutPosition = new Date(dateActivation[2]+"/"+dateActivation[1]+"/"+dateActivation[3] + " "+position.heure_activation);
-                    console.log("dateAjoutPos: " + dateAjoutPosition);
+                    let dateAjoutPosition = new Date(dateActivation[2] + "/" + dateActivation[1] + "/" + dateActivation[3] + " "+position.heure_activation);
                     console.log("diff deux dates");
                     //Calcul en milliseconde de la date d'archivage
-                    let dateArchivage = dateAjoutPosition.getTime()+position.duree*1000;
+                    let dateArchivage = dateAjoutPosition.getTime() + position.duree * 1000;
                     console.log(dateArchivage);
                     console.log(heureActuelle);
-                    let diff = dateArchivage-heureActuelle;
-                    console.log("diff entre pos  : "+ diff);
-                    if((dateArchivage-heureActuelle)<=0 ){
+                    if ((dateArchivage - heureActuelle) <= 0) {
                         console.log("position à archiver retrouvée");
                         archivePosition(position, positions);
-                    }
-                    else{
+                    } else {
                         console.log("les positions actives sont encore valables");
                         console.log("duree restante en secondes : ");
-                        let dureeNv = (dateArchivage-heureActuelle)/1000;
+                        let dureeNv = (dateArchivage - heureActuelle) / 1000;
                         console.log(dureeNv);
                         setTimeout(() => { archivePosition(position, positions) }, dureeNv * 1000);
                     }                    
@@ -225,27 +221,41 @@ MongoClient.connect(url, {
                     positions.insertOne(position, (err, resu) => {
                         console.log("Position Ajoutée");
                         console.log(decoded.data);
-                        friends.find({ $or: [{ id_1: decoded.data }, { id_2: decoded.data }] }).toArray().then(result => {
-                            console.log(JSON.stringify(result));
+                        friends.find({ id_1: decoded.data }).toArray().then(result => {
                             result.forEach(friend => {
                                 let notif = {
                                     code: 1,
                                     id_src: decoded.data,
+                                    id_dst: friend.id_2,
+                                    target: resu.insertedId,
                                     status: "en attente"
                                 };
-                                if (result.id_1 === decoded.data) {
-                                    notif.id_dst = ObjectID(friend.id_2).toString();
-                                } else {
-                                    notif.id_dst = ObjectID(friend.id_1).toString();
-                                }
-                                notifications.insertOne(notif).then((err, notifInserted) => {
-                                    console.log(JSON.stringify(notifInserted));
+                                notifications.insertOne(notif, (err, notifInserted) => {
+                                    console.log("notif inserted: " + JSON.stringify(notifInserted));
                                 })
                             })
-                            setTimeout(() => { archivePosition(position, positions) }, position.duree * 1000);
-                            res.statusCode = 200;
-                            res.json("success");
-                        })
+                        });
+                        friends.find({ id_2: decoded.data }).toArray().then(result => {
+                            result.forEach(friend => {
+                                let notif = {
+                                    code: 1,
+                                    id_src: decoded.data,
+                                    id_dst: friend.id_1,
+                                    target: resu.insertedId,
+                                    status: "en attente"
+                                };
+                                notifications.insertOne(notif, (err, notifInserted) => {
+                                    // console.log("notif inserted: " + JSON.stringify(notifInserted));
+                                })
+                            })
+                        });
+                        setTimeout(() => { archivePosition(position, positions) }, position.duree * 1000);
+                        // res.statusCode = 200;
+                        console.log("RESULT: " + JSON.stringify(resu.insertedId));
+                        res.status(200).json({
+                                text: resu.insertedId,
+                            })
+                            // res.json(resu.insertedId);
                     })
                 } catch (err) {
                     console.log("erreur lors du décodage");
@@ -279,42 +289,21 @@ MongoClient.connect(url, {
                     let decoded = jwt.verify(req.params.token, privatekey);
                     console.log("decoded:" + decoded.data);
                     let id = decoded.data;
-                    // let friendsListId = [];
-                    //recherche des amis de l'utilisateur
-                    let friend1 = {
-                        id_1: id
-                    };
-                    let friend2 = {
-                        id_2: id
-                    };
-                    friends.find({ $or: [friend1, friend2] }).toArray().then(friendsListId => {
-                        console.log("friendsList: " + JSON.stringify(friendsListId));
-                        positions.find({ $and: [{ user: { $in: friendsListId.id_1 } }, { status: "active" }] }).toArray().then(positionsFriendsList => {
+                    let friendsListId = [];
+                    friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
+                        result.forEach(item => {
+                            if (item.id_1 === id) {
+                                friendsListId.push(item.id_2);
+                            } else {
+                                friendsListId.push(item.id_1);
+                            }
+                        });
+                        console.log("length: " + JSON.stringify(friendsListId));
+                        positions.find({ $and: [{ status: "active" }, { user: { $in: friendsListId } }] }).toArray().then(positionsFriendsList => {
                             console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
                             res.json(positionsFriendsList);
                         })
-                    })
-                //recherche des positions actives des amis
-                positions.find({ $and: [{ user: { $in: friendsListId } }, { status: "active" }] }).toArray().then(positionsFriendsList => {
-                    console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
-                    res.json(positionsFriendsList);
-                })
-
-                    // friends.find({ $or: [{ id_1: id }, { id_2: id }] }).toArray().then(result => {
-                    //     console.log("friends: " + JSON.stringify(result));
-                    //     result.forEach(item => {
-                    //         if (item.id_1 === id) {
-                    //             friendsListId.push(ObjectID(item.id_2));
-                    //         } else {
-                    //             friendsListId.push(ObjectID(item.id_1));
-                    //         }
-                    //         console.log("id des amis : " + friendsListId);
-                    //     })
-                    // })
-                    // console.log("friends list: " + JSON.stringify(friendsListId));
-                    //recherche des positions actives des amis
-
-
+                    });
                 } catch (err) {
                     console.log("Erreur lors du décodage");
                 }
@@ -444,8 +433,8 @@ MongoClient.connect(url, {
                     console.log("Erreur s'est produite lors du décodage");
                 }
             })
-            .delete("/deletePos/:token/:posId",(req,res) =>{
-                try{
+            .delete("/deletePos/:token/:posId", (req, res) => {
+                try {
                     // on décode le token fourni
                     let decoded = jwt.verify(req.params.token, privatekey);
                     let idPos = req.params.posId;
@@ -456,7 +445,7 @@ MongoClient.connect(url, {
                     })
                     console.log("position supprimée avec succes");
 
-                }catch (err) {
+                } catch (err) {
                     console.log("Erreur s'est produite lors du décodage");
                 }
             })
@@ -468,13 +457,13 @@ MongoClient.connect(url, {
                     let idPos = req.params.posId;
                     //  On cherche la position active dans la BDD
                     positions.findOne({ _id: ObjectID(idPos) })
-                    .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position trouvée"))
+                        .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position trouvée"))
                 } catch (err) {
                     console.log("Erreur lors du décodage");
                 }
             })
-            
-            .delete("/friend/:token/:id", (req, res) => {
+
+        .delete("/friend/:token/:id", (req, res) => {
                 try {
                     // on décode le token fourni
                     let decoded = jwt.verify(req.params.token, privatekey);
@@ -655,7 +644,7 @@ MongoClient.connect(url, {
                 }
             })
             .get("/SetNotifAsSeen/:token", (req, res) => {
-                // res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Origin", "*");
                 try {
                     // On décode le token fourni
                     let decoded = jwt.verify(req.params.token, privatekey);
@@ -663,8 +652,22 @@ MongoClient.connect(url, {
                     let id = decoded.data;
                     notifications.update({ _id: ObjectID(req.query.id) }, { $set: { status: "vue" } }, (err, result) => {
                         console.log("notifs mise à jour");
-                        res.statusCode = 403;
+                        res.statusCode = 200;
                         res.json();
+                    })
+                } catch (err) {
+                    console.log("Erreur lors du décodage");
+                }
+            })
+            .get("/TargetNotif/:token/:id", (req, res) => {
+                try {
+                    // On décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    let id = decoded.data;
+                    notifications.findOne({ _id: ObjectID(req.params.id) }, (err, result) => {
+                        console.log("NOTIF: " + result);
+                        res.json(result);
                     })
                 } catch (err) {
                     console.log("Erreur lors du décodage");
@@ -690,4 +693,5 @@ MongoClient.connect(url, {
 
 .catch(function(err) {
     throw err;
+
 });

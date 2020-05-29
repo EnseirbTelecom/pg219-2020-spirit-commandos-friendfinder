@@ -1,8 +1,8 @@
 <template>
     <div class="page" data-name="home">
         <!-- <header> -->
-                <!-- <h1 id="title">Friend Finder</h1> -->
-                <img src="./logo1.png" width="250px" height="100px" style="margin-left: 15%; margin-top: 15%;">
+        <!-- <h1 id="title">Friend Finder</h1> -->
+        <img src="./logo1.png" width="250px" height="100px" style="margin-left: 15%; margin-top: 15%;">
         <!-- </header> -->
         <form id="log">
             <div id="formulaire">
@@ -22,17 +22,22 @@
                     </div>
                 </div>
                 <div class="add">
-                    <a @click="sign_in" href="#" class="button button-round button-fill">Sign in</a>
+                    <a @click="sign_in" href="#" class="button button-round button-fill">Se connecter</a>
                 </div>
                 <div>
                     <div style="float: right;">
-                        <a @click="changePassword" class="d-block link">mot de passe oublié ?</a>
+                        <a @click="changePassword" class="d-block link">Mot de passe oublié ?</a>
                         <a @click="signup" class="d-block link">S'inscrire</a>
                     </div>
                 </div>
             </div>
+        </form>
+
+        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+            <h6>&copy; spirit_commandos 2020</h6>
+        </div>
     </div>
-    </form>
+
 </template>
 <script>
     if (window.cordova === undefined) {
@@ -46,6 +51,7 @@
                 this.$router.navigate("/signup/");
             },
             sign_in: async function() {
+                console.log("mail: " + document.getElementById("mail").value);
                 if (!document.getElementById("mail").value.includes("@") || !document.getElementById("mail").value.includes(".")) {
                     document.getElementById("error_mail").classList.remove("d-none");
                     document.getElementById("mail").style.borderColor = "red";

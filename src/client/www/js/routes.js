@@ -80,6 +80,10 @@ var routes = [{
         componentUrl: "./pages/historique.html"
     },
     {
+        path: '/historique/:token/:UserId',
+        componentUrl: "./pages/historique.html"
+    },
+    {
         path: '/detailsPos/:token/:idPos',
         componentUrl: "./pages/details.html"
     },

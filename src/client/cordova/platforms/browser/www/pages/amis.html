@@ -1,7 +1,7 @@
 <template>
-    <div class="page" data-name="params">
+    <div class="page" data-name="profile">
         <div class="scrollbar-warm-flame d-none" id="menu1">
-            <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge w3-animate-zoom" style="width:70px">
+            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
                 <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
                         title="page d'accueil"></i></a>
                 <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
@@ -34,6 +34,13 @@
                 <h1 id="title">Friend Finder</h1>
             </center>
 
+            <center>
+                <h2 id="secondTitle">Liste des amis: </h2>
+            </center>
+
+            <!-- / =============================================================================================== \ -->
+            <!--  -->
+            <!-- / =============================================================================================== \ -->
             {{#if id}}
             <div id="card-accept">
                 Acceptez vous l'invitation de "xxxxxx" ?
@@ -47,34 +54,41 @@
                 </div>
             </div>
             {{/if}}
-            <div class="d-inline">
+
+
+
+            <div style="margin-bottom: 10%;">
+            <!-- <div class="d-inline"> -->
                 {{#each friends}}
                 {{#js_if "@index%2 === 0"}}
-                <div class="card" id="cv1">
-                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
-                    <div class="container">
+                <div class="card" id="cv1" >
+                    <img src="./avatar-7.png" alt="Avatar" id="avatar">
+                    <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
-                    <a @click="getProfile('{{_id}}'" class="link-profile">
-                        profil
-                    </a>
+                    <div id="profile">
+                        <a @click="getProfile('{{_id}}'" id="profile">profil</a>
+                    </div>
                 </div>
                 {{else}}
                 <div class="card" id="cv2">
-                    <img src="./avatar-7.png" alt="Avatar" style="width:100%">
-                    <div class="container">
+                    <img src="./avatar-7.png" alt="Avatar" style="width:100%" id="avatar">
+                    <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
-                    <a @click="getProfile('{{_id}}'" class="link-profile">
-                        profil
-                    </a>
+                    <div id="profile">
+                        <a @click="getProfile('{{_id}}'" id="profile">profil</a>
+                    </div>
                 </div>
                 {{/js_if}}
                 {{/each}}
             </div>
+            <!-- </div> -->
 
-            <div class="fab fab-center" id="plus">
-                <a @click="add_friend" href="#" title="Ajouter un ami">
+
+            <!-- <div class="fab fab-center-bottom" id="plus"> -->
+            <div >
+                <a @click="add_friend" href="#" class="button button-fill" title="Ajouter un ami" id="plus">
                     <i class="icon f7-icons">plus</i>
                 </a>
             </div>
@@ -87,7 +101,7 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">@</div>
                         </div>
-                        <input class="form-control" id="mail" placeholder="Username">
+                        <input class="form-control" id="username" placeholder="Username">
                     </div>
                 </div>
                 <ul id="results"></ul>
@@ -96,13 +110,17 @@
                 </div>
             </div>
             <!-- </ul> -->
-        </div>
-    </div>
 
-    <div class="fab " id="back">
-        <a @click="back" href="#" title="Ajouter un produit">
-            <i class="icon f7-icons">arrow_left</i>
-        </a>
+            <div class="fab " id="back">
+                <a @click="back" href="#" title="Ajouter un produit">
+                    <i class="icon f7-icons">arrow_left</i>
+                </a>
+            </div>
+            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                <h6>&copy; spirit_commandos 2020</h6>
+            </div>
+        </div>
+
     </div>
 </template>
 <script>
@@ -184,7 +202,7 @@
                 console.log("Ajouter un ami");
                 document.getElementById("plus").classList.add("d-none");
                 document.getElementById("search").classList.remove("d-none");
-                let search = document.getElementById("mail");
+                let search = document.getElementById("username");
                 let results = document.querySelector('#results');
                 let users = [];
                 let url;
@@ -230,10 +248,10 @@
                 document.getElementById("plus").classList.remove("d-none");
                 let url;
                 if (window.cordova === undefined) {
-                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    url = "http://localhost:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("username").value;
                     console.log("Browser");
                 } else {
-                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("mail").value;
+                    url = "http://10.0.2.2:3000/friends/" + this.$route.params.token + "?mail=" + document.getElementById("username").value;
                     console.log(window.cordova.platformId);
                 }
                 console.log("URL: " + url);

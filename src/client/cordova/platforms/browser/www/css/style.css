@@ -23,18 +23,33 @@
     overflow-x: scroll;
 }
 
+#map {
+    /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+    height: 400px;
+}
+
+#avatar {
+    width: 100%;
+    border-radius: 1rem;
+}
+
 #cv1 {
     float: left;
     width: 40%;
     margin-right: 2.5%;
     margin-left: 5.5%;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
 }
 
 #cv2 {
     float: left;
     width: 40%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 5.5%;
+    /* margin-right: auto; */
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
+    /* border: rgb(42, 60, 119) solid 0.3rem; */
 }
 
 #log {
@@ -57,24 +72,28 @@ h1 h2 h3 h4 h5 h6 {
     color: black;
 }
 
-.button {
-    /* background: linear-gradient(rgb(126, 176, 189), white, rgb(128, 162, 224)); */
-    /* background: linear-gradient(rgba(97, 190, 190, 0.884), rgba(122, 189, 243, 0.918), rgba(107, 132, 243, 0.74)); */
-    /* background: linear-gradient(var(--green), var(--blue)); */
-    /* background: linear-gradient(0.60turn, #12eb7f, #0e8ebd, #444444); */
-    /* background: linear-gradient(0.60turn, #444444, var(--light-green)); */
-    /* background: linear-gradient(0.60turn, #12eb7f, var(--blue-green)); */
-    /* background-color: transparent; */
-    /* background: linear-gradient(rgba(34, 189, 189, 0.884), rgba(0, 140, 255, 0.918), rgba(9, 52, 240, 0.74)); */
-    background-color: rgb(42, 60, 119);
+#secondTitle {
+    color: rgb(42, 60, 119);
+    font-weight: 800;
 }
+
+
+/* .button { */
 
 .page-previous {
     display: none;
 }
 
 #plus {
-    margin-top: 70%;
+    /* margin-bottom: -50px; */
+    /* margin-top: -50%; */
+    /* margin-top: 70%; */
+    margin-top: 5%;
+    border-radius: 50%;
+    width: 50px;
+    height: 40px;
+    margin-left: 43%;
+    /* margin-right: 25%; */
 }
 
 input[type] {
@@ -127,11 +146,6 @@ input[type] {
 
 /* } */
 
-header {
-    margin-top: 10%;
-    margin-left: 42%;
-}
-
 .label1 {
     font-weight: 1000;
     color: rgb(42, 60, 119);
@@ -149,17 +163,14 @@ header {
     margin-bottom: 20%;
 }
 
-header {
-    margin-right: 100%;
-    /* margin-bottom: 15%; */
-}
-
 #title {
+    font-family: 'Sofia';
+    font-size: 40px;
     margin-top: 5%;
     /* margin-bottom: 35%; */
     font-weight: bold;
     /* color: rgb(215, 240, 248); */
-    color: black;
+    color: white;
     text-shadow: 1px 1px 2px rgb(48, 207, 181), 0 0 25px rgb(8, 105, 231), 0 0 5px rgb(196, 196, 169);
 }
 
@@ -168,6 +179,7 @@ header {
 }
 
 #back {
+    /* position: fixed; */
     margin-left: 5%;
     margin-top: 5%;
 }
@@ -224,9 +236,36 @@ header {
     transition: .4s;
 }
 
+#historique {
+    border: rgb(42, 60, 119) solid 0.3rem;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
+    margin: 5%;
+    height: 400px;
+    overflow: scroll;
+}
+
+.barre {
+    border-style: solid;
+    border-width: 7px;
+    color: rgb(42, 60, 119);
+    border-radius: 3rem;
+    width: 50%;
+    margin-left: 25%;
+}
+
+#indexPos {
+    color: rgb(42, 60, 119);
+    margin-left: 3%;
+}
+
+#sidebar {
+    background-color: rgb(42, 60, 119);
+}
+
 input:checked+.slider {
     background-color: black;
-    background: linear-gradient(blue, green);
+    background: linear-gradient(rgb(42, 60, 119), rgb(152, 164, 206));
 }
 
 input:focus+.slider {
@@ -309,16 +348,18 @@ input:checked+.slider:before {
     border-radius: 2rem;
 }
 
-ul li {
+
+/* ul li {
     list-style: none;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
     padding: 8px 0;
     display: flex;
-}
+} */
 
-ul li:last-child {
+
+/* ul li:last-child {
     border-bottom: none;
-}
+} */
 
 
 /* ul li .icon {
@@ -372,8 +413,29 @@ li:hover {
     padding: 2px 16px;
 }
 
-.link-profile {
+#profile {
     float: right;
+    margin-right: 3%;
+    /* font-size: large; */
+    font-weight: bold;
+}
+
+#pseudo {
+    color: rgb(42, 60, 119);
+}
+
+#profileImg {
+    border-radius: 50%;
+    width: 60%;
+    margin: 3%;
+    margin-left: 20%;
+}
+
+#card-profile {
+    margin: 5%;
+    border: rgb(42, 60, 119) solid 0.3rem;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
 }
 
 #icon-profile {
@@ -444,7 +506,24 @@ li:hover {
 
 .navbar {
     /* background: linear-gradient(white, black); */
-    background: black;
+    /* background: black; */
+    background: rgb(42, 60, 119);
+}
+
+.w3-sidebar {
+    background: rgb(42, 60, 119);
+}
+
+.scrollbar-warm-flame {
+    background: rgb(42, 60, 119);
+}
+
+.w3-bar-block {
+    background: rgb(42, 60, 119);
+}
+
+.fa {
+    color: white;
 }
 
 

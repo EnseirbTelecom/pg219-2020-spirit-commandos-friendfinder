@@ -28,18 +28,28 @@
     height: 400px;
 }
 
+#avatar {
+    width: 100%;
+    border-radius: 1rem;
+}
+
 #cv1 {
     float: left;
     width: 40%;
     margin-right: 2.5%;
     margin-left: 5.5%;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
 }
 
 #cv2 {
     float: left;
     width: 40%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 5.5%;
+    /* margin-right: auto; */
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
+    /* border: rgb(42, 60, 119) solid 0.3rem; */
 }
 
 #log {
@@ -62,6 +72,11 @@ h1 h2 h3 h4 h5 h6 {
     color: black;
 }
 
+#secondTitle {
+    color: rgb(42, 60, 119);
+    font-weight: 800;
+}
+
 
 /* .button { */
 
@@ -70,7 +85,15 @@ h1 h2 h3 h4 h5 h6 {
 }
 
 #plus {
-    margin-top: 70%;
+    /* margin-bottom: -50px; */
+    /* margin-top: -50%; */
+    /* margin-top: 70%; */
+    margin-top: 5%;
+    border-radius: 50%;
+    width: 50px;
+    height: 40px;
+    margin-left: 43%;
+    /* margin-right: 25%; */
 }
 
 input[type] {
@@ -123,11 +146,6 @@ input[type] {
 
 /* } */
 
-header {
-    margin-top: 10%;
-    margin-left: 42%;
-}
-
 .label1 {
     font-weight: 1000;
     color: rgb(42, 60, 119);
@@ -145,11 +163,6 @@ header {
     margin-bottom: 20%;
 }
 
-header {
-    margin-right: 100%;
-    /* margin-bottom: 15%; */
-}
-
 #title {
     font-family: 'Sofia';
     font-size: 40px;
@@ -162,10 +175,11 @@ header {
 }
 
 #log {
-    margin-top: 20%;
+    margin-top: 10%;
 }
 
 #back {
+    /* position: fixed; */
     margin-left: 5%;
     margin-top: 5%;
 }
@@ -275,15 +289,6 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
-#notifs {
-    margin-left: 150%;
-}
-
-#notifs :hover {
-    color: cyan;
-    background-color: darkmagenta;
-}
-
 #form_signin {
     border: black solid 0.4rem;
     border-radius: 1rem;
@@ -296,6 +301,49 @@ input:checked+.slider:before {
     margin-top: 2%;
     margin-bottom: 2%;
 }
+
+
+/***********************************************************************************************************************************************************************************\
+                                                                                    Notifications                                                                                               
+\***********************************************************************************************************************************************************************************/
+
+#details>li {
+    list-style: none;
+    background: linear-gradient(#ccf7ff, #8cebf1, #7ef0f8);
+    margin-bottom: 5px;
+    margin-right: 10px;
+    border-radius: 1rem;
+}
+
+#notifications li {
+    list-style: none;
+    background: #ccf7ff;
+    margin: 5px;
+    border-bottom: solid rgb(42, 60, 119) 0.3rem;
+    border-radius: 1rem;
+    text-align: center;
+    margin-right: 15%;
+}
+
+.icon {
+    margin: 2px;
+    text-align: center;
+}
+
+#allNotifs {
+    float: right;
+    margin: 2%;
+    margin-left: 60%;
+    font-size: large;
+    font-weight: 800;
+    text-align: center;
+    color: rgb(42, 60, 119);
+}
+
+
+/* #notifications li:last-child {
+    border-bottom: none;
+} */
 
 
 /* #bell {
@@ -318,21 +366,15 @@ input:checked+.slider:before {
     color: white;
 }
 
-.lili :hover {
-    color: rgb(8, 39, 97);
-    background-color: rgba(77, 123, 224, 0.212);
-    font-size: larger;
-    font-weight: 1000;
-}
 
-#productList {
-    /* background: linear-gradient(rgb(3, 157, 247), black);; */
+/* #productList {
+    background: linear-gradient(rgb(3, 157, 247), black);;
     background-color: white;
     margin-left: 10%;
     margin-right: 10%;
     border: black solid 0.3rem;
     border-radius: 2rem;
-}
+} */
 
 
 /* ul li {
@@ -340,11 +382,6 @@ input:checked+.slider:before {
     border-bottom: 1px solid rgba(0, 0, 0, .1);
     padding: 8px 0;
     display: flex;
-} */
-
-
-/* ul li:last-child {
-    border-bottom: none;
 } */
 
 
@@ -358,13 +395,16 @@ input:checked+.slider:before {
   margin-right: 15px;
 } */
 
-ul li .icon .fas {
-    color: #fff;
+
+/* ul li .icon .fas {
+    margin: 5%;
+    color: black;
     font-size: 16px;
     line-height: 24px;
 }
 
 ul li .text {
+    margin: 5%;
     position: relative;
     font-family: sans-serif;
     font-weight: 100;
@@ -372,13 +412,16 @@ ul li .text {
     top: 3px;
     cursor: pointer;
 }
+*/
 
 ul li:hover .text {
+    margin: 5%;
     font-weight: bold;
     /* color: #ff2c74; */
 }
 
 li:hover {
+    margin: 5%;
     font-weight: 1000;
     color: black;
 }
@@ -399,8 +442,29 @@ li:hover {
     padding: 2px 16px;
 }
 
-.link-profile {
+#profile {
     float: right;
+    margin-right: 3%;
+    /* font-size: large; */
+    font-weight: bold;
+}
+
+#pseudo {
+    color: rgb(42, 60, 119);
+}
+
+#profileImg {
+    border-radius: 50%;
+    width: 60%;
+    margin: 3%;
+    margin-left: 20%;
+}
+
+#card-profile {
+    margin: 5%;
+    border: rgb(42, 60, 119) solid 0.3rem;
+    border-radius: 1rem;
+    background-image: url("fond_formulaire.png");
 }
 
 #icon-profile {
@@ -489,6 +553,16 @@ li:hover {
 
 .fa {
     color: white;
+}
+
+#fa-notifs {
+    color: rgb(42, 60, 119);
+}
+
+#mapDetails {
+    /* width: 80%; */
+    margin: 5%;
+    /* height: 50%; */
 }
 
 
