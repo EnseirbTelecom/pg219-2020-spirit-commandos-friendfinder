@@ -91,13 +91,17 @@ MongoClient.connect(url, {
                     console.log("calcul date ajout de la position");
                     //on parse la date pour la construire sous la bonne forme
                     let dateActivation = position.date_activation.match(/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})/);
+                    console.log("dateActivation: " + dateActivation);
                     //on construit la date sous le bon format
-                    let dateAjoutPosition = new Date(dateActivation[2]+"/"+dateActivation[1]+"/"+dateActivation[3]);
+                    let dateAjoutPosition = new Date(dateActivation[2]+"/"+dateActivation[1]+"/"+dateActivation[3] + " "+position.heure_activation);
+                    console.log("dateAjoutPos: " + dateAjoutPosition);
                     console.log("diff deux dates");
                     //Calcul en milliseconde de la date d'archivage
                     let dateArchivage = dateAjoutPosition.getTime()+position.duree*1000;
                     console.log(dateArchivage);
                     console.log(heureActuelle);
+                    let diff = dateArchivage-heureActuelle;
+                    console.log("diff entre pos  : "+ diff);
                     if((dateArchivage-heureActuelle)<=0 ){
                         console.log("position à archiver retrouvée");
                         archivePosition(position, positions);
@@ -107,11 +111,12 @@ MongoClient.connect(url, {
                         console.log("duree restante en secondes : ");
                         let dureeNv = (dateArchivage-heureActuelle)/1000;
                         console.log(dureeNv);
+                        setTimeout(() => { archivePosition(position, positions) }, dureeNv * 1000);
                     }                    
                 })
             })
          } 
-        setTimeout(archPosApOuverture, 1, 'funky');
+        setTimeout(archPosApOuverture, 1);
         // Rajouter les routes et les traitements
         app.post("/signup", (req, res) => {
                 console.log("BODY: " + JSON.stringify(req.body));
@@ -175,7 +180,7 @@ MongoClient.connect(url, {
                 function myFunc() {
                     console.log("Apres signin test timer après 10 secondes");
                 }
-                setTimeout(myFunc, 10000, 'funky');
+                setTimeout(myFunc, 10000);
             })
             .get("/users/:token", (req, res) => {
                 try {
