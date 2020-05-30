@@ -36,22 +36,17 @@
 
             <div id="historique">
                 {{#each positions}}
-                <div>
-                    <div class="d-inline">
+                <div class="posHist">
+                    <div class="d-inline" >
                         <h3 id="indexPos">Position {{@index}}: ({{status}}) </h3>
-                        <a href="#" @click="getDetails('{{_id}}')" title="edit" style="float: right; margin-right: 5%;">
+                        <a href="#" @click="getDetails('{{_id}}')" title="edit" class="edit">
                             <i class="icon f7-icons">pencil</i>
                         </a>
                     </div>
 
-                    <div style="margin-left: 10%; margin-right: 5%;">
-                        <h6 id="address">{{address}}</h6>
-                        <h6 id="context">{{context}}</h6>
-                        <!-- <div class="fab "> -->
-
-                        <!-- </div> -->
-                        <!-- <h6>partagée le {{date_activation}} à {{heure_activation}}</h6> -->
-                        <!-- <h6>message: {{msg}}</h6> -->
+                    <div >
+                        <h6 class="adress" id="address">{{address}}</h6>
+                        <h6 class="adress">{{context}}</h6>
                     </div>
                 </div>
                 {{#if @last}}
@@ -61,7 +56,7 @@
                 {{/each}}
             </div>
             <div id="mapHistorique" class="d-none"></div>
-            <a @click="getMap" class="button button-round button-fill" style="margin: 5%; color: white;">Afficher la
+            <a @click="getMap" class="button button-round button-fill btn-margin" id="btn">Afficher la
                 carte</a>
 
             <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
@@ -135,16 +130,22 @@
             }
         },
         methods: {
-
             getMap: async function() {
                 document.getElementById("mapHistorique").classList.remove("d-none");
                 let positions = [];
-                if (window.cordova === undefined) {
-                    url = "http://localhost:3000/positions/" + this.$route.params.token;
-                    console.log("Browser");
+                let url;
+                if (this.$route.params.UserId) {
+                    if (window.cordova === undefined) {
+                        url = "http://localhost:3000/positions/" + this.$route.params.token + "?id=" + this.$route.params.UserId;
+                    } else {
+                        url = "http://10.0.2.2:3000/positions/" + this.$route.params.token + "?id=" + this.$route.params.UserId;
+                    }
                 } else {
-                    url = "http://10.0.2.2:3000/positions/" + this.$route.params.token;
-                    console.log(window.cordova.platformId);
+                    if (window.cordova === undefined) {
+                        url = "http://localhost:3000/positions/" + this.$route.params.token;
+                    } else {
+                        url = "http://10.0.2.2:3000/positions/" + this.$route.params.token;
+                    }
                 }
                 try {
                     positions = await fetch(url).then(res =>

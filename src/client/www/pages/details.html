@@ -34,11 +34,11 @@
                 <h2 id="secondTitle">Détails position: </h2>
             </center>
             {{#position}}
-            <div id="log">
-                <h4 id="secondTitle" style="margin-left: 5px;">Carte: </h4>
+            <div id="historique">
+                <h4 class="titleDetail">Carte: </h4>
                 <div id="mapDetails"></div>
                 <div>
-                    <h4 id="secondTitle" style="margin-left: 5px;">Détails: </h4>
+                    <h4 class="titleDetail">Détails: </h4>
                     <ul id="details">
                         <li>Partagée le: {{date_activation}} à {{heure_activation}}</li>
                         {{#js_if "this.status === 'Archivée'"}}
@@ -50,16 +50,16 @@
                             <ul>
                                 <li>
                                     <strong>Latitude: </strong>
-                                    <div id="col-li" style="margin-left: 20px;"> {{lat}}</div>
+                                    <div class="col-li"> {{lat}}</div>
                                 </li>
                                 <li>
                                     <strong>Longitude: </strong>
-                                    <div id="col-li" style="margin-left: 20px;">{{long}}</div>
+                                    <div class="col-li">{{long}}</div>
                                 </li>
                             </ul>
                         </li>
                         <li><strong>Message: </strong>
-                            <div id="col-li" style="margin-left: 20px;">{{msg}}</div>
+                            <div class="col-li" id="msg">{{msg}}</div>
                         </li>
                     </ul>
                 </div>

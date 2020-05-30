@@ -1,32 +1,19 @@
 :root {
-    --dark: #051937k;
-    --dark-blue: #004d7a;
-    --dark-green: #12eb7f;
-    --blue-green: #008793;
-    --light-blue: #0e8ebd;
-    --light-green: #24eb12;
+    --font: tahoma;
 }
 
 .page {
     margin-bottom: 20%;
-    /* background: conic-gradient(at 0% 30%, rgb(0, 225, 255) 10%, rgb(0, 26, 255) 30%, #1e90ff 50%); */
-    /* background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); */
-    /* background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #00B287); */
-    /* I liked this one too */
-    /* background-image: linear-gradient(to right top, #142B52, #004d7a, #006C96, #00B4C0, #70FACB); */
-    /* background-image: linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12); */
-    background-image: linear-gradient(to right bottom, #051937, #004d7a, #008793, #00bf72, var(--light-green));
-    background: linear-gradient(217deg, var(--light-blue), rgba(255, 0, 0, 0)), linear-gradient(127deg, var(--dark-green), rgba(0, 255, 0, 0)), linear-gradient(336deg, var(--light-green), rgba(0, 0, 255, 0));
-    /* , linear-gradient(217deg, var(--dark-blue), rgba(255, 0, 0, 0)), linear-gradient(127deg, var(--blue-green), rgba(0, 255, 0, 0)); */
     background-image: url("fond.jpg");
     background-repeat: no-repeat;
     overflow: scroll;
     overflow-x: scroll;
 }
 
-#map {
-    /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
-    height: 400px;
+p {
+    font-family: var(--font);
+    font-weight: 800;
+    margin: 2rem;
 }
 
 #avatar {
@@ -152,28 +139,45 @@ input[type] {
 
 .label1 {
     font-weight: 1000;
+    font-family: var(--font);
+    font-size: large;
+    /* color: rgb(42, 60, 119); */
+    color: rgb(194, 207, 248);
+}
+
+#btn {
+    font-weight: 1000;
+    font-family: var(--font);
+    color: rgb(194, 207, 248);
+}
+
+#btn:hover {
+    font-size: large;
+    font-weight: 1000;
+    background-color: rgb(194, 207, 248);
     color: rgb(42, 60, 119);
+}
+
+.link {
+    font-family: var(--font);
 }
 
 .link:hover {
     font-weight: 1000;
-    color: blue;
 }
 
 #formulaire {
     margin-left: 10%;
     margin-right: 10%;
     /* margin-top: 10%; */
-    margin-bottom: 20%;
+    /* margin-bottom: 20%; */
 }
 
 #title {
     font-family: 'Sofia';
     font-size: 40px;
     margin-top: 5%;
-    /* margin-bottom: 35%; */
     font-weight: bold;
-    /* color: rgb(215, 240, 248); */
     color: white;
     text-shadow: 1px 1px 2px rgb(48, 207, 181), 0 0 25px rgb(8, 105, 231), 0 0 5px rgb(196, 196, 169);
 }
@@ -183,9 +187,7 @@ input[type] {
 }
 
 #back {
-    /* position: fixed; */
     margin-left: 5%;
-    margin-top: 5%;
 }
 
 .time {
@@ -241,28 +243,97 @@ input[type] {
 }
 
 #historique {
-    /* border: rgb(42, 60, 119) solid 0.3rem;
     border-radius: 1rem;
-    background-image: url("fond_formulaire.png");*/
     margin: 5%;
-    height: 400px; 
+    height: 400px;
     border: rgb(42, 60, 119) solid 0.3rem;
     background: rgba(44, 61, 116, 0.4);
     overflow: scroll;
 }
 
+.posHist {
+    /* background: #cbf3fa; */
+    background: rgba(185, 248, 250, 0.8);
+    margin: 1rem;
+    border-bottom: solid rgb(42, 60, 119) 0.3rem;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+}
+
+.btn-margin {
+    margin: 5%;
+    /* color: white; */
+}
+
 .barre {
     border-style: solid;
-    border-width: 7px;
+    border-width: 5px;
     color: rgb(42, 60, 119);
     border-radius: 3rem;
     width: 50%;
     margin-left: 25%;
+    /* border: 5px solid rgb(194, 207, 248);
+    background: linear-gradient(rgb(194, 207, 248), rgb(42, 60, 119));
+    border-radius: 5px;
+    margin-right: 5rem;
+    margin-left: 5rem; */
 }
 
 #indexPos {
     color: rgb(42, 60, 119);
-    margin-left: 3%;
+    margin-left: 1rem;
+    font-family: var(--font);
+    font-size: larger;
+    font-weight: 900;
+}
+
+.adress {
+    margin-left: 2.5rem;
+    font-family: var(--font);
+}
+
+.edit {
+    float: right;
+    margin-right: 10px;
+}
+
+#map {
+    height: 400px;
+    border-radius: 1rem;
+    margin: 1rem;
+    border: 1px solid rgb(42, 60, 119);
+    padding: 10px;
+    box-shadow: 5px 5px 8px rgb(42, 60, 119), 10px 10px 8px rgb(53, 69, 119), 15px 15px 8px rgb(99, 113, 160);
+}
+
+
+/* Page de détails position */
+
+.titleDetail {
+    font-family: var(--font);
+    color: rgb(194, 207, 248);
+    font-weight: 1000;
+    font-style: italic;
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    margin-left: 5px;
+}
+
+.col-li {
+    margin-left: 20px;
+}
+
+#msg {
+    font-style: italic;
+}
+
+#details>li {
+    list-style: none;
+    /* background: linear-gradient(#ccf7ff, #8cebf1, #7ef0f8); */
+    background-color: rgba(185, 226, 250, 0.8);
+    margin-bottom: 5px;
+    margin-right: 10px;
+    border-radius: 1rem;
 }
 
 #sidebar {
@@ -270,8 +341,8 @@ input[type] {
 }
 
 input:checked+.slider {
-    background-color: black;
-    background: linear-gradient(rgb(42, 60, 119), rgb(152, 164, 206));
+    background-color: rgb(194, 207, 248);
+    background: linear-gradient(rgb(194, 207, 248), rgb(96, 131, 248), rgb(78, 110, 212), rgb(61, 87, 175), rgb(78, 110, 212), rgb(96, 131, 248), rgb(194, 207, 248));
 }
 
 input:focus+.slider {
@@ -312,14 +383,6 @@ input:checked+.slider:before {
 /***********************************************************************************************************************************************************************************\
                                                                                     Notifications                                                                                               
 \***********************************************************************************************************************************************************************************/
-
-#details>li {
-    list-style: none;
-    background: linear-gradient(#ccf7ff, #8cebf1, #7ef0f8);
-    margin-bottom: 5px;
-    margin-right: 10px;
-    border-radius: 1rem;
-}
 
 #notifications li {
     list-style: none;
@@ -535,9 +598,10 @@ li:hover {
     font-weight: bold;
 }
 
-#btn {
+
+/* #btn {
     color: black;
-}
+} */
 
 .navbar {
     /* background: linear-gradient(white, black); */
