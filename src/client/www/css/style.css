@@ -241,11 +241,13 @@ input[type] {
 }
 
 #historique {
-    border: rgb(42, 60, 119) solid 0.3rem;
+    /* border: rgb(42, 60, 119) solid 0.3rem;
     border-radius: 1rem;
-    background-image: url("fond_formulaire.png");
+    background-image: url("fond_formulaire.png");*/
     margin: 5%;
-    height: 400px;
+    height: 400px; 
+    border: rgb(42, 60, 119) solid 0.3rem;
+    background: rgba(44, 61, 116, 0.4);
     overflow: scroll;
 }
 
