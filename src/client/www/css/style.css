@@ -19,6 +19,7 @@
     background: linear-gradient(217deg, var(--light-blue), rgba(255, 0, 0, 0)), linear-gradient(127deg, var(--dark-green), rgba(0, 255, 0, 0)), linear-gradient(336deg, var(--light-green), rgba(0, 0, 255, 0));
     /* , linear-gradient(217deg, var(--dark-blue), rgba(255, 0, 0, 0)), linear-gradient(127deg, var(--blue-green), rgba(0, 255, 0, 0)); */
     background-image: url("fond.jpg");
+    background-repeat: no-repeat;
     overflow: scroll;
     overflow-x: scroll;
 }
@@ -56,8 +57,11 @@
     margin-left: 10%;
     margin-right: 10%;
     border: rgb(42, 60, 119) solid 0.3rem;
-    border-radius: 1rem;
-    background-image: url("fond_formulaire.png");
+    /* border-radius: 1rem; */
+    border-top-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+    background: rgba(44, 61, 116, 0.4);
+    /* background-image: url("fond_formulaire.png"); */
     /* background-color: rgb(128, 246, 250); */
     /* background-image: linear-gradient(to right top, #0fede8, #00e1eb, #00d5ec, #00c8eb, #00bbe7, #00b4e6, #00ace5, #0aa5e3, #00a1e7, #009deb, #0099ee, #1194f0); */
     /* background-image: linear-gradient(to left top, #125ec2, #0e8ebd, #00a1aa, #00ce83, #12eb7f); */
