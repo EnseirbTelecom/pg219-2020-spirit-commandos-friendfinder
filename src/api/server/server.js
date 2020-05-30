@@ -3,10 +3,6 @@ const app = express();
 const jwt = require("jsonwebtoken");
 let nodemailer = require('nodemailer');
 
-
-function myFuncArch() {
-    console.log("test timer pour archiver");
-}
 let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -31,41 +27,44 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const url = 'mongodb://localhost:27017';
 
+const userChecker = (req, res, next) => {
+    const user = {
+        mail: req.body.mail,
+        password: req.body.password,
+        nom: req.body.nom,
+        prenom: req.body.prenom,
+        pseudo: req.body.pseudo,
+        date: req.body.date
+    }
+    for (let attr in user) {
+        if (user[attr] === undefined)
+            return res.status(400).json({ error: "Bad user parameters." })
+    }
+    next()
+}
+
+const positionChecker = (req, res, next) => {
+    const position = {
+        lat: req.body.lat,
+        long: req.body.long,
+        date_activation: req.body.date,
+        heure_activation: req.body.heure,
+        duree: req.body.duree
+    }
+    for (let attr in position) {
+        if (position[attr] === undefined)
+            return res.status(400).json({ error: "Bad position parameters." })
+    }
+    next()
+}
+
 // Clé pour le cryptage du token
-// Math.random().toString(36).substring(7)
-const privatekey = "privatekey";
+const privatekey = Math.random().toString(36).substring(7);
 
 let archivePosition = function(position, positions) {
     positions.updateOne(position, { $set: { status: "Archivée" } }).then((err, res) => {
         console.log("une position a été archivée");
     })
-}
-
-
-let answerFriendshipInvitation = function(token, id, str) {
-    try {
-        // On décode le token fourni
-        console.log("requête GET accept friend");
-        let decoded = jwt.verify(token, privatekey);
-        console.log("decoded:" + decoded.data);
-        notifications.findOne({ _id: ObjectID(id) }, (error, notif) => {
-            let friend = {
-                id_1: notif.id_src,
-                id_2: notif.id_dst
-            };
-            friends.findOne(friend, (err, result) => {
-                console.log(JSON.stringify(result));
-                friends.updateOne(result, { $set: { status: str } }, (error, resu) => {
-                    console.log(error);
-                    console.log("opération réussie !");
-                    console.log(JSON.stringify(resu));
-                })
-            })
-        })
-
-    } catch (err) {
-
-    }
 }
 
 // On ouvre une connexion à notre base de données
@@ -93,7 +92,7 @@ MongoClient.connect(url, {
                     let dateActivation = position.date_activation.match(/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})/);
                     console.log("dateActivation: " + dateActivation);
                     //on construit la date sous le bon format
-                    let dateAjoutPosition = new Date(dateActivation[2] + "/" + dateActivation[1] + "/" + dateActivation[3] + " "+position.heure_activation);
+                    let dateAjoutPosition = new Date(dateActivation[2] + "/" + dateActivation[1] + "/" + dateActivation[3] + " " + position.heure_activation);
                     console.log("diff deux dates");
                     //Calcul en milliseconde de la date d'archivage
                     let dateArchivage = dateAjoutPosition.getTime() + position.duree * 1000;
@@ -108,13 +107,16 @@ MongoClient.connect(url, {
                         let dureeNv = (dateArchivage - heureActuelle) / 1000;
                         console.log(dureeNv);
                         setTimeout(() => { archivePosition(position, positions) }, dureeNv * 1000);
-                    }                    
+                    }
                 })
             })
-         } 
+        }
         setTimeout(archPosApOuverture, 1);
         // Rajouter les routes et les traitements
-        app.post("/signup", (req, res) => {
+        /***********************************************************************************************************************************************************************************\
+                                                                                            Users                                                                                               
+        \***********************************************************************************************************************************************************************************/
+        app.post("/signup", userChecker, (req, res) => {
                 console.log("BODY: " + JSON.stringify(req.body));
                 let user = {
                     mail: req.body.mail,
@@ -198,69 +200,146 @@ MongoClient.connect(url, {
 
                 }
             })
-            .post("/position/:token", (req, res) => {
+            .get("/changePassword", (req, res) => {
+                let mail = req.query.mail;
+                console.log("MAIL: " + mail);
+                // ON DOIT VÉRIFIER D'ABORD QUE L'UTILISATEUR EST BIEN INSCRIT DANS LA BDD
+                users.findOne({ mail: mail }, (err, user) => {
+                    console.log("USER: " + JSON.stringify(user));
+                    if (user !== null) {
+                        let randString = Math.random().toString(36).substring(7);
+                        console.log("random", randString);
+                        // Envoyer des mails
+                        let mailOptions = {
+                            from: 'SpiritCommandos2020@gmail.com',
+                            to: mail,
+                            subject: 'Réinitialisation du mot de passe FriendFinder',
+                            // text: 'à modifier',
+                            // html: '<p>Bonjour, <br/>' +
+                            // 'Merci de votre inscription sur notre site. <br/>' + 
+                            // 'Afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <a href="http://localhost:8082/pages/changePassword.php?mail=' + mail + '">Formulaire</a></p>'
+                            text: "Veuillez trouvez ci-dessous vos nouveaux identifiants pour l'application mobile FriendFinder: \n" +
+                                "mail: " + mail +
+                                "\npassword: " + randString
+                        };
+                        transporter.sendMail(mailOptions, function(error, info) {
+                            if (error) {
+                                console.log("ERROR: " + error);
+                                res.json(null);
+                            } else {
+                                // On modifie le mot de passe de cet utilisateur dans la BDD
+                                // users.findOne({mail: mail}).then(user => {
+                                users.updateOne(user, { $set: { password: randString } }).then((err, result) => {
+                                        console.log("Mot de passe modifié avec succès");
+                                        res.json(user);
+                                    })
+                                    // })
+                            }
+                        })
+                    } else {
+                        res.json(null);
+                    }
+                })
+            })
+            .post("/newPassword/:token", (req, res) => {
                 res.header("Access-Control-Allow-Origin", "*");
-                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 try {
+                    // on décode le token fourni
                     let decoded = jwt.verify(req.params.token, privatekey);
                     console.log("decoded:" + decoded.data);
-                    console.log("reqBody:" + req.body);
-                    let position = {
-                            lat: req.body.lat,
-                            long: req.body.long,
-                            date_activation: req.body.date,
-                            heure_activation: req.body.heure,
-                            msg: req.body.msg,
-                            duree: req.body.duree,
-                            user: decoded.data,
-                            status: "active"
+                    let id = decoded.data;
+                    console.log("id: " + id);
+                    console.log("BODY: " + JSON.stringify(req.body));
+                    let oldPassword = req.body.old;
+                    let newPassword = req.body.new_mdp;
+                    // On vérifie que l'ancien mot de passe envoyé est le bon
+                    users.findOne({ "_id": ObjectID(id) }, (err, result) => {
+                        console.log("right: " + result.password);
+                        console.log("wrong: " + oldPassword);
+                        if (result.password === oldPassword) {
+                            console.log("Password conforme !");
+                            users.updateOne(result, { $set: { password: newPassword } }).then((err, res) => {
+                                console.log("Mot de passe modifié avec succès");
+                            });
+                            res.statusCode = 200;
+                            res.json();
+                        } else {
+                            console.log("Le password entré n'est pas conforme !");
+                            res.statusCode = 403;
+                            res.json();
                         }
-                        //  Si on a une position active lors de l'ajout d'une nouvelle position, on l'archive
-                    positions.findOne({ $and: [{ status: "active" }, { user: decoded.data }] })
-                        .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
-                    positions.insertOne(position, (err, resu) => {
-                        console.log("Position Ajoutée");
-                        console.log(decoded.data);
-                        friends.find({ id_1: decoded.data }).toArray().then(result => {
-                            result.forEach(friend => {
-                                let notif = {
-                                    code: 1,
-                                    id_src: decoded.data,
-                                    id_dst: friend.id_2,
-                                    target: resu.insertedId,
-                                    status: "en attente"
-                                };
-                                notifications.insertOne(notif, (err, notifInserted) => {
-                                    console.log("notif inserted: " + JSON.stringify(notifInserted));
-                                })
-                            })
-                        });
-                        friends.find({ id_2: decoded.data }).toArray().then(result => {
-                            result.forEach(friend => {
-                                let notif = {
-                                    code: 1,
-                                    id_src: decoded.data,
-                                    id_dst: friend.id_1,
-                                    target: resu.insertedId,
-                                    status: "en attente"
-                                };
-                                notifications.insertOne(notif, (err, notifInserted) => {
-                                    // console.log("notif inserted: " + JSON.stringify(notifInserted));
-                                })
-                            })
-                        });
-                        setTimeout(() => { archivePosition(position, positions) }, position.duree * 1000);
-                        // res.statusCode = 200;
-                        console.log("RESULT: " + JSON.stringify(resu.insertedId));
-                        res.status(200).json({
-                                text: resu.insertedId,
-                            })
-                            // res.json(resu.insertedId);
                     })
                 } catch (err) {
-                    console.log("erreur lors du décodage");
+
                 }
             })
+
+        /***********************************************************************************************************************************************************************************\
+                                                                                            Positions                                                                                               
+        \***********************************************************************************************************************************************************************************/
+        .post("/position/:token", positionChecker, (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            try {
+                let decoded = jwt.verify(req.params.token, privatekey);
+                console.log("decoded:" + decoded.data);
+                console.log("reqBody:" + req.body);
+                let position = {
+                        lat: req.body.lat,
+                        long: req.body.long,
+                        date_activation: req.body.date,
+                        heure_activation: req.body.heure,
+                        msg: req.body.msg,
+                        duree: req.body.duree,
+                        user: decoded.data,
+                        status: "active"
+                    }
+                    //  Si on a une position active lors de l'ajout d'une nouvelle position, on l'archive
+                positions.findOne({ $and: [{ status: "active" }, { user: decoded.data }] })
+                    .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
+                positions.insertOne(position, (err, resu) => {
+                    console.log("Position Ajoutée");
+                    console.log(decoded.data);
+                    friends.find({ id_1: decoded.data }).toArray().then(result => {
+                        result.forEach(friend => {
+                            let notif = {
+                                code: 1,
+                                id_src: decoded.data,
+                                id_dst: friend.id_2,
+                                target: resu.insertedId,
+                                status: "en attente"
+                            };
+                            notifications.insertOne(notif, (err, notifInserted) => {
+                                console.log("notif inserted: " + JSON.stringify(notifInserted));
+                            })
+                        })
+                    });
+                    friends.find({ id_2: decoded.data }).toArray().then(result => {
+                        result.forEach(friend => {
+                            let notif = {
+                                code: 1,
+                                id_src: decoded.data,
+                                id_dst: friend.id_1,
+                                target: resu.insertedId,
+                                status: "en attente"
+                            };
+                            notifications.insertOne(notif, (err, notifInserted) => {
+                                // console.log("notif inserted: " + JSON.stringify(notifInserted));
+                            })
+                        })
+                    });
+                    setTimeout(() => { archivePosition(position, positions) }, position.duree * 1000);
+                    // res.statusCode = 200;
+                    console.log("RESULT: " + JSON.stringify(resu.insertedId));
+                    res.status(200).json({
+                            text: resu.insertedId,
+                        })
+                        // res.json(resu.insertedId);
+                })
+            } catch (err) {
+                console.log("erreur lors du décodage");
+            }
+        })
 
         .get("/positions/:token", (req, res) => {
                 console.log("GET positions' list");
@@ -326,7 +405,51 @@ MongoClient.connect(url, {
 
                 }
             })
+            .delete("/deletePos/:token/:posId", (req, res) => {
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    let idPos = req.params.posId;
+                    positions.deleteOne({ _id: ObjectID(idPos) }, (err, result) => {
+                        console.log(result.deletedCount);
+                        res.statusCode = 200;
+                        res.json();
+                    })
+                    console.log("position supprimée avec succes");
 
+                } catch (err) {
+                    console.log("Erreur s'est produite lors du décodage");
+                }
+            })
+            .post("/archiverPos/:token/:posId", (req, res) => {
+                try {
+                    // On décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    console.log("decoded:" + decoded.data);
+                    let idPos = req.params.posId;
+                    //  On cherche la position active dans la BDD
+                    positions.findOne({ _id: ObjectID(idPos) })
+                        .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position trouvée"))
+                } catch (err) {
+                    console.log("Erreur lors du décodage");
+                }
+            })
+            .get("/getUserProfile/:token/:id", (req, res) => {
+                try {
+                    // on décode le token fourni
+                    let decoded = jwt.verify(req.params.token, privatekey);
+                    users.findOne({ _id: ObjectID(req.params.id) }, (err, user) => {
+                        delete user.password;
+                        res.json(user);
+                    })
+                } catch (err) {
+                    console.log("Erreur s'est produite lors du décodage");
+                }
+            })
+
+        /***********************************************************************************************************************************************************************************\
+                                                                                            Friends                                                                                               
+        \***********************************************************************************************************************************************************************************/
         .post("/friends/:token", (req, res) => {
                 console.log("Vous voulez AJOUTER UN AMI");
                 // Ajouter un nouvel ami
@@ -421,155 +544,44 @@ MongoClient.connect(url, {
                     console.log("Erreur s'est produite lors du décodage");
                 }
             })
-            .get("/getUserProfile/:token/:id", (req, res) => {
-                try {
-                    // on décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    users.findOne({ _id: ObjectID(req.params.id) }, (err, user) => {
-                        delete user.password;
-                        res.json(user);
-                    })
-                } catch (err) {
-                    console.log("Erreur s'est produite lors du décodage");
-                }
-            })
-            .delete("/deletePos/:token/:posId", (req, res) => {
-                try {
-                    // on décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    let idPos = req.params.posId;
-                    positions.deleteOne({ _id: ObjectID(idPos) }, (err, result) => {
-                        console.log(result.deletedCount);
-                        res.statusCode = 200;
-                        res.json();
-                    })
-                    console.log("position supprimée avec succes");
 
-                } catch (err) {
-                    console.log("Erreur s'est produite lors du décodage");
-                }
-            })
-            .post("/archiverPos/:token/:posId", (req, res) => {
-                try {
-                    // On décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    console.log("decoded:" + decoded.data);
-                    let idPos = req.params.posId;
-                    //  On cherche la position active dans la BDD
-                    positions.findOne({ _id: ObjectID(idPos) })
-                        .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position trouvée"))
-                } catch (err) {
-                    console.log("Erreur lors du décodage");
-                }
-            })
+
 
         .delete("/friend/:token/:id", (req, res) => {
-                try {
-                    // on décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    let id_1 = decoded.data;
-                    let id_2 = req.params.id;
-                    friends.findOne({ id_1: id_1 }, { id_2: id_2 }, (err, friend) => {
-                        console.log(JSON.stringify(friend));
-                        if (friend === null) {
-                            friends.findOne({ id_1: id_2 }, { id_2: id_1 }, (err, friend1) => {
-                                if (friend1 === null) {
-                                    console.log("Ces deux utilisateurs ne sont pas amis !!!");
-                                } else {
-                                    console.log(JSON.stringify(friend1));
-                                    friends.deleteOne({ _id: ObjectID(friend1._id) }, (err, result) => {
-                                        console.log(result.deletedCount);
-                                        res.statusCode = 200;
-                                        res.json();
-                                    })
-                                }
-                            })
-                        } else {
-                            friends.deleteOne({ _id: ObjectID(friend._id) }, (err, result) => {
-                                console.log(result.deletedCount);
-                                res.statusCode = 200;
-                                res.json();
-                            })
-                        }
-                    })
-                } catch (err) {
-                    console.log("Erreur s'est produite lors du décodage");
-                }
-            })
-            .get("/changePassword", (req, res) => {
-                let mail = req.query.mail;
-                console.log("MAIL: " + mail);
-                // ON DOIT VÉRIFIER D'ABORD QUE L'UTILISATEUR EST BIEN INSCRIT DANS LA BDD
-                users.findOne({ mail: mail }, (err, user) => {
-                    console.log("USER: " + JSON.stringify(user));
-                    if (user !== null) {
-                        let randString = Math.random().toString(36).substring(7);
-                        console.log("random", randString);
-                        // Envoyer des mails
-                        let mailOptions = {
-                            from: 'SpiritCommandos2020@gmail.com',
-                            to: mail,
-                            subject: 'Réinitialisation du mot de passe FriendFinder',
-                            // text: 'à modifier',
-                            // html: '<p>Bonjour, <br/>' +
-                            // 'Merci de votre inscription sur notre site. <br/>' + 
-                            // 'Afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <a href="http://localhost:8082/pages/changePassword.php?mail=' + mail + '">Formulaire</a></p>'
-                            text: "Veuillez trouvez ci-dessous vos nouveaux identifiants pour l'application mobile FriendFinder: \n" +
-                                "mail: " + mail +
-                                "\npassword: " + randString
-                        };
-                        transporter.sendMail(mailOptions, function(error, info) {
-                            if (error) {
-                                console.log("ERROR: " + error);
-                                res.json(null);
+            try {
+                // on décode le token fourni
+                let decoded = jwt.verify(req.params.token, privatekey);
+                let id_1 = decoded.data;
+                let id_2 = req.params.id;
+                friends.findOne({ id_1: id_1 }, { id_2: id_2 }, (err, friend) => {
+                    console.log(JSON.stringify(friend));
+                    if (friend === null) {
+                        friends.findOne({ id_1: id_2 }, { id_2: id_1 }, (err, friend1) => {
+                            if (friend1 === null) {
+                                console.log("Ces deux utilisateurs ne sont pas amis !!!");
                             } else {
-                                // On modifie le mot de passe de cet utilisateur dans la BDD
-                                // users.findOne({mail: mail}).then(user => {
-                                users.updateOne(user, { $set: { password: randString } }).then((err, result) => {
-                                        console.log("Mot de passe modifié avec succès");
-                                        res.json(user);
-                                    })
-                                    // })
+                                console.log(JSON.stringify(friend1));
+                                friends.deleteOne({ _id: ObjectID(friend1._id) }, (err, result) => {
+                                    console.log(result.deletedCount);
+                                    res.statusCode = 200;
+                                    res.json();
+                                })
                             }
                         })
                     } else {
-                        res.json(null);
-                    }
-                })
-            })
-            .post("/newPassword/:token", (req, res) => {
-                res.header("Access-Control-Allow-Origin", "*");
-                try {
-                    // on décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    console.log("decoded:" + decoded.data);
-                    let id = decoded.data;
-                    console.log("id: " + id);
-                    console.log("BODY: " + JSON.stringify(req.body));
-                    let oldPassword = req.body.old;
-                    let newPassword = req.body.new_mdp;
-                    // On vérifie que l'ancien mot de passe envoyé est le bon
-                    users.findOne({ "_id": ObjectID(id) }, (err, result) => {
-                        console.log("right: " + result.password);
-                        console.log("wrong: " + oldPassword);
-                        if (result.password === oldPassword) {
-                            console.log("Password conforme !");
-                            users.updateOne(result, { $set: { password: newPassword } }).then((err, res) => {
-                                console.log("Mot de passe modifié avec succès");
-                            });
+                        friends.deleteOne({ _id: ObjectID(friend._id) }, (err, result) => {
+                            console.log(result.deletedCount);
                             res.statusCode = 200;
                             res.json();
-                        } else {
-                            console.log("Le password entré n'est pas conforme !");
-                            res.statusCode = 403;
-                            res.json();
-                        }
-                    })
-                } catch (err) {
+                        })
+                    }
+                })
+            } catch (err) {
+                console.log("Erreur s'est produite lors du décodage");
+            }
+        })
 
-                }
-            })
-            .get("/acceptFriend/:token", (req, res) => {
+        .get("/acceptFriend/:token", (req, res) => {
                 res.header("Access-Control-Allow-Origin", "*");
                 // answerFriendshipInvitation(req.params.token, req.query.id, "accepted");
                 try {
@@ -610,8 +622,13 @@ MongoClient.connect(url, {
 
                 }
             })
-            // On doit retourner uniquement les notifs non vues
-            .get("/notifs/:token", (req, res) => {
+
+        /***********************************************************************************************************************************************************************************\
+                                                                                Notifications                                                                                               
+        \***********************************************************************************************************************************************************************************/
+
+        // On doit retourner uniquement les notifs non vues
+        .get("/notifs/:token", (req, res) => {
                 console.log("Notifsssss");
                 try {
                     // on décode le token fourni
@@ -673,19 +690,6 @@ MongoClient.connect(url, {
                     console.log("Erreur lors du décodage");
                 }
             })
-            .get("/ArchivePosition/:token", (req, res) => {
-                console.log("Position archivée!!!!!!!!");
-                try {
-                    // On décode le token fourni
-                    let decoded = jwt.verify(req.params.token, privatekey);
-                    console.log("decoded:" + decoded.data);
-                    //  On cherche la position active dans la BDD
-                    positions.findOne({ status: "active" })
-                        .then(item => (item) ? archivePosition(item, positions) : console.log("Pas de position active trouvée"))
-                } catch (err) {
-                    console.log("Erreur lors du décodage");
-                }
-            });
         app.listen(3000, () => {
             console.log("En attente de requêtes...");
         })
