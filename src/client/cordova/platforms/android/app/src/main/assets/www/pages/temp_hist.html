@@ -24,6 +24,7 @@
             <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
                 {{#if cpt}}
                 <span id="span_notifs"></span>
+                        <span id="text_notifs">{{cpt}}</span>
                 {{/if}}
             </a>
             <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
@@ -53,11 +54,8 @@
                     <!-- <h6>message: {{msg}}</h6> -->
                 </div>
             </div>
-            {{#if @last}}
-            {{else}}
-            <hr class="barre" />
-            {{/if}}
-            {{/each}}
+            {{#if @last}} {{else}}
+            <hr class="barre" /> {{/if}} {{/each}}
         </div>
         <div id="map" class="d-none"></div>
         <a @click="getMap" class="button button-round button-fill" style="margin: 5%; color: white;">Afficher la

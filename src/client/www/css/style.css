@@ -423,16 +423,27 @@ input:checked+.slider:before {
   border-radius: 4rem;
   margin-bottom: 2px; */
     position: absolute;
-    top: 9px;
+    top: 9.5px;
     bottom: 30px;
-    right: 21.5%;
+    right: 20%;
     line-height: 60px;
     /* left: 10px; */
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     background: #ff2c74;
+}
+
+#text_notifs {
+    position: absolute;
+    top: 5.5px;
+    bottom: 40px;
+    right: 20%;
     color: white;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    font-size: smaller;
 }
 
 

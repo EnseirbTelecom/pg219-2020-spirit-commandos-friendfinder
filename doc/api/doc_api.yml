@@ -9,6 +9,53 @@ servers:
   - url: https://localhost:8082/api
     description: Development server
 paths:
+  /signup:
+    post:
+      summary: ajouter un nouvel utilisateur dans la base de données
+      requestBody:
+        description: Les paramètres d'unutilisateur
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      responses:
+        200:
+          description: opération réusssie
+          content:
+            application/json:
+              schema:
+                text: 
+                  type: string
+        403:
+          description: adresse mail déjà utilisée
+          content: {}
+  /signin:
+    post:
+      summary: permet à un utilisateur de se connecter à son compte sur l'application 
+      requestBody:
+        description: L'adresse mail et le mot de passe de l'utilisateur
+        content:
+          application/json:
+            schema:
+              type: Object
+              properties:
+                mail:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Utilisateur authentifié
+          content:
+            application/json:
+              schema:
+                text: 
+                  type: string
+        403:
+          description: identifiants incorrects
+          content: {}
   /greeting:
     get:
       operationId: getHello
@@ -146,6 +193,21 @@ paths:
           content: {}
 components:
   schemas:
+    user:
+      type: Object
+      properties:
+        mail:
+          type: string
+        password:
+          type: string
+        nom:
+          type: string
+        prenom:
+          type: string
+        pseudo:
+          type: string
+        date:
+          type: string
     Captcha:
       type: Object
       properties:
