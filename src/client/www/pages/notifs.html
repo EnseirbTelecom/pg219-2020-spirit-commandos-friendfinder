@@ -67,13 +67,21 @@
         async data() {
             // On cherche les notifications de l'utilisateur
             let url;
-            if (window.cordova === undefined) {
-                url = "http://localhost:3000/notifs/" + this.$route.params.token;
-                console.log("Browser");
-            } else {
-                url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
-                console.log(window.cordova.platformId);
+            if (this.$route.params.all === '0') {
+                console.log("ALL: " + this.$route.params.all);
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/notifs/" + this.$route.params.token;
+                } else {
+                    url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
+                }
+            } else if (this.$route.params.all === '1') {
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/AllNotifs/" + this.$route.params.token;
+                } else {
+                    url = "http://10.0.2.2:3000/AllNotifs/" + this.$route.params.token;;
+                }
             }
+
             let notifs = [];
             let usr;
             let user_src = [];
@@ -90,10 +98,8 @@
             for (let index = 0; index < cpt; index++) {
                 if (window.cordova === undefined) {
                     url = "http://localhost:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
-                    console.log("Browser");
                 } else {
                     url = "http://10.0.2.2:3000/getUserProfile/" + this.$route.params.token + "/" + notifs[index].id_src;
-                    console.log(window.cordova.platformId);
                 }
                 try {
                     usr = await fetch(url)
@@ -101,7 +107,6 @@
                 } catch (err) {
                     this.$app.dialog.alert("Error " + err);
                 } finally {
-                    console.log(JSON.stringify(usr));
                     notifs[index].id_src = usr.mail;
                 }
             };
@@ -136,7 +141,7 @@
                 this.$router.navigate("/");
             },
             bell: function() {
-                this.$router.navigate("/notifs/" + this.$route.params.token);
+                this.$router.navigate("/notifs/0/" + this.$route.params.token);
             },
             vu: function(id, id_src, notif) {
                 console.log("id_SRC: " + id_src);
@@ -188,6 +193,7 @@
 
                 //     })
                 // }
+                this.$router.navigate("/notifs/1/" + this.$route.params.token);
             }
         }
     }
