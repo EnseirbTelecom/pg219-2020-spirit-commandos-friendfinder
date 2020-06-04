@@ -386,6 +386,16 @@ input:checked+.slider:before {
 
 #notifications li {
     list-style: none;
+    background: #2dc0c5;
+    margin: 5px;
+    border-bottom: solid rgb(42, 60, 119) 0.3rem;
+    border-radius: 1rem;
+    text-align: center;
+    margin-right: 15%;
+}
+
+#notifications #seen {
+    list-style: none;
     background: #ccf7ff;
     margin: 5px;
     border-bottom: solid rgb(42, 60, 119) 0.3rem;

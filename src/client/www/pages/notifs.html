@@ -37,19 +37,23 @@
                 <div style="margin-top: 10%;">
                     <ul id="notifications">
                         {{#each notifs}}
-                        <li>
-                            {{#if code}}
-                            <a @click="vu('{{_id}}', '{{id_src}}', 1)">
-                                <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
-                                <span class="text">{{id_src}} a partagé une nouvelle position</span>
-                            </a>
+                            {{#if status}}
+                                <li> 
                             {{else}}
-                            <a @click="vu('{{_id}}', '{{id_src}}', 0)">
-                                <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
-                                <span class="text">Vous avez une nouvelle demande d'amitié de "{{id_src}}"</span>
-                            </a>
+                                <li id="seen"> 
                             {{/if}}
-                        </li>
+                                {{#if code}}
+                                    <a @click="vu('{{_id}}', '{{id_src}}', 1)">
+                                        <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
+                                        <span class="text">{{id_src}} a partagé une nouvelle position</span>
+                                    </a>
+                                    {{else}}
+                                    <a @click="vu('{{_id}}', '{{id_src}}', 0)">
+                                        <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
+                                        <span class="text">Vous avez une nouvelle demande d'amitié de "{{id_src}}"</span>
+                                    </a>
+                                    {{/if}}
+                            </li>
                         <!-- </div> -->
                         {{/each}}
                     </ul>
@@ -108,6 +112,11 @@
                     this.$app.dialog.alert("Error " + err);
                 } finally {
                     notifs[index].id_src = usr.mail;
+                    if (notifs[index].status === "vue") {
+                        notifs[index].status = 0;
+                    } else {
+                        notifs[index].status = 1;
+                    }
                 }
             };
 
