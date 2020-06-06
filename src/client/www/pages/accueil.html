@@ -38,37 +38,21 @@
                     <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
                 </center>
 
-                <!--
-                    <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
-               -->
-
+               <div id="log">
+                   <h3 id="titleStat">Statistiques: </h3>
+                   <p id="stat"></p>
+               </div>
                 <div id="mapAccueil"></div>
 
 
                 <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                     <h6>&copy; spirit_commandos 2020</h6>
                 </div>
-                <!-- <div>
-                    <p>
-                        {{#if cpt}}
-                        var
-                        {{else}}
-                        yok
-                        {{/if}}
-                    </p>
-
-                    <ul>
-                        {{#each notifs}}
-                        <li>{{code}}: {{id_src}} => {{id_dst}}</li>
-                        {{/each}}
-                    </ul>
-                </div> -->
             </div>
         </div>
 </template>
 <script>
     return {
-        // data(this.$route.params)
         async data() {
             let url;
             if (window.cordova === undefined) {
@@ -158,7 +142,29 @@
                     minZoom: 1,
                     maxZoom: 20
                 }).addTo(macarte);
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/positionsActives/" + this.$route.params.token;
+                } else {
+                    url = "http://10.0.2.2:3000/positionsActives/" + this.$route.params.token;;
+                }
+                try {
+                    fetch(url).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        if (data.length > 1) {
+                            document.getElementById("stat").innerText = data.length + " de vos amis ont une position active partagée ! ";
+                        } else {
+                            document.getElementById("stat").innerText = "Un de vos amis a une position active partagée ! ";
+                        }
+                        for (pos in data) {
+                            var marker = L.marker([data[pos].lat, data[pos].long]).addTo(macarte);
+                            // marker.bindPopup(data[pos].user);
+                        }
+                    })
+                } catch (err) {
 
+                }
             },
             // pageBeforeout: function() {
             //     document.getElementById("map").parentNode.removeChild(document.getElementById("map"));

@@ -66,16 +66,16 @@
                 {{#js_if "@index%2 === 0"}}
                 <div class="card" id="cv1">
                     <img src="./avatar-7.png" alt="Avatar" id="avatar">
-                    <div class="container" id="pseudo">
+                    <div class="container" id="pseudo-left">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
                     <div id="profile">
-                        <a @click="getProfile('{{_id}}'" id="profile">profil</a>
+                        <a @click="getProfile('{{_id}}'" id="profile-left">profil</a>
                     </div>
                 </div>
                 {{else}}
                 <div class="card" id="cv2">
-                    <img src="./avatar-7.png" alt="Avatar" style="width:100%" id="avatar">
+                    <img src="./avatar-7.png" alt="Avatar"  id="avatar">
                     <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>

@@ -10,15 +10,39 @@
     overflow-x: scroll;
 }
 
+#titleStat {
+    font-family: var(--font);
+    font-weight: 900;
+    margin-left: 15px;
+    color: rgb(194, 207, 248);
+}
+
+#stat {
+    color: white;
+    /* margin-left: 20px; */
+    text-align: center;
+}
+
 p {
     font-family: var(--font);
     font-weight: 800;
-    margin: 2rem;
+    margin-left: 2rem;
+    margin-top: 2rem;
+    /* margin-left: 2rem; */
 }
 
 #avatar {
-    width: 100%;
-    border-radius: 1rem;
+    width: 90%;
+    margin: 5%;
+    /* border-radius: 1rem; */
+    /* box-shadow: 5px 5px 8px rgb(42, 60, 119), 10px 10px 8px rgb(53, 69, 119), 15px 15px 8px rgb(99, 113, 160); */
+    /* box-shadow: 5px 10px 20px red inset; */
+    /* border-color: linear-gradient(black, white); 
+    */
+    /* border: 4px solid transparent;
+    border-image: linear-gradient(black, cyan);
+    border-image-slice: 1;*/
+    border-radius: 50%;
 }
 
 #cv1 {
@@ -26,8 +50,17 @@ p {
     width: 40%;
     margin-right: 2.5%;
     margin-left: 5.5%;
-    border-radius: 1rem;
-    background-image: url("fond_formulaire.png");
+    /* border-radius: 1rem; */
+    /* border-top-left-radius: 50%;
+    border-top-right-radius: 50%; */
+    /* background-image: url("fond_formulaire.png"); */
+    background: rgba(44, 61, 116, 0.4);
+    border: 4px solid rgba(44, 61, 116);
+    /* border-image: linear-gradient(black, cyan);
+    border-image-slice: 2; */
+    border-bottom-right-radius: 3rem;
+    border-top-left-radius: 3rem;
+    /* border-radius: 50%; */
 }
 
 #cv2 {
@@ -35,8 +68,12 @@ p {
     width: 40%;
     margin-left: 5.5%;
     /* margin-right: auto; */
-    border-radius: 1rem;
-    background-image: url("fond_formulaire.png");
+    /* border-radius: 1rem; */
+    border-bottom-left-radius: 3rem;
+    border-top-right-radius: 3rem;
+    background: rgba(44, 61, 116, 0.4);
+    border: 4px solid rgba(44, 61, 116);
+    /* background-image: url("fond_formulaire.png"); */
     /* border: rgb(42, 60, 119) solid 0.3rem; */
 }
 
@@ -44,15 +81,9 @@ p {
     margin-left: 10%;
     margin-right: 10%;
     border: rgb(42, 60, 119) solid 0.3rem;
-    /* border-radius: 1rem; */
     border-top-right-radius: 100px;
     border-bottom-left-radius: 100px;
     background: rgba(44, 61, 116, 0.4);
-    /* background-image: url("fond_formulaire.png"); */
-    /* background-color: rgb(128, 246, 250); */
-    /* background-image: linear-gradient(to right top, #0fede8, #00e1eb, #00d5ec, #00c8eb, #00bbe7, #00b4e6, #00ace5, #0aa5e3, #00a1e7, #009deb, #0099ee, #1194f0); */
-    /* background-image: linear-gradient(to left top, #125ec2, #0e8ebd, #00a1aa, #00ce83, #12eb7f); */
-    /* background: linear-gradient(to right top, var(--dark-blue), var(--blue-green), #00ce83); */
 }
 
 h1 h2 h3 h4 h5 h6 {
@@ -534,13 +565,24 @@ li:hover {
 
 #profile {
     float: right;
-    margin-right: 3%;
+    margin-right: 5%;
+    /* font-size: large; */
+    font-weight: bold;
+}
+
+#profile-left {
+    margin-left: 5%;
     /* font-size: large; */
     font-weight: bold;
 }
 
 #pseudo {
-    color: rgb(42, 60, 119);
+    color: rgb(194, 207, 248);
+}
+
+#pseudo-left {
+    color: rgb(194, 207, 248);
+    margin-left: 50%;
 }
 
 #profileImg {

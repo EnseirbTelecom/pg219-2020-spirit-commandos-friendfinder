@@ -380,6 +380,7 @@ MongoClient.connect(url, {
                         console.log("length: " + JSON.stringify(friendsListId));
                         positions.find({ $and: [{ status: "active" }, { user: { $in: friendsListId } }] }).toArray().then(positionsFriendsList => {
                             console.log("Liste des positions des amis: " + JSON.stringify(positionsFriendsList));
+                            res.statusCode = 200;
                             res.json(positionsFriendsList);
                         })
                     });
