@@ -62,7 +62,7 @@ var routes = [{
         }
     },
     {
-        path: '/notifs/:token',
+        path: '/notifs/:all/:token',
         componentUrl: "./pages/notifs.html",
         options: {
             transition: 'f7-circle',

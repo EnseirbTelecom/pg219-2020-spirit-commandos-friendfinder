@@ -2,42 +2,50 @@
     <div class="page" data-name="detailsPos">
         <div class="scrollbar-warm-flame d-none" id="menuDetail">
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
-                <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
-                        title="page d'accueil"></i></a>
-                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
+                        class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
-                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
-                        title="liste des amis"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
-                        title="historique des positions"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
+                        class="fa fa-group" title="liste des amis"></i></a>
+                <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
+                        class="fa fa-power-off" title="Déconnexion"></i></a>
 
             </div>
         </div>
 
         <div id="containDetail">
             <nav class="navbar navbar-dark">
-                <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
-                        style="color: white;">menu</i></a>
-                <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menuDetail', 'containDetail')"><i
+                        class="icon f7-icons" style="color: white;">menu</i></a>
+                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)" style="color: white; margin-left: 50%;"><i
+                        class="icon f7-icons">bell</i>
                     {{#if cpt}}
                     <span id="span_notifs"></span>
-                        <span id="text_notifs">{{cpt}}</span>
+                    <span id="text_notifs">{{cpt}}</span>
                     {{/if}}
                 </a>
-                <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
+                        class="icon f7-icons">power</i></a>
             </nav>
             <center>
                 <h1 id="title">Friend Finder</h1>
+                <h2 id="secondTitle">Détails position: </h2>
             </center>
             {{#position}}
-            <div id="mapDetails"></div>
-            <div id="log">
+            <div id="historique">
+                <h4 class="titleDetail">Carte: </h4>
+                <div id="mapDetails"></div>
                 <div>
-                    <ul>
+                    <h4 class="titleDetail">Détails: </h4>
+                    <ul id="details">
                         <li>Partagée le: {{date_activation}} à {{heure_activation}}</li>
                         {{#js_if "this.status === 'Archivée'"}}
                         <li>Archivée après {{duree}} secondes du partage</li>
@@ -48,21 +56,21 @@
                             <ul>
                                 <li>
                                     <strong>Latitude: </strong>
-                                    <div id="col-li" style="margin-left: 20px;"> {{lat}}</div>
+                                    <div class="col-li"> {{lat}}</div>
                                 </li>
                                 <li>
                                     <strong>Longitude: </strong>
-                                    <div id="col-li" style="margin-left: 20px;">{{long}}</div>
+                                    <div class="col-li">{{long}}</div>
                                 </li>
                             </ul>
                         </li>
                         <li><strong>Message: </strong>
-                            <div id="col-li" style="margin-left: 20px;">{{msg}}</div>
+                            <div class="col-li" id="msg">{{msg}}</div>
                         </li>
                     </ul>
                 </div>
                 <div class="row" style="margin-bottom: 2%; margin-right: 1%; margin-left: 1%;">
-                    <a @click="back" class="col button button-fill button-raised"
+                    <a @click="this.$app.methods.back(this.$router)" class="col button button-fill button-raised"
                         style="margin-left: 5%; margin-right: 1.5%; color: white;"><i
                             class="icon f7-icons">hand_point_left</i></a>
                     {{#js_if "this.status === 'Archivée'"}}
@@ -84,7 +92,7 @@
         </div>
     </div>
     <div class="fab " id="back">
-        <a @click="back" href="#" title="Ajouter un produit">
+        <a @click="this.$app.methods.back" href="#" title="Ajouter un produit">
             <i class="icon f7-icons">arrow_left</i>
         </a>
     </div>
@@ -165,7 +173,7 @@
                 let lon = position.long;
                 console.log("AFFICHAGE MAP");
                 // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map"
-                macarte = L.map('map').setView([lat, lon], 5);
+                macarte = L.map('map').setView([lat, lon], 11);
                 // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
                 L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                     // Il est toujours bien de laisser le lien vers la source des données
@@ -182,43 +190,43 @@
             }
         },
         methods: {
-            params: function() {
-                console.log("Vous voulez modifier votre mot de passe");
-                console.log(this.$route.params.token);
-                this.$router.navigate("/parameters/" + this.$route.params.token);
-            },
-            getPos: function() {
-                // this.$router.navigate("/position");
-                this.$router.navigate("/AddPosition/" + this.$route.params.token);
-            },
-            show_menu: function() {
-                if (document.getElementById("menuDetail").classList.contains("d-none")) {
-                    document.getElementById("menuDetail").classList.remove("d-none");
-                    document.getElementById("containDetail").style.marginLeft = "70px";
-                } else {
-                    document.getElementById("menuDetail").classList.add("d-none");
-                    document.getElementById("containDetail").style.marginLeft = "0px";
-                }
-            },
-            amis: function() {
-                this.$router.navigate("/amis");
-            },
-            home: function() {
-                this.$router.navigate("/accueil/" + this.$route.params.token);
-            },
-            deconnecter: function() {
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                //     // this.$router.navigate("/");
-                //     this.$app.dialog.alert("GREAT!");
-                // });
-                this.$router.navigate("/");
-            },
-            bell: function() {
-                this.$router.navigate("/notifs/0/" + this.$route.params.token); < /span>
-            },
-            back: function() {
-                this.$router.back();
-            },
+            // params: function() {
+            //     console.log("Vous voulez modifier votre mot de passe");
+            //     console.log(this);
+            //     this.$router.navigate("/parameters/" + this.$route.params.token);
+            // },
+            // getPos: function() {
+            //     // this.$router.navigate("/position");
+            //     this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            // },
+            // show_menu: function() {
+            //     if (document.getElementById("menuDetail").classList.contains("d-none")) {
+            //         document.getElementById("menuDetail").classList.remove("d-none");
+            //         document.getElementById("containDetail").style.marginLeft = "70px";
+            //     } else {
+            //         document.getElementById("menuDetail").classList.add("d-none");
+            //         document.getElementById("containDetail").style.marginLeft = "0px";
+            //     }
+            // },
+            // amis: function() {
+            //     this.$router.navigate("/amis");
+            // },
+            // home: function() {
+            //     this.$router.navigate("/accueil/" + this.$route.params.token);
+            // },
+            // deconnecter: function() {
+            //     // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+            //     //     // this.$router.navigate("/");
+            //     //     this.$app.dialog.alert("GREAT!");
+            //     // });
+            //     this.$router.navigate("/");
+            // },
+            // bell: function() {
+            //     this.$router.navigate("/notifs/0/" + this.$route.params.token);
+            // },
+            // back: function() {
+            //     this.$router.back();
+            // },
             supprimer: function() {
                 if (window.cordova === undefined) {
                     url = "http://localhost:3000/deletePos/" + this.$route.params.token + "/" + this.$route.params.idPos;

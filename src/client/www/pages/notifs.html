@@ -2,33 +2,39 @@
     <div class="page" data-name="notifs">
         <div class="scrollbar-warm-flame d-none" id="menuNotif">
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
-                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
+                        class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
-                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
-                        title="liste des amis"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
-                        title="historique des positions"></i></a>
-                <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
-                        title="Déconnexion"></i></a>
+                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
+                        class="fa fa-group" title="liste des amis"></i></a>
+                <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
+                        class="fa fa-power-off" title="Déconnexion"></i></a>
 
             </div>
         </div>
         <div>
             <div id="containNotif">
                 <nav class="navbar navbar-dark">
-                    <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                    <a class="navbar-brand" href="#"
+                        @click="this.$app.methods.show_menu('menuNotif', 'containNotif')"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
-                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)" style="color: white; margin-left: 50%;"><i
+                            class="icon f7-icons">bell</i>
                         {{#if cpt}}
                         <span id="span_notifs"></span>
                         <span id="text_notifs">{{cpt}}</span>
                         {{/if}}
                     </a>
-                    <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                    <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
+                            class="icon f7-icons">power</i></a>
                 </nav>
                 <center>
                     <h1 id="title">Friend Finder</h1>
@@ -37,23 +43,23 @@
                 <div style="margin-top: 10%;">
                     <ul id="notifications">
                         {{#each notifs}}
-                            {{#if status}}
-                                <li> 
+                        {{#if status}}
+                        <li>
                             {{else}}
-                                <li id="seen"> 
+                        <li id="seen">
                             {{/if}}
-                                {{#if code}}
-                                    <a @click="vu('{{_id}}', '{{id_src}}', 1)">
-                                        <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
-                                        <span class="text">{{id_src}} a partagé une nouvelle position</span>
-                                    </a>
-                                    {{else}}
-                                    <a @click="vu('{{_id}}', '{{id_src}}', 0)">
-                                        <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
-                                        <span class="text">Vous avez une nouvelle demande d'amitié de "{{id_src}}"</span>
-                                    </a>
-                                    {{/if}}
-                            </li>
+                            {{#if code}}
+                            <a @click="vu('{{_id}}', '{{id_src}}', 1)">
+                                <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
+                                <span class="text">{{id_src}} a partagé une nouvelle position</span>
+                            </a>
+                            {{else}}
+                            <a @click="vu('{{_id}}', '{{id_src}}', 0)">
+                                <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
+                                <span class="text">Vous avez une nouvelle demande d'amitié de "{{id_src}}"</span>
+                            </a>
+                            {{/if}}
+                        </li>
                         <!-- </div> -->
                         {{/each}}
                     </ul>
@@ -126,32 +132,32 @@
             }
         },
         methods: {
-            params: function() {
-                console.log("Vous voulez modifier votre mot de passe");
-                console.log(this.$route.params.token);
-                this.$router.navigate("/parameters/" + this.$route.params.token);
-            },
-            getPos: function() {
-                this.$router.navigate("/AddPosition/" + this.$route.params.token);
-            },
-            show_menu: function() {
-                if (document.getElementById("menuNotif").classList.contains("d-none")) {
-                    document.getElementById("menuNotif").classList.remove("d-none");
-                    document.getElementById("containNotif").style.marginLeft = "70px";
-                } else {
-                    document.getElementById("menuNotif").classList.add("d-none");
-                    document.getElementById("containNotif").style.marginLeft = "0px";
-                }
-            },
-            amis: function() {
-                this.$router.navigate("/amis/" + this.$route.params.token);
-            },
-            deconnecter: function() {
-                this.$router.navigate("/");
-            },
-            bell: function() {
-                this.$router.navigate("/notifs/0/" + this.$route.params.token);
-            },
+            // params: function() {
+            //     console.log("Vous voulez modifier votre mot de passe");
+            //     console.log(this);
+            //     this.$router.navigate("/parameters/" + this.$route.params.token);
+            // },
+            // getPos: function() {
+            //     this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            // },
+            // show_menu: function() {
+            //     if (document.getElementById("menuNotif").classList.contains("d-none")) {
+            //         document.getElementById("menuNotif").classList.remove("d-none");
+            //         document.getElementById("containNotif").style.marginLeft = "70px";
+            //     } else {
+            //         document.getElementById("menuNotif").classList.add("d-none");
+            //         document.getElementById("containNotif").style.marginLeft = "0px";
+            //     }
+            // },
+            // amis: function() {
+            //     this.$router.navigate("/amis/" + this.$route.params.token);
+            // },
+            // deconnecter: function() {
+            //     this.$router.navigate("/");
+            // },
+            // bell: function() {
+            //     this.$router.navigate("/notifs/0/" + this.$route.params.token);
+            // },
             vu: function(id, id_src, notif) {
                 console.log("id_SRC: " + id_src);
                 let url;
@@ -194,14 +200,6 @@
                 }
             },
             AllNotifs: function() {
-                // let url = "http://10.0.2.2:3000/AllNotifs/" + this.$route.params.token;
-                // try {
-                //     fetch(url).then(res => {
-                //         return res.json();
-                //     }).then(data => {
-
-                //     })
-                // }
                 this.$router.navigate("/notifs/1/" + this.$route.params.token);
             }
         }

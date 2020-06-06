@@ -1,34 +1,39 @@
 <template>
     <div class="page" data-name="profile">
-        <div class="scrollbar-warm-flame d-none" id="menu1">
+        <div class="scrollbar-warm-flame d-none" id="menuAmi">
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
-                <a href="#" @click="home" class="w3-bar-item w3-button"><i class="fa fa-home"
+                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i class="fa fa-home"
                         title="page d'accueil"></i></a>
-                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
-                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
-                        title="liste des amis"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"
-                        title="historique des positions"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-power-off" title="Déconnexion"></i></a>
+                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
+                        class="fa fa-group" title="liste des amis"></i></a>
+                <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
+                        class="fa fa-power-off" title="Déconnexion"></i></a>
 
             </div>
         </div>
 
-        <div id="contain1">
+        <div id="containAmi">
             <nav class="navbar navbar-dark">
-                <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
-                        style="color: white;">menu</i></a>
-                <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menuAmi', 'containAmi')"><i
+                        class="icon f7-icons" style="color: white;">menu</i></a>
+                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)" style="color: white; margin-left: 50%;"><i
+                        class="icon f7-icons">bell</i>
                     {{#if cpt}}
                     <span id="span_notifs"></span>
-                        <span id="text_notifs">{{cpt}}</span>
+                    <span id="text_notifs">{{cpt}}</span>
                     {{/if}}
                 </a>
-                <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
+                        class="icon f7-icons">power</i></a>
             </nav>
 
             <center>
@@ -75,7 +80,7 @@
                 </div>
                 {{else}}
                 <div class="card" id="cv2">
-                    <img src="./avatar-7.png" alt="Avatar"  id="avatar">
+                    <img src="./avatar-7.png" alt="Avatar" id="avatar">
                     <div class="container" id="pseudo">
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
@@ -118,7 +123,7 @@
             <!-- </ul> -->
 
             <div class="fab " id="back">
-                <a @click="back" href="#" title="Ajouter un produit">
+                <a  href="#" title="Ajouter un produit">
                     <i class="icon f7-icons">arrow_left</i>
                 </a>
             </div>
@@ -183,30 +188,27 @@
             }
         },
         methods: {
-            params: function() {
-                console.log("Vous voulez modifier votre mot de passe");
-                console.log(this.$route.params.token);
-                this.$router.navigate("/parameters/" + this.$route.params.token);
-            },
-            getPos: function() {
-                // this.$router.navigate("/position");
-                this.$router.navigate("/AddPosition/" + this.$route.params.token);
-            },
-            show_menu: function() {
-                if (document.getElementById("menu1").classList.contains("d-none")) {
-                    document.getElementById("menu1").classList.remove("d-none");
-                    document.getElementById("contain1").style.marginLeft = "70px";
-                } else {
-                    document.getElementById("menu1").classList.add("d-none");
-                    document.getElementById("contain1").style.marginLeft = "0px";
-                }
-            },
-            amis: function() {
-                this.$router.navigate("/amis");
-            },
-            setValue: function() {
-                // document.getElementById("mail").value 
-            },
+            // params: function() {
+            //     console.log("Vous voulez modifier votre mot de passe");
+            //     console.log(this);
+            //     this.$router.navigate("/parameters/" + this.$route.params.token);
+            // },
+            // getPos: function() {
+            //     // this.$router.navigate("/position");
+            //     this.$router.navigate("/AddPosition/" + this.$route.params.token);
+            // },
+            // show_menu: function() {
+            //     if (document.getElementById("menu1").classList.contains("d-none")) {
+            //         document.getElementById("menu1").classList.remove("d-none");
+            //         document.getElementById("contain1").style.marginLeft = "70px";
+            //     } else {
+            //         document.getElementById("menu1").classList.add("d-none");
+            //         document.getElementById("contain1").style.marginLeft = "0px";
+            //     }
+            // },
+            // amis: function() {
+            //     this.$router.navigate("/amis");
+            // },
             add_friend: async function() {
                 console.log("Ajouter un ami");
                 document.getElementById("plus").classList.add("d-none");
@@ -280,12 +282,12 @@
                     console.log("Une erreur est survenue");
                 }
             },
-            back: function() {
-                this.$router.back();
-            },
-            home: function() {
-                this.$router.navigate("/accueil/" + this.$route.params.token);
-            },
+            // back: function() {
+            //     this.$router.back();
+            // },
+            // home: function() {
+            //     this.$router.navigate("/accueil/" + this.$route.params.token);
+            // },
             accept: function() {
                 console.log("You want to accept the invitation");
                 let url;
@@ -324,16 +326,16 @@
             getProfile: function(id) {
                 this.$router.navigate("/profile/" + this.$route.params.token + "/" + id);
             },
-            deconnecter: function() {
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                //     // this.$router.navigate("/");
-                //     this.$app.dialog.alert("GREAT!");
-                // });
-                this.$router.navigate("/");
-            },
-            bell: function() {
-                this.$router.navigate("/notifs/0/" + this.$route.params.token);
-            }
+            // deconnecter: function() {
+            //     // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+            //     //     // this.$router.navigate("/");
+            //     //     this.$app.dialog.alert("GREAT!");
+            //     // });
+            //     this.$router.navigate("/");
+            // },
+            // bell: function() {
+            //     this.$router.navigate("/notifs/0/" + this.$route.params.token);
+            // }
         }
     }
 </script>

@@ -1,19 +1,18 @@
 <template>
     <div class="page" data-name="accueil">
         <div class="scrollbar-warm-flame d-none" id="menu">
-            <!-- <div  w3-include-html="./menu.html"></div> -->
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
-                <a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
-                <a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"
+                <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"
+                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i class="fa fa-group"
                         title="liste des amis"></i></a>
-                <a href="#" @click="historique" class="w3-bar-item w3-button"><i class="fa fa-history"
+                <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i class="fa fa-history"
                         title="historique des positions"></i></a>
-                <a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i class="fa fa-power-off"
                         title="Déconnexion"></i></a>
             </div>
         </div>
@@ -21,15 +20,15 @@
         <div>
             <div id="contain">
                 <nav class="navbar navbar-dark">
-                    <a class="navbar-brand" href="#" @click="show_menu"><i class="icon f7-icons"
+                    <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menu', 'contain')"><i class="icon f7-icons"
                             style="color: white;">menu</i></a>
-                    <a href="#" @click="bell" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)" style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
                         {{#if cpt}}
                         <span id="span_notifs"></span>
                         <span id="text_notifs">{{cpt}}</span>
                         {{/if}}
                     </a>
-                    <a href="#" @click="deconnecter" style="color: white; "><i class="icon f7-icons">power</i></a>
+                    <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i class="icon f7-icons">power</i></a>
                 </nav>
                 <center>
                     <h1 id="title">Friend Finder</h1>
@@ -38,31 +37,16 @@
                     <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
                 </center>
 
-                <!--
-                    <a @click="showMap" class="button button-fill button-round">Afficher la carte</a>
-               -->
-
+               <div id="log">
+                   <h3 id="titleStat">Statistiques: </h3>
+                   <p id="stat"></p>
+               </div>
                 <div id="mapAccueil"></div>
 
 
                 <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                     <h6>&copy; spirit_commandos 2020</h6>
                 </div>
-                <!-- <div>
-                    <p>
-                        {{#if cpt}}
-                        var
-                        {{else}}
-                        yok
-                        {{/if}}
-                    </p>
-
-                    <ul>
-                        {{#each notifs}}
-                        <li>{{code}}: {{id_src}} => {{id_dst}}</li>
-                        {{/each}}
-                    </ul>
-                </div> -->
             </div>
         </div>
 </template>
@@ -95,43 +79,6 @@
                 cpt: cpt
             }
         },
-        methods: {
-            params: function() {
-                console.log("Vous voulez modifier votre mot de passe");
-                console.log(this.$route.params.token);
-                this.$router.navigate("/parameters/" + this.$route.params.token);
-            },
-            getPos: function() {
-                this.$router.navigate("/AddPosition/" + this.$route.params.token);
-            },
-            show_menu: function() {
-                // console.log("menu: " + document.getElementById("menu").innerHTML);
-                if (document.getElementById("menu").classList.contains("d-none")) {
-                    document.getElementById("menu").classList.remove("d-none");
-                    document.getElementById("contain").style.marginLeft = "70px";
-                } else {
-                    document.getElementById("menu").classList.add("d-none");
-                    document.getElementById("contain").classList.remove("w3-container");
-                    document.getElementById("contain").style.marginLeft = "0px";
-                }
-            },
-            amis: function() {
-                this.$router.navigate("/amis/" + this.$route.params.token);
-            },
-            deconnecter: function() {
-                // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
-                //     // this.$router.navigate("/");
-                //     this.$app.dialog.alert("GREAT!");
-                // });
-                this.$router.navigate("/");
-            },
-            bell: function() {
-                this.$router.navigate("/notifs/0/" + this.$route.params.token); < /span>
-            },
-            historique: function() {
-                this.$router.navigate("/historique/" + this.$route.params.token);
-            }
-        },
         on: {
             pageInit: function() {
                 let macarte = null;
@@ -157,7 +104,31 @@
                     minZoom: 1,
                     maxZoom: 20
                 }).addTo(macarte);
+                let url;
+                if (window.cordova === undefined) {
+                    url = "http://localhost:3000/positionsActives/" + this.$route.params.token;
+                } else {
+                    url = "http://10.0.2.2:3000/positionsActives/" + this.$route.params.token;;
+                }
+                try {
+                    fetch(url).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        if (data.length > 1) {
+                            document.getElementById("stat").innerText = data.length + " de vos amis ont une position active partagée ! ";
+                        } else if (data.length === 0) {
+                            document.getElementById("stat").innerText = "Aucun de vos amis n'a une position active partagée ! ";
+                        } else {
+                            document.getElementById("stat").innerText = "Un de vos amis a une position active partagée ! ";
+                        }
+                        for (pos in data) {
+                            var marker = L.marker([data[pos].lat, data[pos].long]).addTo(macarte);
+                            // marker.bindPopup(data[pos].user);
+                        }
+                    })
+                } catch (err) {
 
+                }
             },
             // pageBeforeout: function() {
             //     document.getElementById("map").parentNode.removeChild(document.getElementById("map"));

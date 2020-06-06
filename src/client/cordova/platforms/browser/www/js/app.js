@@ -8,19 +8,83 @@ var app = new Framework7({
     theme: 'auto', // Automatic theme detection
     // App root data
     data: function() {
-        return {
-            user: {
-                firstName: 'John',
-                lastName: 'Doe',
-            },
-
-        };
+        // user: {
+        //     firstName: 'John',
+        //     lastName: 'Doe',
+        // },
     },
     // App root methods
     methods: {
-        helloWorld: function() {
-            app.dialog.alert('Hello World!');
+        params: function(router, token) {
+            console.log("Vous voulez modifier votre mot de passe");
+            router.navigate("/parameters/" + token);
         },
+        getPos: function(router, token) {
+            router.navigate("/AddPosition/" + token);
+        },
+        show_menu: function(menu, container) {
+            if (document.getElementById(menu).classList.contains("d-none")) {
+                document.getElementById(menu).classList.remove("d-none");
+                document.getElementById(container).style.marginLeft = "70px";
+            } else {
+                document.getElementById(menu).classList.add("d-none");
+                document.getElementById(container).classList.remove("w3-container");
+                document.getElementById(container).style.marginLeft = "0px";
+            }
+        },
+        amis: function(router, token) {
+            router.navigate("/amis/" + token);
+        },
+        back: function(router) {
+            router.back();
+        },
+        deconnecter: function(router) {
+            // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+            //     // router.navigate("/");
+            //     this.$app.dialog.alert("GREAT!");
+            // });
+            router.navigate("/");
+        },
+        bell: function(router, token) {
+            router.navigate("/notifs/0/" + token);
+        },
+        historique: function(router, token) {
+            router.navigate("/historique/" + token);
+        },
+        home: function(router, token) {
+            router.navigate("/accueil/" + token);
+        }
+
+        // getData: async function(router, token) {
+        //     console.log("DATAAAAAAA");
+        //     let url;
+        //     if (window.cordova === undefined) {
+        //         url = "http://localhost:3000/notifs/" + self;
+        //         console.log("Browser");
+        //     } else {
+        //         url = "http://10.0.2.2:3000/notifs/" + self;;
+        //         console.log(window.cordova.platformId);
+        //     }
+        //     // On cherche les notifications de l'utilisateur
+        //     let notifs = [];
+        //     let cpt = 0;
+        //     try {
+        //         notifs = await fetch(url)
+        //             .then(res =>
+        //                 res.json())
+        //     } catch (err) {
+        //         this.$app.dialog.alert("Error " + err);
+        //     }
+
+        //     // console.log("notifs: " + JSON.stringify(notifs));
+        //     cpt = notifs.length;
+        //     console.log("CPT: " + cpt);
+        //     return { cpt };
+        // return {
+        //     notifs: notifs
+        //         // cpt: cpt
+        // };
+        // }
     },
     // App routes
     routes: routes,
@@ -61,31 +125,3 @@ $$('#my-login-screen .login-button').on('click', function() {
 app.views.create('.view-main', {
     url: '/'
 });
-
-// Template7.registerPartial("menu", '<div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">' +
-//     '<a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d\'accueil"></i></a>' +
-//     '<a href="#" @click="getPos" class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"' +
-//     'title="Ajouter une nouvelle position"></i></a>' +
-//     '<a href="#" @click="params" class="w3-bar-item w3-button"><i class="fa fa-gear"' +
-//     'title="modifier les paramètres de votre compte"></i></a>' +
-//     '<a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>' +
-//     '<a href="#" @click="amis" class="w3-bar-item w3-button"><i class="fa fa-group"' +
-//     'title="liste des amis"></i></a>' +
-//     '<a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"' +
-//     'title="historique des positions"></i></a>' +
-//     '<a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"' +
-//     'title="Déconnexion"></i></a>' +
-//     '</div>' +
-//     '<script> return { ' +
-//     'methods: {' +
-//     'params: function() {' +
-//     ' this.$router.navigate("/parameters/" + this.$route.params.token);' +
-//     '},' +
-//     'getPos: function() {' +
-//     'this.$router.navigate("/AddPosition/" + this.$route.params.token);' +
-//     '},' +
-//     'amis: function() { this.$router.navigate("/amis/" + this.$route.params.token);},' +
-//     'deconnecter: function() {  this.$router.navigate("/off/"); }' +
-//     '}}' +
-//     '</script>'
-// );

@@ -680,7 +680,7 @@
     //     'title="liste des amis"></i></a>' +
     //     '<a href="#" class="w3-bar-item w3-button"><i class="fa fa-history"' +
     //     'title="historique des positions"></i></a>' +
-    //     '<a href="#" @click="deconnecter" class="w3-bar-item w3-button"><i class="fa fa-power-off"' +
+    //     '<a href="#" @click="deconnecter(this.$router)" class="w3-bar-item w3-button"><i class="fa fa-power-off"' +
     //     'title="Déconnexion"></i></a>';
     // // '</div></div>' +
     // // '<script> return { ' +

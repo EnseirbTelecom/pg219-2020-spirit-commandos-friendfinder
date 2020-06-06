@@ -15,17 +15,54 @@ var app = new Framework7({
     },
     // App root methods
     methods: {
-        helloWorld: function() {
-            app.dialog.alert('Hello World!');
+        params: function(router, token) {
+            console.log("Vous voulez modifier votre mot de passe");
+            router.navigate("/parameters/" + token);
         },
-        // getData: async function(token) {
+        getPos: function(router, token) {
+            router.navigate("/AddPosition/" + token);
+        },
+        show_menu: function(menu, container) {
+            if (document.getElementById(menu).classList.contains("d-none")) {
+                document.getElementById(menu).classList.remove("d-none");
+                document.getElementById(container).style.marginLeft = "70px";
+            } else {
+                document.getElementById(menu).classList.add("d-none");
+                document.getElementById(container).classList.remove("w3-container");
+                document.getElementById(container).style.marginLeft = "0px";
+            }
+        },
+        amis: function(router, token) {
+            router.navigate("/amis/" + token);
+        },
+        back: function(router) {
+            router.back();
+        },
+        deconnecter: function(router) {
+            // this.$app.dialog.confirm("Êtes vous sûr de vouloir quitter cette session ?", function() {
+            //     // router.navigate("/");
+            //     this.$app.dialog.alert("GREAT!");
+            // });
+            router.navigate("/");
+        },
+        bell: function(router, token) {
+            router.navigate("/notifs/0/" + token);
+        },
+        historique: function(router, token) {
+            router.navigate("/historique/" + token);
+        },
+        home: function(router, token) {
+            router.navigate("/accueil/" + token);
+        }
+
+        // getData: async function(router, token) {
         //     console.log("DATAAAAAAA");
         //     let url;
         //     if (window.cordova === undefined) {
-        //         url = "http://localhost:3000/notifs/" + token;
+        //         url = "http://localhost:3000/notifs/" + self;
         //         console.log("Browser");
         //     } else {
-        //         url = "http://10.0.2.2:3000/notifs/" + token;;
+        //         url = "http://10.0.2.2:3000/notifs/" + self;;
         //         console.log(window.cordova.platformId);
         //     }
         //     // On cherche les notifications de l'utilisateur
