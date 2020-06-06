@@ -1,40 +1,80 @@
-# API-first development with OpenAPI
-# This file will be used at compile time to generate Spring-MVC endpoint stubs using openapi-generator
-openapi: '3.0.1'
+openapi: 3.0.1
 info:
   title: 'FriendFinder'
   description: "Application mobile pour la géolocalisation des amis"
   version: 1.0.1
+  # x-logo:
+  #   url : "https://drive.google.com/file/d/1611dZ2Q9sXKlZ0aq1jWmDQs-aB4bOu0M/view?usp=sharing"
+  #   backgroundColor: "#FFFFFF"
+  #   altText: "FriendFinder logo"
+
 servers:
   - url: https://localhost:8082/api
     description: Development server
+tags: 
+  - name : User
+    description : All user details
+  - name : Positions
+    description : Everything about geolocations
+  - name : Friends 
+    description : Friends details
+  - name : Notifications
+    description : Notification system
 paths:
-  /signup:
+  "/signup":
     post:
-      summary: ajouter un nouvel utilisateur dans la base de données
+      tags : 
+      - User
+      summary : Add a new user to the dataBase
+      operationId: userSignup
       requestBody:
-        description: Les paramètres d'unutilisateur
+        description: User object that needs to be added
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/user'
+            examples: 
+              user:
+                summary: A user object example
+                value:
+                    {  "mail" : "user@domain.com",
+                        "password" : "user",
+                        "nom" : "userFamilyName",
+                        "prenom" : "userFirstName",
+                        "pseudo" : "userPseudo",
+                        "date" : "10/04/1997"
+                    }     
+                 
         required: true
       responses:
-        200:
-          description: opération réusssie
+        '200':
+          description: success
+          headers: 
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
           content:
             application/json:
               schema:
                 text: 
                   type: string
-        403:
-          description: adresse mail déjà utilisée
+        '403':
+          description: Mail address already used
           content: {}
+        '405':
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
   /signin:
     post:
-      summary: permet à un utilisateur de se connecter à son compte sur l'application 
+      tags : 
+        - User
+      summary : Connects the user to the APP
+      operationId: userSignin
       requestBody:
-        description: L'adresse mail et le mot de passe de l'utilisateur
+        description: Mail address and user's password.
         content:
           application/json:
             schema:
@@ -44,222 +84,110 @@ paths:
                   type: string
                 password:
                   type: string
+            examples : 
+              logIn : 
+                summary: User Identification Example
+                value:
+                    {   "mail" : "user@domain.com",
+                        "password" : "user"
+                    }  
         required: true
       responses:
-        200:
-          description: Utilisateur authentifié
+        '200':
+          description: Authentification Success
           content:
             application/json:
               schema:
                 text: 
                   type: string
-        403:
-          description: identifiants incorrects
+        '403':
+          description: Invalid Id
           content: {}
-  /greeting:
+  /users/{token} :
     get:
-      operationId: getHello
-      parameters:
-        - name: nom
-          in: query
-          description: returns hello
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: successful operation
-          content:
+      tags: 
+      - User
+      summary : Returns the list of users
+      operationId: getUsers
+      parameters: 
+      - name : token
+        in : path
+        description : token needed to verify the current user
+        required : true
+        schema : 
+          type : string
+      responses : 
+        '200' : 
+          description : successful operation
+          content : 
             application/json:
-              schema:
-                $ref: '#/components/schemas/Greeting'
-        400:
-          description: invalid operation
-          content: {}
-  /user_info:
-    post:
-      summary: Get user info from request
-      operationId: userInfo
-      requestBody:
-        description: user info added to the database
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/userInfo'
-        required: true
-      responses:
-        405:
-          description: Invalid input
-          content: {}
-        200:
-          description: successful operation
-          content:
-            text/plain:
-              schema:
-                type: string
-      x-codegen-request-body-name: body
-  /is_bot:
+              schema: 
+                type : array
+                items : 
+                  $ref : "#/components/schemas/user"
+        '400' : 
+          description : invalid input
+  /getUserProfile/{token}/{id}:
     get:
-      operationId: isBot
-      parameters:
-        - name: id
-          in: query
-          description: returns true or false (is a bot or no)
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: successful operation
-          content:
+      tags: 
+      - User
+      summary : Returns one user by his Id
+      operationId: getUserById
+      parameters: 
+      - name : token
+        in : path
+        description : token needed to verify the current user
+        required : true
+        schema : 
+          type : string
+      - name : id
+        in : path
+        description : user's Id
+        required : true
+        schema : 
+          type : string
+      responses : 
+        '200' : 
+          description : successful operation
+          content : 
             application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-        400:
-          description: invalid operation
-          content: {}
-    post:
-      summary: Set bot value
-      operationId: setBot
-      requestBody:
-        description: change bot value
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/botValue'
-        required: true
-      responses:
-        405:
-          description: Invalid input
-          content: {}
-        200:
-          description: successful operation
-          content:
-            text/plain:
-              schema:
-                type: string
-  /setAsBot:
-    put:
-      operationId: setAsBot
-      parameters:
-        - name: id
-          in: query
-          description: sets a user as a bot
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bot'
-        400:
-          description: invalid operation
-          content: {}
-  /captcha:
-    get:
-      operationId: getCaptchaResponse
-      parameters:
-        - name: recaptcha
-          in: query
-          description: returns captcha response
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: id
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Captcha'
-        400:
-          description: invalid operation
-          content: {}
+              schema: 
+                  "$ref" : "#/components/schemas/user"
+        '400' : 
+          description : invalid input
+
+
 components:
-  schemas:
+ schemas:
     user:
+      required:
+      - mail
+      - password
+      - nom
+      - prenom
+      - pseudo
+      - date
       type: Object
       properties:
         mail:
           type: string
+          # example: user@domain.com
         password:
           type: string
+          # example: user
         nom:
           type: string
+          # example: familyName
         prenom:
           type: string
+          # example: firstName
         pseudo:
           type: string
+          # example: pseudo
         date:
           type: string
-    Captcha:
-      type: Object
-      properties:
-        id:
-          type: integer
-          format: int64
-        resp:
-          type: string
-    Bot:
-      type: Object
-      properties:
-        id:
-          type: string
-        resp:
-          type: boolean
-    Greeting:
-      type: Object
-      properties:
-        id:
-          type: integer
-          format: int64
-        resp:
-          type: string
-    botValue:
-      type: Object
-      properties:
-        id:
-          type: string
-        value:
-          type: integer
-    userInfo:
-      type: Object
-      properties:
-        ip:
-          type: string
-        userAgent:
-          type: string
-        language:
-          type: string
-        cookie:
-          type: string
-        keyboard:
-          type: boolean
-        mouse:
-          type: boolean
-        screenx:
-          type: integer
-          format: int64
-        screeny:
-          type: integer
-          format: int64
-        nbRequest:
-          type: integer
-        bot:
-          type: boolean
+          format: date-time
+          # example: 10/04/1997
+    
+    
+    
