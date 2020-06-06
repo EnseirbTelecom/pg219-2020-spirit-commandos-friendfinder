@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: 'FriendFinder'
+  title: "FriendFinder"
   description: "Application mobile pour la géolocalisation des amis"
   version: 1.0.1
   # x-logo:
@@ -11,45 +11,46 @@ info:
 servers:
   - url: https://localhost:8082/api
     description: Development server
-tags: 
-  - name : User
-    description : All user details
-  - name : Positions
-    description : Everything about geolocations
-  - name : Friends 
-    description : Friends details
-  - name : Notifications
-    description : Notification system
+tags:
+  - name: User
+    description: All user details
+  - name: Positions
+    description: Everything about geolocations
+  - name: Friends
+    description: Friends details
+  - name: Notifications
+    description: Notification system
 paths:
   "/signup":
     post:
-      tags : 
-      - User
-      summary : Add a new user to the dataBase
+      tags:
+        - User
+      summary: Add a new user to the dataBase
       operationId: userSignup
       requestBody:
         description: User object that needs to be added
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
-            examples: 
+              $ref: "#/components/schemas/user"
+            examples:
               user:
                 summary: A user object example
                 value:
-                    {  "mail" : "user@domain.com",
-                        "password" : "user",
-                        "nom" : "userFamilyName",
-                        "prenom" : "userFirstName",
-                        "pseudo" : "userPseudo",
-                        "date" : "10/04/1997"
-                    }     
-                 
+                  {
+                    "mail": "user@domain.com",
+                    "password": "user",
+                    "nom": "userFamilyName",
+                    "prenom": "userFirstName",
+                    "pseudo": "userPseudo",
+                    "date": "10/04/1997",
+                  }
+
         required: true
       responses:
-        '200':
+        "200":
           description: success
-          headers: 
+          headers:
             X-Expires-After:
               description: date in UTC when token expires
               schema:
@@ -58,20 +59,20 @@ paths:
           content:
             application/json:
               schema:
-                text: 
+                text:
                   type: string
-        '403':
+        "403":
           description: Mail address already used
           content: {}
-        '405':
+        "405":
           description: Invalid input
           content: {}
       x-codegen-request-body-name: body
   /signin:
     post:
-      tags : 
+      tags:
         - User
-      summary : Connects the user to the APP
+      summary: Connects the user to the APP
       operationId: userSignin
       requestBody:
         description: Mail address and user's password.
@@ -84,89 +85,271 @@ paths:
                   type: string
                 password:
                   type: string
-            examples : 
-              logIn : 
+            examples:
+              logIn:
                 summary: User Identification Example
-                value:
-                    {   "mail" : "user@domain.com",
-                        "password" : "user"
-                    }  
+                value: { "mail": "user@domain.com", "password": "user" }
         required: true
       responses:
-        '200':
+        "200":
           description: Authentification Success
           content:
             application/json:
               schema:
-                text: 
+                text:
                   type: string
-        '403':
+        "403":
           description: Invalid Id
           content: {}
-  /users/{token} :
+  /users/{token}:
     get:
-      tags: 
-      - User
-      summary : Returns the list of users
+      tags:
+        - User
+      summary: Returns the list of users
       operationId: getUsers
-      parameters: 
-      - name : token
-        in : path
-        description : token needed to verify the current user
-        required : true
-        schema : 
-          type : string
-      responses : 
-        '200' : 
-          description : successful operation
-          content : 
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
             application/json:
-              schema: 
-                type : array
-                items : 
-                  $ref : "#/components/schemas/user"
-        '400' : 
-          description : invalid input
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
+        "400":
+          description: invalid input
   /getUserProfile/{token}/{id}:
     get:
-      tags: 
-      - User
-      summary : Returns one user by his Id
+      tags:
+        - User
+      summary: Returns one user by his Id
       operationId: getUserById
-      parameters: 
-      - name : token
-        in : path
-        description : token needed to verify the current user
-        required : true
-        schema : 
-          type : string
-      - name : id
-        in : path
-        description : user's Id
-        required : true
-        schema : 
-          type : string
-      responses : 
-        '200' : 
-          description : successful operation
-          content : 
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: user's Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
             application/json:
-              schema: 
-                  "$ref" : "#/components/schemas/user"
-        '400' : 
-          description : invalid input
+              schema:
+                "$ref": "#/components/schemas/user"
+        "400":
+          description: invalid input
+  /changePassword:
+    get:
+      tags:
+        - User
+      summary: Sends an email to the user with new identifiers in case he forgot hit password
+      operationId: sendUserEmail
+      parameters:
+        - name: mail
+          in: query
+          description: user's mail adress
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content: {}
 
+  /newPassword/{token}:
+    post:
+      tags:
+        - User
+      summary: Allows users to change their passwords
+      operationId: changePassword
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+
+  /position/{token}:
+    post:
+      tags:
+        - Positions
+      summary: Adds a new position in the dataBase
+      operationId: addPosition
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Position object that is going to be added
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/position"
+        required: true
+      responses:
+        "200":
+          description: success
+          content:  
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/position"
+  /positions/{token}:
+    get:
+      tags:
+        - Positions
+      summary: Returns positions' list
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          schema:
+            type: string
+          description: friend's id if we want to return a friend's positions' list
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/position"
+  /positionsActives/{token}:
+    get:
+      tags:
+        - Positions
+      summary: Returns the list of friends' active positions
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/position"
+  /positionDetails/{token}:
+    get:
+      tags:
+        - Positions
+      summary: Returns a position's details                
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+        - name: id_position
+          in: query
+          description: the position's id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/position"
+        404:
+          description: No such position
+          content: {}
+  /deletePos/{token}/{posId}:
+    delete:
+      tags:
+        - Positions
+      summary: deletes a position
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+        - name: posId
+          in: path
+          description: The position's id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content: {}
+  /archiverPos/{token}/{posId}:
+    post:
+      tags:
+        - Positions
+      summary: archives a position
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+        - name: posId
+          in: path
+          description: The position's id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content: {}
 
 components:
- schemas:
+  schemas:
     user:
       required:
-      - mail
-      - password
-      - nom
-      - prenom
-      - pseudo
-      - date
+        - mail
+        - password
+        - nom
+        - prenom
+        - pseudo
+        - date
       type: Object
       properties:
         mail:
@@ -188,6 +371,27 @@ components:
           type: string
           format: date-time
           # example: 10/04/1997
-    
-    
-    
+
+    position:
+      required:
+        - lat
+        - long
+        - date_activation
+        - heure_activation
+        - duree
+        - user
+      type: Object
+      properties:
+        lat:
+          type: string
+        long:
+          type: string
+        date_activation:
+          type: string
+          format: date-time
+        heure_activation:
+          type: string
+        user:
+          type: string
+        duree:
+          type: integer
