@@ -11,7 +11,6 @@
                 <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)"
                     class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
                 <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
                         class="fa fa-group" title="liste des amis"></i></a>
                 <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
@@ -98,7 +97,7 @@
                 </div> -->
                 {{/profile}}
             </div>
-            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+            <div id="footer">
                 <h6>&copy; spirit_commandos 2020</h6>
             </div>
         </div>
