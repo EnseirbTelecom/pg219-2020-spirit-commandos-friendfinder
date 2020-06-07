@@ -56,12 +56,12 @@
                         </div>
 
                         <div>
-                            <div class="label1">Nom: </div>
+                            <div class="label1">Family Name: </div>
                             <div class="col-details">{{nom}}</div>
                         </div>
 
                         <div>
-                            <div class="label1">Prénom: </div>
+                            <div class="label1">First Name: </div>
                             <div class="col-details">{{prenom}}</div>
                         </div>
 
@@ -71,7 +71,7 @@
                         </div>
 
                         <div>
-                            <div class="label1">Date de naissance: </div>
+                            <div class="label1">Date of Birth: </div>
                             <div class="col-details">{{date}}</div>
                         </div>
                     </div>
@@ -79,10 +79,10 @@
                     <div>
                         <div  style="margin-top: 2%; margin-bottom: 2%;">
                             <a @click="historique('{{_id}}')" class="button button-fill button-round" id="btn" style= "margin-left: 15%; margin-right: 10%; margin-bottom: 3%;"
-                                >Historique</a> 
+                                >Locations' History</a> 
                                 <!-- style="color: white; margin-left: 10%; margin-right: 5%;" -->
                             <a @click="delete('{{_id}}')" class="button button-fill button-round" id="btn" style= "margin-left: 15%; margin-right: 10%; margin-bottom: 3%;"
-                                >Supprimer</a> 
+                                >Delete</a> 
                                 <!-- style="color: white; margin-left: 10%; margin-right: 5%;" -->
                         </div>
                     </div>
@@ -191,7 +191,7 @@
                     method: "DELETE"
                 }).then(res => {
                     if (res.status === 200) {
-                        this.$app.dialog.alert('Cet utilisateur a été supprimé de la liste de vos amis', () => {
+                        this.$app.dialog.alert("The user is deleted from your friends' list", () => {
                             this.$router.navigate("/amis/" + this.$route.params.token);
                         });
                     }
@@ -207,12 +207,13 @@
             historique: function(id) {
                 this.$router.navigate("/historique/" + this.$route.params.token + "/" + id);
             }
-        },
-        on: {
-            pageInit: function() {
-                // we include the menu
-                // w3.includeHTML();
-            }
         }
+        // },
+        // on: {
+        //     pageInit: function() {
+        //         // we include the menu
+        //         // w3.includeHTML();
+        //     }
+        // }
     }
 </script>

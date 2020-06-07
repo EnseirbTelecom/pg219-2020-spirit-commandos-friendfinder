@@ -37,52 +37,50 @@
                     </a>
                     <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i class="icon f7-icons">power</i></a>
                 </nav>
-                <h1 class="title">Paramètres: </h1>
+                <h1 class="title">Parameters: </h1>
                 <ul>
                     <li>
-                        <a href="#" @click="show_form">changer le mot de passe</a>
+                        <a href="#" @click="show_form">Change password</a>
                         <div style="visibility: none;" id="form_modify" class="d-none">
                             <div
-                                style="border: black solid 0.3rem; border-radius: 0.3rem; margin-left: 5%; margin-top: 2%; margin-right: 15%;">
-                                <div style="margin-left: 2%;">
+                                style="border: black solid 0.3rem; border-radius: 0.3rem; margin-left: 7%; margin-top: 2%; margin-right: 7%;">
+                                <div style="margin-left: 7%; margin-right: 7%;">
                                     <div class="form-group">
-                                        <label for="old_mdp">Ancien mot de passe: </label>
+                                        <label for="old_mdp">Old password: </label>
                                         <input id="old_mdp" type="password" class="form-control field"
                                             placeholder="password">
                                     </div>
                                     <div class="form-group">
-                                        <label for="mdp">Nouveau mot de passe: </label>
+                                        <label for="mdp">New password: </label>
                                         <input id="mdp" type="password" class="form-control field"
                                             placeholder="password">
                                     </div>
                                     <div class="form-group">
-                                        <label for="new_mdp">Confirmer le mot de passe: </label>
+                                        <label for="new_mdp">Confirm new password: </label>
                                         <input id="new_mdp" type="password" class="form-control field"
                                             placeholder="password">
-                                        <p style="color: red; visibility: hidden;" id="non_conforme">Les deux mots de
-                                            passe doivent être conformes !</p>
+                                        <p style="color: red; visibility: hidden;" id="non_conforme">Old and new passwords do not match !</p>
                                     </div>
-                                    <div class="add" style="margin-left: 40%; margin-right: 40%;">
-                                        <a @click="modify" href="#" class="button button-round button-fill">changer le
-                                            mot de passe</a>
+                                    <div class="add" style="margin-left: 20%; margin-right: 20%;">
+                                        <a @click="modify" href="#" class="button button-round button-fill">Confirm</a>
                                     </div>
                                 </div>
                     </li>
                     <li>
-                        <a href="#" class="disabled">changer l'adresse mail</a>
+                        <a href="#" class="disabled">Change mail address</a>
                     </li>
                     <li>
-                        <a href="#" class="disabled">changer la photo de profil</a>
+                        <a href="#" class="disabled">Change profile's photo</a>
                     </li>
 
                 </ul>
 
 
-                <div class="fab " id="back">
+                <!-- <div class="fab " id="back">
                     <a @click="this.$app.methods.back" href="#" title="Ajouter un produit">
                         <i class="icon f7-icons">arrow_left</i>
                     </a>
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -158,7 +156,7 @@
                             //     console.log(JSON.stringify(data));
                             //     if (data === "OK") {
                             if (res.status === 200) {
-                                this.$app.dialog.alert("Mot de passe changé avec succès !");
+                                this.$app.dialog.alert("Password changed with success !");
                                 document.getElementById("form_modify").classList = "d-none";
                             } else {
                                 this.$app.dialog.alert("Something went wrong");
@@ -174,7 +172,7 @@
                             body: reqBody
                         }).then(res => {
                             if (res.status === 200) {
-                                this.$app.dialog.alert("Mot de passe changé avec succès !");
+                                this.$app.dialog.alert("Password changed with success !");
                                 document.getElementById("form_modify").classList = "d-none";
                             } else {
                                 this.$app.dialog.alert("Something went wrong");
@@ -221,12 +219,13 @@
             // bell: function() {
             //     this.$router.navigate("/notifs/0/" + this.$route.params.token);
             // }
-        },
-        on: {
-            pageInit: function() {
-                // we include the menu
-                // w3.includeHTML();
-            }
         }
+        // },
+        // on: {
+        //     pageInit: function() {
+        //         // we include the menu
+        //         // w3.includeHTML();
+        //     }
+        // }
     }
 </script>

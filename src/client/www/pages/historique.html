@@ -62,8 +62,7 @@
                 {{/each}}
             </div>
             <div id="mapHistorique" class="d-none"></div>
-            <a @click="getMap" class="button button-round button-fill btn-margin" id="btn">Afficher la
-                carte</a>
+            <a @click="getMap" class="button button-round button-fill btn-margin" id="btn">Show Map</a>
 
             <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                 <h6>&copy; spirit_commandos 2020</h6>
@@ -119,8 +118,8 @@
                 let address = await fetch('https://api-adresse.data.gouv.fr/reverse/?lon=' + positions[i].long + '&lat=' + positions[i].lat).then(res =>
                     res.json());
                 if (address.features[0] === undefined) {
-                    positions[i].address = "Seules les adresses en france sont prises en compte";
-                    positions[i].context = "Seules les adresses en france sont prises en compte";
+                    positions[i].address = "Only french addresses can be decoded";
+                    positions[i].context = "Only french addresses can be decoded";
                 } else {
                     positions[i].address = address.features[0].properties.label;
                     positions[i].context = address.features[0].properties.context;
@@ -159,7 +158,7 @@
                 } catch (err) {
                     this.$app.dialog.alert("ERROR: " + err);
                 }
-                console.log("liste des positions: " + JSON.stringify(positions));
+                console.log("Locations' list: " + JSON.stringify(positions));
                 for (pos in positions) {
                     console.log("pos latitude : " + positions[pos].lat + " longitude : " + positions[pos].long);
                 }

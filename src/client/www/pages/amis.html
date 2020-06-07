@@ -42,7 +42,7 @@
             </center>
 
             <center>
-                <h2 id="secondTitle">Liste des amis: </h2>
+                <h2 id="secondTitle">Friends' List: </h2>
             </center>
 
             <!-- / =============================================================================================== \ -->
@@ -50,13 +50,13 @@
             <!-- / =============================================================================================== \ -->
             {{#if id}}
             <div id="card-accept">
-                Acceptez vous l'invitation de {{invitation}} ?
+                Do you accept {{invitation}} friendship request ?
                 <div class="block">
                     <div class="row" id="buttons">
                         <a @click="accept" class="col button button-fill btn-accept"
-                            style="margin-right: 1%;">Accepter</a>
+                            style="margin-right: 1%;">Accept</a>
                         <a @click="cancel" class="col button button-fill btn-accept"
-                            style="margin-left: 1%;">Refuser</a>
+                            style="margin-left: 1%;">Refuse</a>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
                     <div id="profile">
-                        <a @click="getProfile('{{_id}}'" id="profile-left">profil</a>
+                        <a @click="getProfile('{{_id}}'" id="profile-left">profile</a>
                     </div>
                 </div>
                 {{else}}
@@ -86,7 +86,7 @@
                         <h4><b>{{pseudo}}</b></h4>
                     </div>
                     <div id="profile">
-                        <a @click="getProfile('{{_id}}'" id="profile">profil</a>
+                        <a @click="getProfile('{{_id}}'" id="profile">profile</a>
                     </div>
                 </div>
                 {{/js_if}}
@@ -118,16 +118,16 @@
                 </div>
                 <ul id="results"></ul>
                 <div class="add" style="margin-left: 40%; margin-right: 40%;">
-                    <a @click="addf" href="#" class="button button-round button-fill">Ajouter</a>
+                    <a @click="addf" href="#" class="button button-round button-fill">Add</a>
                 </div>
             </div>
             <!-- </ul> -->
 
-            <div class="fab " id="back">
+            <!-- <div class="fab " id="back">
                 <a  href="#" title="Ajouter un produit">
                     <i class="icon f7-icons">arrow_left</i>
                 </a>
-            </div>
+            </div> -->
             <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                 <h6>&copy; spirit_commandos 2020</h6>
             </div>
@@ -272,9 +272,9 @@
                         method: "POST",
                     }).then(res => {
                         if (res.status === 401) {
-                            this.$app.dialog.alert("Cet utilisateur est déjà dans votre liste d'amis !");
+                            this.$app.dialog.alert("You are already friends with this user !");
                         } else if (res.status === 200) {
-                            this.$app.dialog.alert("Invitation evoyée avec succès");
+                            this.$app.dialog.alert("Frienship request sent successfully");
                         } else if (res.status === 403) {
                             this.$app.dialog.alert("User not found");
                         }

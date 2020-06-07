@@ -40,13 +40,13 @@
             <div style="margin-top: 2%;">
                 <center>
                     <h1 id="title">Friend Finder</h1>
-                    <h2 id="secondTitle">Partager une nouvelle position: </h2>
+                    <h2 id="secondTitle">Add a new position: </h2>
                 </center>
             </div>
             <form id="historique">
                 <div id="formulaire">
                     <div class="form-group row">
-                        <label class="label1">Acceptez-vous de partager votre position ? </label>
+                        <label class="label1">Do you want to share this location ? </label>
                         <div class="col-sm-10">
                             <label class="switch">
                                 <input type="checkbox" id="pos">
@@ -54,7 +54,7 @@
                             </label>
                         </div>
                         <div id="error" style="color: red;" class="d-none">
-                            <p>Veuillez d'abord accepter la récupération de votre localisation par notre application</p>
+                            <p>It is required to accept sharing the positions with our APP </p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="label1">Durée: </label>
+                        <label class="label1">Keep active for : </label>
                         <div class="col-sm-10">
                             <input placeholder="0" id="d" class="time">
                             <label>dd</label>
@@ -78,17 +78,16 @@
                     </div>
             </form>
             <div class="add">
-                <a @click="getPosition" href="#" class="button button-round button-fill" id="btn">Partager la
-                    position</a>
+                <a @click="getPosition" href="#" class="button button-round button-fill" id="btn">Share this location </a>
             </div>
             <div id="geolocalisation"> </div>
 
         </div>
-        <div class="fab " id="back">
+        <!-- <div class="fab " id="back">
             <a href="#" title="Ajouter un produit">
                 <i class="icon f7-icons">arrow_left</i>
             </a>
-        </div>
+        </div> -->
         <div style="margin-bottom: 2%; margin-left: 25%;">
             <h6>&copy; spirit_commandos 2020</h6>
         </div>
@@ -239,7 +238,7 @@
                                 // Let's check whether notification permissions have already been granted
                                 else if (Notification.permission === "granted") {
                                     // If it's okay let's create a notification
-                                    var notification = new Notification("Votre position a été partagé avec succès !");
+                                    var notification = new Notification("Your location has been shared with success !");
                                 }
 
                                 // Otherwise, we need to ask the user for permission
@@ -247,7 +246,7 @@
                                     Notification.requestPermission().then(function(permission) {
                                         // If the user accepts, let's create a notification
                                         if (permission === "granted") {
-                                            var notification = new Notification("Votre position a été partagé avec succès !");
+                                            var notification = new Notification("Your location has been shared with success !");
                                         }
                                     });
                                 }
@@ -256,7 +255,7 @@
                                 //     _5_sec_from_now = new Date(time + duree * 1000);
                                 console.log("now: " + now);
                                 cordova.plugins.notification.local.schedule({
-                                    text: "Votre position a été partagé avec succès !",
+                                    text: "Your location has been shared with success !",
                                     led: "FF0000",
                                     sound: null,
                                 });
@@ -298,13 +297,13 @@
             // historique: function() {
             //     this.$router.navigate("/historique/" + this.$route.params.token);
             // },
-
-        },
-        on: {
-            pageInit: function() {
-                // we include the menu
-                // w3.includeHTML();
-            }
         }
+        // },
+        // on: {
+        //     pageInit: function() {
+        //         // we include the menu
+        //         // w3.includeHTML();
+        //     }
+        // }
     }
 </script>

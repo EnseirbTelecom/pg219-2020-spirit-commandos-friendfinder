@@ -44,7 +44,7 @@
             </div>
             <div id="map"></div>
             <div class="add">
-                <a @click="getMap" href="#" class="button button-round button-fill">Afficher la carte</a>
+                <a @click="getMap" href="#" class="button button-round button-fill">Show Map</a>
             </div>
             <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
                 <h6>&copy; spirit_commandos 2020</h6>
@@ -124,15 +124,15 @@
                     maxZoom: 20
                 }).addTo(macarte);
                 var marker = L.marker([lat, lon]).addTo(macarte);
-                marker.bindPopup("position1");
-            }
-
-        },
-        on: {
-            pageInit: function() {
-                // we include the menu
-                // w3.includeHTML();
+                marker.bindPopup("Position's latitude : " + lat +"\n"+"Position's longitude : " + lon);
             }
         }
+        // },
+        // on: {
+        //     pageInit: function() {
+        //         // we include the menu
+        //         // w3.includeHTML();
+        //     }
+        // }
     }
 </script>

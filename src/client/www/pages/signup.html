@@ -16,37 +16,37 @@
                         <input id="mail1" class="form-control field" placeholder="you@email.com">
                     </div>
                     <div class="d-none" style="color: red;" id="error_mail1">
-                        <p>Veuillez entrer une adresse mail valide (contenant les caractères @ et .)</p>
+                        <p>Please type your mail address (username@domaine.com)</p>
                     </div>
                     <div class="d-none" style="color: red;" id="mail1_needed">
-                        <p>Ce champ est obligatoire pour votre inscription </p>
+                        <p>This field is required for your registration </p>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="mdp1" class="col-sm-2 col-form-label label1">Mot de passe: </label>
+                    <label for="mdp1" class="col-sm-2 col-form-label label1">Password: </label>
                     <div class="col-sm-10">
                         <input id="mdp1" type="password" class="form-control field" placeholder="password">
                     </div>
                     <div class="d-none" style="color: red;" id="mdp_needed">
-                        <p>Ce champ est obligatoire pour votre inscription </p>
+                        <p>This field is required for your registration </p>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="nom" class="col-sm-2 col-form-label label1">Nom: </label>
+                    <label for="nom" class="col-sm-2 col-form-label label1">Family Name: </label>
                     <div class="col-sm-10">
                         <input id="nom" class="form-control field" placeholder="First name">
                     </div>
                     <div class="d-none" style="color: red;" id="nom_needed">
-                        <p>Ce champ est obligatoire pour votre inscription </p>
+                        <p>This field is required for your registration </p>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="prenom" class="col-sm-2 col-form-label label1">Prénom: </label>
+                    <label for="prenom" class="col-sm-2 col-form-label label1">First Name: </label>
                     <div class="col-sm-10">
                         <input id="prenom" class="form-control field" placeholder="Last name">
                     </div>
                     <div class="d-none" style="color: red;" id="prenom_needed">
-                        <p>Ce champ est obligatoire pour votre inscription </p>
+                        <p>This field is required for your registration </p>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -55,34 +55,34 @@
                         <input id="pseudo" class="form-control field" placeholder="Pseudo">
                     </div>
                     <div class="d-none" style="color: red;" id="pseudo_needed">
-                        <p>Ce champ est obligatoire pour votre inscription </p>
+                        <p>This field is required for your registration </p>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="date" class="col-sm-2 col-form-label label1">Date de naissance: </label>
+                    <label for="date" class="col-sm-2 col-form-label label1">Date of Birth: </label>
                     <div class="col-sm-10">
                         <input type="date" class="form-control" id="date" value="" name="date">
                     </div>
                     <div class="d-none" style="color: red;" id="date_needed">
-                        <p>Ce champ est obligatoire pour votre inscription </p>
+                        <p>This field is required for your registration </p>
                     </div>
                 </div>
                 <div class="add">
-                    <a @click="sign_up" href="#" class="button button-round button-fill">S'enregistrer</a>
+                    <a @click="sign_up" href="#" class="button button-round button-fill">Signup</a>
                 </div>
                 <div class="list">
                     <div style="float: right;">
-                        <a @click="signin" class="d-block link">Se connecter</a>
+                        <a @click="signin" class="d-block link">Signin</a>
                     </div>
                 </div>
                 <br/>
             </div>
         </form>
-        <div class="fab " id="back">
+        <!-- <div class="fab " id="back">
             <a @click="back" href="#" title="Ajouter un produit">
                 <i class="icon f7-icons">arrow_left</i>
             </a>
-        </div>
+        </div> -->
         <div style="margin-top: 50%; margin-bottom: 5%;">
             <h6>&copy; spirit_commandos</h6>
         </div>
@@ -147,15 +147,15 @@
                         }).then(res => {
                             if (res.status === 200) {
                                 console.log("200 OK");
-                                console.log("Bienvenue dans notre appli !");
+                                console.log("Welcome to our APP !");
                                 res.json().then(data => {
                                     let result = data.text;
                                     let paths = "/accueil/" + result;
                                     this.$router.navigate(paths);
                                 });
                             } else if (res.status === 403) {
-                                console.log("@mail déjà utilisée");
-                                this.$app.dialog.alert("Cette adresse mail est déjà utilisée !");
+                                console.log("@mail already used");
+                                this.$app.dialog.alert("This mail address is already used !");
                             }
                         });
                     } catch (err) {

@@ -38,22 +38,22 @@
             </nav>
             <center>
                 <h1 id="title">Friend Finder</h1>
-                <h2 id="secondTitle">Détails position: </h2>
+                <h2 id="secondTitle">Position's details: </h2>
             </center>
             {{#position}}
             <div id="historique">
-                <h4 class="titleDetail">Carte: </h4>
+                <h4 class="titleDetail">MAP: </h4>
                 <div id="mapDetails"></div>
                 <div>
-                    <h4 class="titleDetail">Détails: </h4>
+                    <h4 class="titleDetail">Details: </h4>
                     <ul id="details">
-                        <li>Partagée le: {{date_activation}} à {{heure_activation}}</li>
+                        <li>Shared the : {{date_activation}} at {{heure_activation}}</li>
                         {{#js_if "this.status === 'Archivée'"}}
-                        <li>Archivée après {{duree}} secondes du partage</li>
+                        <li>Archived after {{duree}} seconds </li>
                         {{else}}
-                        <li>Sera archivée après {{duree}} secondes du partage</li>
+                        <li>will be archived after {{duree}} seconds </li>
                         {{/js_if}}
-                        <li><strong>Coordonnées: </strong>
+                        <li><strong>Geographical coordinates: </strong>
                             <ul>
                                 <li>
                                     <strong>Latitude: </strong>
@@ -92,11 +92,11 @@
 
         </div>
     </div>
-    <div class="fab " id="back">
+    <!-- <div class="fab " id="back">
         <a @click="this.$app.methods.back" href="#" title="Ajouter un produit">
             <i class="icon f7-icons">arrow_left</i>
         </a>
-    </div>
+    </div> -->
     </div>
 </template>
 <script>
@@ -185,7 +185,7 @@
                     maxZoom: 20
                 }).addTo(macarte);
                 let marker = L.marker([lat, lon]).addTo(macarte);
-                marker.bindPopup("test page init");
+                // marker.bindPopup("test page init");
                 console.log(marker);
             },
             pageBeforeout: function() {

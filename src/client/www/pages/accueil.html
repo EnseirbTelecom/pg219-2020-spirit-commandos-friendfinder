@@ -39,11 +39,11 @@
                     <h1 id="title">Friend Finder</h1>
                 </center>
                 <center>
-                    <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
+                    <p>This APP is used to keep track of your friends' locations </p>
                 </center>
 
                 <div id="log">
-                    <h3 id="titleStat">Statistiques: </h3>
+                    <h3 id="titleStat">New locations: </h3>
                     <p id="stat"></p>
                 </div>
                 <div id="mapAccueil"></div>
@@ -127,11 +127,11 @@
                         return res.json();
                     }).then(data => {
                         if (data.length > 1) {
-                            document.getElementById("stat").innerText = data.length + " de vos amis ont une position active partagée ! ";
+                            document.getElementById("stat").innerText = data.length + " friends added a new active position ! ";
                         } else if (data.length === 0) {
-                            document.getElementById("stat").innerText = "Aucun de vos amis n'a une position active partagée ! ";
+                            document.getElementById("stat").innerText = "None of your friends added a new active position ! ";
                         } else {
-                            document.getElementById("stat").innerText = "Un de vos amis a une position active partagée ! ";
+                            document.getElementById("stat").innerText = "One of your friends added a new active position ! ";
                         }
                         for (pos in data) {
                             var marker = L.marker([data[pos].lat, data[pos].long]).addTo(macarte);
