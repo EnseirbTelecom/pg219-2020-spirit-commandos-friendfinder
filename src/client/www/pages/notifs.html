@@ -1,107 +1,124 @@
 <template>
     <div class="page" data-name="notifs">
+        {{#if all}}
         <div class="scrollbar-warm-flame d-none" id="menuNotif">
-            <!-- <div  w3-include-html="menu.html"></div>   -->
-            <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
-                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)"
-                    class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
-                <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
-                    class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
-                        title="Ajouter une nouvelle position"></i></a>
-                <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)"
-                    class="w3-bar-item w3-button"><i class="fa fa-gear"
-                        title="modifier les paramètres de votre compte"></i></a>
-                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)"
-                    class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a>
-                <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
-                    class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
-                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
-                        class="fa fa-power-off" title="Déconnexion"></i></a>
+            {{else}}
+            <div class="scrollbar-warm-flame d-none" id="menuNotif1">
+                {{/if}}
+                <!-- <div  w3-include-html="menu.html"></div>   -->
+                <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
+                    <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)"
+                        class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
+                    <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
+                        class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
+                            title="Ajouter une nouvelle position"></i></a>
+                    <a href="#" @click="this.$app.methods.params(this.$router, this.$route.params.token)"
+                        class="w3-bar-item w3-button"><i class="fa fa-gear"
+                            title="modifier les paramètres de votre compte"></i></a>
+                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
+                    <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)"
+                        class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a>
+                    <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
+                        class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
+                    <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
+                            class="fa fa-power-off" title="Déconnexion"></i></a>
 
+                </div>
             </div>
-        </div>
-        <div>
-            <div id="containNotif">
-                <nav class="navbar navbar-dark">
-                    <a class="navbar-brand" href="#"
-                        @click="this.$app.methods.show_menu('menuNotif', 'containNotif')"><i class="icon f7-icons"
-                            style="color: white;">menu</i></a>
-                    <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)"
-                        style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
-                        {{#if cpt}}
-                        <span id="span_notifs"></span>
-                        <span id="text_notifs">{{cpt}}</span>
+            <div>
+                {{#if all}}
+                <div id="containNotif">
+                    {{else}}
+                    <div id="containNotif1">
                         {{/if}}
-                    </a>
-                    <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
-                            class="icon f7-icons">power</i></a>
-                </nav>
-                <center>
-                    <h1 id="title">Friend Finder</h1>
-                    <h2 id="secondTitle">Nnotifications' list</h2>
-                </center>
-                <div style="margin-top: 10%;">
-                    <ul id="notifications">
-                        {{#each notifs}}
-                        {{#if status}}
-                        <li>
+                        <nav class="navbar navbar-dark">
+                            {{#if all}}
+                            <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menuNotif', 'containNotif')"><i class="icon f7-icons"
+                                style="color: white;">menu</i></a>
                             {{else}}
-                        <li id="seen">
+                            <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menuNotif1', 'containNotif1')"><i class="icon f7-icons"
+                                style="color: white;">menu</i></a>
                             {{/if}}
-                            {{#if code}}
-                            {{#if status}}
-                            <a @click="vu('{{_id}}', '{{id_src}}', 1)">
-                                <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
-                                <span class="text">{{id_src}} has shared a new position</span>
+                            
+                            <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)"
+                                style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                                {{#if cpt}}
+                                <span id="span_notifs"></span>
+                                <span id="text_notifs">{{cpt}}</span>
+                                {{/if}}
                             </a>
-                            {{else}}
-                            <a @click="notifSeen">
-                                <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
-                                <span class="text">{{id_src}} has shared a new position</span>
-                            </a>
-                            {{/if}}
-                            {{else}}
-                            {{#if status}}
-                            <a @click="vu('{{_id}}', '{{id_src}}', 0)">
-                                <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
-                                <span class="text">You have a new friendship invitation sent by "{{id_src}}"</span>
-                            </a>
-                            {{else}}
-                            <a @click="notifSeen">
-                                <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
-                                <span class="text">You've already seen the friendship invitation sent to you by
-                                    "{{id_src}}"</span>
-                            </a>
-                            {{/if}}
-                            {{/if}}
+                            <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
+                                    class="icon f7-icons">power</i></a>
+                        </nav>
+                        <center>
+                            <h1 id="title">Friend Finder</h1>
+                            <h2 id="secondTitle">Nnotifications' list</h2>
+                        </center>
+                        <div style="margin-top: 10%;">
+                            <ul id="notifications">
+                                {{#each notifs}}
+                                {{#if status}}
+                                <li>
+                                    {{else}}
+                                <li id="seen">
+                                    {{/if}}
+                                    {{#if code}}
+                                    {{#if status}}
+                                    <a @click="vu('{{_id}}', '{{id_src}}', 1)">
+                                        <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
+                                        <span class="text">{{id_src}} has shared a new position</span>
+                                    </a>
+                                    {{else}}
+                                    <a @click="notifSeen">
+                                        <span class="icon"><i class="fa fa-thumb-tack" id="fa-notifs"></i></span>
+                                        <span class="text">{{id_src}} has shared a new position</span>
+                                    </a>
+                                    {{/if}}
+                                    {{else}}
+                                    {{#if status}}
+                                    <a @click="vu('{{_id}}', '{{id_src}}', 0)">
+                                        <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
+                                        <span class="text">You have a new friendship invitation sent by
+                                            "{{id_src}}"</span>
+                                    </a>
+                                    {{else}}
+                                    <a @click="notifSeen">
+                                        <span class="icon"><i class="fa fa-user" id="fa-notifs"></i></span>
+                                        <span class="text">You've already seen the friendship invitation sent to you by
+                                            "{{id_src}}"</span>
+                                    </a>
+                                    {{/if}}
+                                    {{/if}}
 
-                        </li>
-                        <!-- </div> -->
-                        {{/each}}
-                    </ul>
-                </div>
+                                </li>
+                                <!-- </div> -->
+                                {{/each}}
+                            </ul>
+                        </div>
 
-                <a @click="AllNotifs" id="allNotifs">Show all notifications</a>
+                        <a @click="AllNotifs" id="allNotifs">Show all notifications</a>
 
-                <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
-                    <h6>&copy; spirit_commandos 2020</h6>
-                </div>
-            </div>
+                        <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+                            <h6>&copy; spirit_commandos 2020</h6>
+                        </div>
+                    </div>
 </template>
 <script>
     return {
         async data() {
             // On cherche les notifications de l'utilisateur
             let url;
+            let all;
             if (this.$route.params.all === '0') {
-                console.log("ALL: " + this.$route.params.all);
+                all = 0;
+                // console.log("ALL: " + this.$route.params.all);
                 if (window.cordova === undefined) {
                     url = "http://localhost:3000/notifs/" + this.$route.params.token;
                 } else {
                     url = "http://10.0.2.2:3000/notifs/" + this.$route.params.token;;
                 }
             } else if (this.$route.params.all === '1') {
+                all = 1;
                 if (window.cordova === undefined) {
                     url = "http://localhost:3000/AllNotifs/" + this.$route.params.token;
                 } else {
@@ -113,6 +130,7 @@
             let usr;
             let user_src = [];
             let cpt = 0;
+            //  = this.$route.params.all;
             try {
                 notifs = await fetch(url)
                     .then(res =>
@@ -120,7 +138,8 @@
             } catch (err) {
                 this.$app.dialog.alert("Error " + err);
             }
-            console.log("notifs: " + JSON.stringify(notifs));
+            // console.log("notifs: " + JSON.stringify(notifs));
+            console.log("ALLLLLLL: " + all);
             cpt = notifs.length;
             for (let index = 0; index < cpt; index++) {
                 if (window.cordova === undefined) {
@@ -145,7 +164,8 @@
 
             return {
                 notifs: notifs,
-                cpt: cpt
+                cpt: cpt,
+                all: all
             }
         },
         methods: {
@@ -232,6 +252,13 @@
             pageInit: function() {
                 // we include the menu
                 // w3.includeHTML();
+                if (this.$route.params.all === 1) {
+                    document.getElementById("menuNotif").id = "menuNotif1";
+                    document.getElementById("containNotif").id = "containNotif1";
+                    document.getElementById("show").setAttribute("@click", "this.$app.methods.show_menu('menuNotif1', 'containNotif1')");
+                } else if (this.$route.params.all === 0) {
+                    document.getElementById("show").setAttribute("@click", "");
+                }
             }
         }
     }
