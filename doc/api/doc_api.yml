@@ -21,7 +21,7 @@ tags:
   - name: Notifications
     description: Notification system
 paths:
-  "/signup":
+  /signup:
     post:
       tags:
         - User
@@ -48,7 +48,7 @@ paths:
 
         required: true
       responses:
-        "200":
+        200:
           description: success
           headers:
             X-Expires-After:
@@ -67,12 +67,12 @@ paths:
         "405":
           description: Invalid input
           content: {}
-      x-codegen-request-body-name: body
+      #x-codegen-request-body-name: body
   /signin:
     post:
       tags:
         - User
-      summary: Connects the user to the APP
+      summary: Connect the user to the APP
       operationId: userSignin
       requestBody:
         description: Mail address and user's password.
@@ -91,21 +91,21 @@ paths:
                 value: { "mail": "user@domain.com", "password": "user" }
         required: true
       responses:
-        "200":
+        200:
           description: Authentification Success
           content:
             application/json:
               schema:
                 text:
                   type: string
-        "403":
+        403:
           description: Invalid Id
           content: {}
   /users/{token}:
     get:
       tags:
         - User
-      summary: Returns the list of users
+      summary: Return the list of users
       operationId: getUsers
       parameters:
         - name: token
@@ -115,7 +115,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        200:
           description: successful operation
           content:
             application/json:
@@ -123,13 +123,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/user"
-        "400":
+        400:
           description: invalid input
+          content : {}
   /getUserProfile/{token}/{id}:
     get:
       tags:
         - User
-      summary: Returns one user by his Id
+      summary: Return a user by his Id
       operationId: getUserById
       parameters:
         - name: token
@@ -145,19 +146,20 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        200 :
           description: successful operation
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/user"
-        "400":
+        400:
           description: invalid input
+          content : {}
   /changePassword:
     get:
       tags:
         - User
-      summary: Sends an email to the user with new identifiers in case he forgot hit password
+      summary: Send an email to the user with new identifiers in case he forgot his password
       operationId: sendUserEmail
       parameters:
         - name: mail
@@ -167,7 +169,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        200:
           description: successful operation
           content: {}
 
@@ -175,7 +177,7 @@ paths:
     post:
       tags:
         - User
-      summary: Allows users to change their passwords
+      summary: Allow users to change their passwords
       operationId: changePassword
       parameters:
         - name: token
@@ -185,7 +187,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        200:
           description: successful operation
           content: {}
 
@@ -193,7 +195,7 @@ paths:
     post:
       tags:
         - Positions
-      summary: Adds a new position in the dataBase
+      summary: Add a new position in the dataBase
       operationId: addPosition
       parameters:
         - name: token
@@ -210,7 +212,7 @@ paths:
               $ref: "#/components/schemas/position"
         required: true
       responses:
-        "200":
+        200:
           description: success
           content:  
             application/json:
@@ -222,7 +224,7 @@ paths:
     get:
       tags:
         - Positions
-      summary: Returns positions' list
+      summary: Return positions' list
       parameters:
         - name: token
           in: path
@@ -248,7 +250,7 @@ paths:
     get:
       tags:
         - Positions
-      summary: Returns the list of friends' active positions
+      summary: Return the list of friends' active positions
       parameters:
         - name: token
           in: path
@@ -269,7 +271,7 @@ paths:
     get:
       tags:
         - Positions
-      summary: Returns a position's details                
+      summary: Return a position's details                
       parameters:
         - name: token
           in: path
@@ -299,7 +301,7 @@ paths:
     delete:
       tags:
         - Positions
-      summary: deletes a position
+      summary: delete a position
       parameters:
         - name: token
           in: path
@@ -321,7 +323,7 @@ paths:
     post:
       tags:
         - Positions
-      summary: archives a position
+      summary: archive a position
       parameters:
         - name: token
           in: path
@@ -339,6 +341,184 @@ paths:
         200:
           description: success
           content: {}
+  /friends/{token}: 
+    post: 
+      tags : 
+        - Friends
+      summary : add a new friend
+      parameters : 
+      - name: token
+        in: path
+        description: token needed to verify the current user
+        required: true
+        schema:
+          type: string
+      - name: mail
+        in: query
+        description: friend's mail 
+        required: true
+        schema:
+          type: string
+      responses : 
+        200 : 
+          description : success
+          content : {}
+        401 : 
+          description : user already in friends' list
+          content : {}
+        403 : 
+          description : user not found
+          content : {}
+    get:
+      tags:
+        - Friends
+      summary: Return user's friends' list              
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/friend"
+  /friend/{token}/{id}:
+    delete:
+      tags:
+        - Friends
+      summary: delete a user from friends' list
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: The user's id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content: {}
+  /acceptFriend/{token}:
+    get:
+      tags:
+        - Friends
+      summary: accept friendship request
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string
+  /refuseFriend/{token}:
+    get:
+      tags:
+        - Friends
+      summary: refuse friendship request
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string 
+  /notifs/{token}:
+    get:
+      tags:
+        - Notifications 
+      summary: return unseen notifications
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string 
+      responses: 
+        200 : 
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/notification"
+  /Allnotifs/{token}:
+    get:
+      tags:
+        - Notifications 
+      summary: return all notifications
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string 
+      responses: 
+        200 : 
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/notification"
+  /SetNotifAsSeen/{token}:
+    get:
+      tags:
+        - Notifications 
+      summary: set notification as seen
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string 
+      responses: 
+        200 : 
+          description: success
+          content: {} 
+  /TargetNotif/{token}/{id}: 
+    get:
+      tags:
+        - Notifications 
+      summary: return the notification object based on its ID 
+      parameters:
+        - name: token
+          in: path
+          description: token needed to verify the current user
+          required: true
+          schema:
+            type: string 
+        - name: id
+          in: path
+          description: notification's ID
+          required: true
+          schema:
+            type: string 
+      responses: 
+        200 : 
+          description : success
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/notification"
+
 
 components:
   schemas:
@@ -395,3 +575,27 @@ components:
           type: string
         duree:
           type: integer
+    friend : 
+      required:
+        - id_1
+        - id_2
+        - status
+      type : Object
+      properties:
+        id_1: 
+          type : string
+        id_2: 
+          type : string
+        status: 
+          type : string
+    notification : 
+      type : Object
+      properties: 
+        code :
+          type : integer
+        id_src :
+          type: string
+        id_dest : 
+          type : string
+        target : 
+          type : string
