@@ -1,6 +1,7 @@
 <template>
     <div class="page" data-name="detailsPos">
         <div class="scrollbar-warm-flame d-none" id="menuDetail">
+            <!-- <div  w3-include-html="menu.html"></div>   -->
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
                 <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
                         class="fa fa-home" title="page d'accueil"></i></a>
@@ -145,6 +146,8 @@
         },
         on: {
             pageInit: async function() {
+                // we include the menu
+                // w3.includeHTML();
                 console.log("Page chargée");
                 let position = null;
                 let url;

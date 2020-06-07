@@ -1,6 +1,7 @@
 <template>
     <div class="page" data-name="params">
         <div class="scrollbar-warm-flame d-none" id="menuParams">
+            <!-- <div  w3-include-html="menu.html"></div>   -->
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
                 <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
                         class="fa fa-home" title="page d'accueil"></i></a>
@@ -220,6 +221,12 @@
             // bell: function() {
             //     this.$router.navigate("/notifs/0/" + this.$route.params.token);
             // }
+        },
+        on: {
+            pageInit: function() {
+                // we include the menu
+                // w3.includeHTML();
+            }
         }
     }
 </script>

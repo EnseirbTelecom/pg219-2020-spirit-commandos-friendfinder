@@ -657,6 +657,13 @@ li:hover {
     font-weight: bold;
 }
 
+.col-details {
+    margin-left: 4rem;
+    font-family: var(--font);
+    font-style: italic;
+    font-weight: 800;
+}
+
 
 /* #btn {
     color: black;
@@ -666,10 +673,14 @@ li:hover {
     /* background: linear-gradient(white, black); */
     /* background: black; */
     background: rgb(42, 60, 119);
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .w3-sidebar {
     background: rgb(42, 60, 119);
+    border-bottom-right-radius: 5rem;
+    border-top-right-radius: 5px;
 }
 
 .scrollbar-warm-flame {

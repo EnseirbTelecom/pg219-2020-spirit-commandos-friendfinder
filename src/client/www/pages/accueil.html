@@ -1,6 +1,7 @@
 <template>
     <div class="page" data-name="accueil">
         <div class="scrollbar-warm-flame d-none" id="menu">
+            <!-- <div  w3-include-html="menu.html"></div>             -->
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px" id="sidebar">
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
@@ -83,8 +84,15 @@
                 cpt: cpt
             }
         },
+        methods: {
+            getPos: function() {
+                console.log("NAVIGATE");
+            }
+        },
         on: {
             pageInit: function() {
+                // we include the menu
+                // w3.includeHTML();
                 let macarte = null;
                 var lat = 44.839683;
                 var lon = -0.570618;
