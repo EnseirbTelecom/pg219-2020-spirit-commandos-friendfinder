@@ -20,40 +20,39 @@
             </div>
         </div>
 
-        <div>
-            <div id="contain">
-                <nav class="navbar navbar-dark">
-                    <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menu', 'contain')"><i
-                            class="icon f7-icons" style="color: white;">menu</i></a>
-                    <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)"
-                        style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
-                        {{#if cpt}}
-                        <span id="span_notifs"></span>
-                        <span id="text_notifs">{{cpt}}</span>
-                        {{/if}}
-                    </a>
-                    <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
-                            class="icon f7-icons">power</i></a>
-                </nav>
-                <center>
-                    <h1 id="title">Friend Finder</h1>
-                </center>
-                <center>
-                    <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
-                </center>
+        <div id="contain">
+            <nav class="navbar navbar-dark">
+                <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menu', 'contain')"><i
+                        class="icon f7-icons" style="color: white;">menu</i></a>
+                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)"
+                    style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
+                    {{#if cpt}}
+                    <span id="span_notifs"></span>
+                    <span id="text_notifs">{{cpt}}</span>
+                    {{/if}}
+                </a>
+                <a href="#" @click="this.$app.methods.deconnecter(this.$router)" style="color: white; "><i
+                        class="icon f7-icons">power</i></a>
+            </nav>
+            <center>
+                <h1 id="title">Friend Finder</h1>
+            </center>
+            <center>
+                <p>Cette application mobile vous permet de géolocaliser vos amis.</p>
+            </center>
 
-                <div id="log">
-                    <h3 id="titleStat">Statistiques: </h3>
-                    <p id="stat"></p>
-                </div>
-                <div id="mapAccueil"></div>
+            <div id="log">
+                <h3 id="titleStat">Statistiques: </h3>
+                <p id="stat"></p>
+            </div>
+            <div id="mapAccueil"></div>
 
-                
-                <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
-                    <h6>&copy; spirit_commandos 2020</h6>
-                </div>
+
+            <div id="footer">
+                <h6>&copy; spirit_commandos 2020</h6>
             </div>
         </div>
+    </div>
 </template>
 <script>
     return {

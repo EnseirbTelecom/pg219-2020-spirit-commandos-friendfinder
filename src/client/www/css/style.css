@@ -664,6 +664,15 @@ li:hover {
     font-weight: 800;
 }
 
+#footer {
+    position: absolute;
+    bottom: 0;
+    /* width: 100%; */
+    padding-top: 20px;
+    padding-left: 25%;
+    height: 50px;
+}
+
 
 /* #btn {
     color: black;

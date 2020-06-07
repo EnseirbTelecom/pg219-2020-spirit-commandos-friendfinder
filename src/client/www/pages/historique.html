@@ -3,8 +3,8 @@
         <div class="scrollbar-warm-flame d-none" id="menuHist">
             <!-- <div  w3-include-html="menu.html"></div>   -->
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
-                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
-                        class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
                     class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -12,8 +12,8 @@
                     class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
-                        class="fa fa-group" title="liste des amis"></i></a>
+                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a>
                 <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
                     class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
                 <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
@@ -25,8 +25,8 @@
             <nav class="navbar navbar-dark">
                 <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menuHist', 'containHist')"><i
                         class="icon f7-icons" style="color: white;">menu</i></a>
-                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)" style="color: white; margin-left: 50%;"><i
-                        class="icon f7-icons">bell</i>
+                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)"
+                    style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
                     {{#if cpt}}
                     <span id="span_notifs"></span>
                     <span id="text_notifs">{{cpt}}</span>
@@ -65,7 +65,7 @@
             <a @click="getMap" class="button button-round button-fill btn-margin" id="btn">Afficher la
                 carte</a>
 
-            <div style="margin-top: 15%; margin-bottom: 2%; margin-left: 25%;">
+            <div id="footer">
                 <h6>&copy; spirit_commandos 2020</h6>
             </div>
         </div>

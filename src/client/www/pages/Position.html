@@ -3,8 +3,8 @@
         <div class="scrollbar-warm-flame d-none" id="menu_pos">
             <!-- <div  w3-include-html="menu.html"></div>   -->
             <div class="w3-sidebar w3-bar-block w3-xxlarge w3-animate-zoom" style="width:70px;" id="sidebar">
-                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
-                        class="fa fa-home" title="page d'accueil"></i></a>
+                <a href="#" @click="this.$app.methods.home(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-home" title="page d'accueil"></i></a>
                 <a href="#" @click="this.$app.methods.getPos(this.$router, this.$route.params.token)"
                     class="w3-bar-item w3-button"><i class="fa fa-thumb-tack"
                         title="Ajouter une nouvelle position"></i></a>
@@ -12,8 +12,8 @@
                     class="w3-bar-item w3-button"><i class="fa fa-gear"
                         title="modifier les paramètres de votre compte"></i></a>
                 <a href="#" class="w3-bar-item w3-button"><i class="fa fa-search" title="rechercher"></i></a>
-                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)" class="w3-bar-item w3-button"><i
-                        class="fa fa-group" title="liste des amis"></i></a>
+                <a href="#" @click="this.$app.methods.amis(this.$router, this.$route.params.token)"
+                    class="w3-bar-item w3-button"><i class="fa fa-group" title="liste des amis"></i></a>
                 <a href="#" @click="this.$app.methods.historique(this.$router, this.$route.params.token)"
                     class="w3-bar-item w3-button"><i class="fa fa-history" title="historique des positions"></i></a>
                 <a href="#" @click="this.$app.methods.deconnecter(this.$router)" class="w3-bar-item w3-button"><i
@@ -26,8 +26,8 @@
             <nav class="navbar navbar-dark">
                 <a class="navbar-brand" href="#" @click="this.$app.methods.show_menu('menu_pos', 'contain_pos')"><i
                         class="icon f7-icons" style="color: white;">menu</i></a>
-                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)" style="color: white; margin-left: 50%;"><i
-                        class="icon f7-icons">bell</i>
+                <a href="#" @click="this.$app.methods.bell(this.$router, this.$route.params.token)"
+                    style="color: white; margin-left: 50%;"><i class="icon f7-icons">bell</i>
                     {{#if cpt}}
                     <span id="span_notifs"></span>
                     <span id="text_notifs">{{cpt}}</span>
@@ -76,23 +76,18 @@
                             <label>ss</label>
                         </div>
                     </div>
+                    <div class="add">
+                        <a @click="getPosition" href="#" class="button button-round button-fill" id="btn">Partager la
+                            position</a>
+                    </div>
+                </div>
             </form>
-            <div class="add">
-                <a @click="getPosition" href="#" class="button button-round button-fill" id="btn">Partager la
-                    position</a>
-            </div>
-            <div id="geolocalisation"> </div>
-
         </div>
-        <div class="fab " id="back">
-            <a href="#" title="Ajouter un produit">
-                <i class="icon f7-icons">arrow_left</i>
-            </a>
-        </div>
-        <div style="margin-bottom: 2%; margin-left: 25%;">
+        <div id="footer">
             <h6>&copy; spirit_commandos 2020</h6>
         </div>
     </div>
+
 </template>
 <script>
     return {
@@ -188,8 +183,6 @@
                     let redirection = 0; //redirection interdite
                     let onSuccess = function(position) {
                         console.log("recuperation position reussie");
-                        console.log(position.coords);
-                        let element = document.getElementById('geolocalisation');
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
                         let ReqBody = JSON.stringify({
@@ -271,11 +264,6 @@
                             console.log("redirection en cours");
 
                         }
-
-
-                        // element.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
-                        //     'Longitude: ' + position.coords.longitude + '<br />' +
-                        //     '<hr />' + element.innerHTML;
                     };
 
                     function onError(error) {
