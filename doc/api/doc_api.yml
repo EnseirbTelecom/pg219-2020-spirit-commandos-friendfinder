@@ -61,10 +61,10 @@ paths:
               schema:
                 text:
                   type: string
-        "403":
+        403:
           description: Mail address already used
           content: {}
-        "405":
+        405:
           description: Invalid input
           content: {}
       #x-codegen-request-body-name: body
@@ -124,8 +124,17 @@ paths:
                 items:
                   $ref: "#/components/schemas/user"
         400:
-          description: invalid input
-          content : {}
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
+        # 400:
+        #   description: invalid input
+        #   content : {}
   /getUserProfile/{token}/{id}:
     get:
       tags:
@@ -153,8 +162,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/user"
         400:
-          description: invalid input
-          content : {}
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
+        # 400:
+        #   description: invalid input
+        #   content : {}
   /changePassword:
     get:
       tags:
@@ -172,7 +190,6 @@ paths:
         200:
           description: successful operation
           content: {}
-
   /newPassword/{token}:
     post:
       tags:
@@ -190,7 +207,15 @@ paths:
         200:
           description: successful operation
           content: {}
-
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /position/{token}:
     post:
       tags:
@@ -220,6 +245,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/position"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /positions/{token}:
     get:
       tags:
@@ -246,6 +280,15 @@ paths:
                 type: array
                 items: 
                   $ref: "#/components/schemas/position"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /positionsActives/{token}:
     get:
       tags:
@@ -267,6 +310,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/position"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /positionDetails/{token}:
     get:
       tags:
@@ -294,6 +346,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/position"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
         404:
           description: No such position
           content: {}
@@ -319,6 +380,15 @@ paths:
         200:
           description: success
           content: {}
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /archiverPos/{token}/{posId}:
     post:
       tags:
@@ -340,6 +410,15 @@ paths:
       responses:
         200:
           description: success
+          content: {}
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
           content: {}
   /friends/{token}: 
     post: 
@@ -363,12 +442,21 @@ paths:
         200 : 
           description : success
           content : {}
-        401 : 
-          description : user already in friends' list
-          content : {}
+        # 401 : 
+        #   description : user already in friends' list
+        #   content : {}
         403 : 
           description : user not found
           content : {}
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
     get:
       tags:
         - Friends
@@ -389,6 +477,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/friend"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /friend/{token}/{id}:
     delete:
       tags:
@@ -410,6 +507,15 @@ paths:
       responses:
         200:
           description: success
+          content: {}
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
           content: {}
   /acceptFriend/{token}:
     get:
@@ -456,6 +562,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/notification"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /Allnotifs/{token}:
     get:
       tags:
@@ -477,6 +592,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/notification"
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /SetNotifAsSeen/{token}:
     get:
       tags:
@@ -493,6 +617,15 @@ paths:
         200 : 
           description: success
           content: {} 
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
   /TargetNotif/{token}/{id}: 
     get:
       tags:
@@ -518,7 +651,15 @@ paths:
             application/json:
               schema:
                   $ref: "#/components/schemas/notification"
-
+        400:
+          description: Thrown error if the token is expired
+          content: {}
+        401:
+          description: Error object
+          content: {}
+        402:
+          description: Thrown if current time is before the nbf claim
+          content: {}
 
 components:
   schemas:
