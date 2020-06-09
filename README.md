@@ -1,3 +1,4 @@
+# Friend Finder
 
 Modules à installer pour lancer le projet côté serveur : 
  * npm install nodemon --save
