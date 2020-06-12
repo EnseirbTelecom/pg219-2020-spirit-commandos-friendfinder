@@ -4,7 +4,7 @@ Cette application est développée dans le but de géolocaliser ses amis à trav
 
 # Démo : 
 
-Vous pouvez retrouver sur ce lien une démonstration du fonctionnement de l'application : 
+Vous pouvez retrouver sur ce lien une démonstration du fonctionnement de l'application : https://youtu.be/1yp4Vay-ad8
 
 # Serveur : 
 
