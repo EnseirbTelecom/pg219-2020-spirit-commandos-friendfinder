@@ -632,6 +632,7 @@ MongoClient.connect(url, {
                     if (err) {
                         jwtErrorHandler(err, res);
                     } else {
+                        let id = decoded.data;
                         notifications.find({ id_dst: id }).toArray().then(notifs => {
                             res.json(notifs);
                         })
