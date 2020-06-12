@@ -1,5 +1,11 @@
 # Friend Finder 
 
+Cette application est développée dans le but de géolocaliser ses amis à travers les positions qu'ils partagent. 
+
+# Démo : 
+
+Vous pouvez retrouver sur ce lien une démonstration du fonctionnement de l'application : 
+
 # Serveur : 
 
 Pour démarrer le serveur : 
@@ -37,3 +43,17 @@ Pour lancer le client :
       
       
       --> Un fichier "redoc-static.html" est crée dans le dossier doc/api
+      
+  NB : La documentation de l'API est déjà générée. Pour la consulter il suffit d'afficher la page HTML redoc-static.
+
+# Équipe : Spirit-commandos
+
+Membres : 
+
+- Khadija Abdelouali
+
+- Sarra Jaballah
+
+- Hicham Larchi 
+
+- Léo Ayral
