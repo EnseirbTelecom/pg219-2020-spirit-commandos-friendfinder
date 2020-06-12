@@ -1,72 +1,1000 @@
-{ 
+{
   "openapi": "3.0.1",
   "info": {
     "title": "FriendFinder",
-    "description": "Application mobile pour la géolocalisation des amis",  
+    "description": "Application mobile pour la géolocalisation des amis",
     "version": "1.0.1"
   },
   "servers": [
     {
-      "url": "https://localhost:8082/api"
+      "url": "https://localhost:8082/api",
+      "description": "Development server"
     }
   ],
   "tags": [
     {
-      "name": "position",
-      "description": "Détails pour les positions"
+      "name": "User",
+      "description": "All user details"
     },
     {
-      "name": "utilisateur",
-      "description": "Détails des utilisateurs"
+      "name": "Positions",
+      "description": "Everything about geolocations"
+    },
+    {
+      "name": "Friends",
+      "description": "Friends details"
+    },
+    {
+      "name": "Notifications",
+      "description": "Notification system"
     }
   ],
-  "paths": 
-  {
-    "/utilisateur": {
+  "paths": {
+    "/signup": {
       "post": {
         "tags": [
-          "user"
+          "User"
         ],
-        "summary": "l'inscription d'un nouvel utilisateur",
-        "operationId": "ajoutUtilisateur",
+        "summary": "Add a new user to the dataBase",
+        "operationId": "userSignup",
         "requestBody": {
-          "description": "L'objet utilisateur à rajouter",
+          "description": "User object that needs to be added",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/utilisateur"
+                "$ref": "#/components/schemas/user"
+              },
+              "examples": {
+                "user": {
+                  "summary": "A user object example",
+                  "value": {
+                    "mail": "user@domain.com",
+                    "password": "user",
+                    "nom": "userFamilyName",
+                    "prenom": "userFirstName",
+                    "pseudo": "userPseudo",
+                    "date": "10/04/1997"
+                  }
+                }
               }
             }
-          }
           },
           "required": true
         },
         "responses": {
-          "405": {
-            "description": "Entrée invalide",
-            "content": {}
-          },
-          "200": {          
-            "description": "Ajout réussi",
-            "content": {
-              "text/plain": {  
+          "200": {
+            "description": "success",
+            "headers": {
+              "X-Expires-After": {
+                "description": "date in UTC when token expires",
                 "schema": {
-                  "type": "string"  
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "text": {
+                    "type": "string"
+                  }
                 }
               }
             }
+          },
+          "403": {
+            "description": "Mail address already used",
+            "content": {}
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {}
           }
         }
-     }
+      }
+    },
+    "/signin": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Connect the user to the APP",
+        "operationId": "userSignin",
+        "requestBody": {
+          "description": "Mail address and user's password.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "Object",
+                "properties": {
+                  "mail": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "logIn": {
+                  "summary": "User Identification Example",
+                  "value": {
+                    "mail": "user@domain.com",
+                    "password": "user"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Authentification Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid Id",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/{token}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Return the list of users",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/getUserProfile/{token}/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Return a user by his Id",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user's Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/changePassword": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send an email to the user with new identifiers in case he forgot his password",
+        "operationId": "sendUserEmail",
+        "parameters": [
+          {
+            "name": "mail",
+            "in": "query",
+            "description": "user's mail adress",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/newPassword/{token}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Allow users to change their passwords",
+        "operationId": "changePassword",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/position/{token}": {
+      "post": {
+        "tags": [
+          "Positions"
+        ],
+        "summary": "Add a new position in the dataBase",
+        "operationId": "addPosition",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Position object that is going to be added",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/position"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/position"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/positions/{token}": {
+      "get": {
+        "tags": [
+          "Positions"
+        ],
+        "summary": "Return positions' list",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "friend's id if we want to return a friend's positions' list"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/position"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/positionsActives/{token}": {
+      "get": {
+        "tags": [
+          "Positions"
+        ],
+        "summary": "Return the list of friends' active positions",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/position"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/positionDetails/{token}": {
+      "get": {
+        "tags": [
+          "Positions"
+        ],
+        "summary": "Return a position's details",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id_position",
+            "in": "query",
+            "description": "the position's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/position"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          },
+          "404": {
+            "description": "No such position",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/deletePos/{token}/{posId}": {
+      "delete": {
+        "tags": [
+          "Positions"
+        ],
+        "summary": "delete a position",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "posId",
+            "in": "path",
+            "description": "The position's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {}
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/archiverPos/{token}/{posId}": {
+      "post": {
+        "tags": [
+          "Positions"
+        ],
+        "summary": "archive a position",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "posId",
+            "in": "path",
+            "description": "The position's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {}
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/friends/{token}": {
+      "post": {
+        "tags": [
+          "Friends"
+        ],
+        "summary": "add a new friend",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mail",
+            "in": "query",
+            "description": "friend's mail",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {}
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          },
+          "403": {
+            "description": "user not found",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Friends"
+        ],
+        "summary": "Return user's friends' list",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/friend"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/friend/{token}/{id}": {
+      "delete": {
+        "tags": [
+          "Friends"
+        ],
+        "summary": "delete a user from friends' list",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {}
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/acceptFriend/{token}": {
+      "get": {
+        "tags": [
+          "Friends"
+        ],
+        "summary": "accept friendship request",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/refuseFriend/{token}": {
+      "get": {
+        "tags": [
+          "Friends"
+        ],
+        "summary": "refuse friendship request",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/notifs/{token}": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "return unseen notifications",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/notification"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/Allnotifs/{token}": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "return all notifications",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/notification"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/SetNotifAsSeen/{token}": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "set notification as seen",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {}
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/TargetNotif/{token}/{id}": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "return the notification object based on its ID",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "token needed to verify the current user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "notification's ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notification"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Thrown error if the token is expired",
+            "content": {}
+          },
+          "401": {
+            "description": "Error object",
+            "content": {}
+          },
+          "402": {
+            "description": "Thrown if current time is before the nbf claim",
+            "content": {}
+          }
+        }
+      }
+    }
   },
   "components": {
     "schemas": {
-      "utilisateur": {
-        "type": "object",
+      "user": {
+        "required": [
+          "mail",
+          "password",
+          "nom",
+          "prenom",
+          "pseudo",
+          "date"
+        ],
+        "type": "Object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "mail": {
             "type": "string"
           },
@@ -83,34 +1011,79 @@
             "type": "string"
           },
           "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "position": {
+        "required": [
+          "lat",
+          "long",
+          "date_activation",
+          "heure_activation",
+          "duree",
+          "user"
+        ],
+        "type": "Object",
+        "properties": {
+          "lat": {
+            "type": "string"
+          },
+          "long": {
+            "type": "string"
+          },
+          "date_activation": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "heure_activation": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "duree": {
+            "type": "integer"
+          }
+        }
+      },
+      "friend": {
+        "required": [
+          "id_1",
+          "id_2",
+          "status"
+        ],
+        "type": "Object",
+        "properties": {
+          "id_1": {
+            "type": "string"
+          },
+          "id_2": {
+            "type": "string"
+          },
+          "status": {
             "type": "string"
           }
         }
       },
-     "positions" : {
-       "type":"object",
-       "properties":{
-         "lat":{
-           "type":"integer"
-         },
-         "long":{
-           "type":"integer"
-         },
-         "date_activation":{
-           "type":"string"
-         },
-         "heure_activation":{
-           "type":"string"
-         },
-         "user":{
-            "$ref": "#/components/schemas/utilisateur"
-         },
-         "status":{
-           "type":"string"
-         }
-
-       }
-     }
+      "notification": {
+        "type": "Object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "id_src": {
+            "type": "string"
+          },
+          "id_dest": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          }
+        }
+      }
     }
-  }    
+  }
 }
