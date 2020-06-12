@@ -1,5 +1,25 @@
 # Friend Finder 
- Documentation de l'API : 
+
+# Serveur : 
+
+Pour démarrer le serveur : 
+
+--> cd src/api.
+
+--> nodemon server/server.js
+
+NB : voir readme.md du dossier src/api pour retrouver les modules à installer côté serveur.
+
+# Client :
+
+Pour lancer le client : 
+
+--> cd src/client
+
+--> npm run start
+
+
+ # Documentation de l'API : 
  
   - cd doc/api 
   - Pour lancer le serveur de Redoc et le lier au fichier json : 
